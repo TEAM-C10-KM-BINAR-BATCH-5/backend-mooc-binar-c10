@@ -39,9 +39,6 @@ module.exports = {
       imageUrl: {
         type: Sequelize.STRING
       },
-      trailerUrl: {
-        type: Sequelize.STRING
-      },
       rating: {
         type: Sequelize.FLOAT
       },

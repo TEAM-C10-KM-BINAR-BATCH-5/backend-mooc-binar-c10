@@ -34,7 +34,6 @@ module.exports = (sequelize, DataTypes) => {
       level: DataTypes.ENUM(["Beginner", "Intermediate", "Advance"]),
       courseType: DataTypes.ENUM(["Free", "Premium"]),
       imageUrl: DataTypes.STRING,
-      trailerUrl: DataTypes.STRING,
       rating: DataTypes.FLOAT,
       instructor: DataTypes.STRING,
       duration: DataTypes.INTEGER,

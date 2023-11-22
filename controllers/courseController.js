@@ -7,7 +7,6 @@ const createCourse = async (req, res) => {
 		level,
 		courseType,
 		imageUrl,
-		trailerUrl,
 		rating,
 		instructor,
 		duration,
@@ -26,7 +25,6 @@ const createCourse = async (req, res) => {
 			level,
 			courseType,
 			imageUrl,
-			trailerUrl,
 			rating,
 			instructor,
 			duration,
@@ -44,7 +42,7 @@ const createCourse = async (req, res) => {
 		})
 	} catch (error) {
 		res.status(500).json({
-      success: false,
+			success: false,
 			message: error.message,
 		})
 		console.log(error.message)
@@ -68,13 +66,13 @@ const getCourses = async (req, res) => {
 			],
 		})
 		res.status(200).json({
-      success: true,
+			success: true,
 			message: "Success, fetch",
 			courses: coursesData,
 		})
 	} catch (error) {
 		res.status(500).json({
-      success: false,
+			success: false,
 			message: error.message,
 		})
 		console.log(error.message)
@@ -86,13 +84,13 @@ const deleteCourse = async (req, res) => {
 	try {
 		await Course.destroy({ where: { id } })
 		res.status(200).json({
-      success: true,
+			success: true,
 			message: "Success, deleted",
 			data: null,
 		})
 	} catch (error) {
 		res.status(500).json({
-      success: false,
+			success: false,
 			message: error.message,
 		})
 		console.log(error.message)
