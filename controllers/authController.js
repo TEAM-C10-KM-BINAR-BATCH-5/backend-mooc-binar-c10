@@ -17,10 +17,26 @@ const register = async (req, res, next) => {
       return next(new ApiError("User email already taken", 400));
     }
 
+    const emailRegex =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
+    // Test the email against the regular expression
+    if (!emailRegex.test(email)) {
+      return next(new ApiError("Please enter a valid email address", 400));
+    }
+
     // minimum password length
     const passwordLength = password <= 8;
     if (passwordLength) {
       return next(new ApiError("Minimum password must be 8 character", 400));
+    }
+    // validate phone number
+    const phoneRegex = /^(?:\+62|62|0)[2-9]\d{7,11}$/;
+
+    // Test the phone number against the regular expression
+    if (!phoneRegex.test(phoneNumber)) {
+      // Phone number is invalid
+      return next(new ApiError("Please enter a valid phone number", 400));
     }
 
     // hashing password
