@@ -48,7 +48,7 @@ const createCourse = async (req, res, next) => {
 
 const getCourses = async (req, res, next) => {
 	try {
-		const coursesData = await Course.findAll({
+		const courses = await Course.findAll({
 			include: [
 				{
 					model: Module,
@@ -65,7 +65,9 @@ const getCourses = async (req, res, next) => {
 		res.status(200).json({
 			success: true,
 			message: "Success, fetch",
-			courses: coursesData,
+			data: {
+				courses,
+			},
 		})
 	} catch (error) {
 		return next(new ApiError(error.message, 500))
