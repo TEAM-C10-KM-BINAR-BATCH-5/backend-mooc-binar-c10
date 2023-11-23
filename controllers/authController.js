@@ -59,8 +59,9 @@ const register = async (req, res, next) => {
       userId: newUser.id,
     });
 
-    res.status(201).json({
-      status: "Success",
+    res.status(200).json({
+      success: true,
+      message: "Success, register user",
       data: {
         ...newUser,
         phoneNumber,

@@ -3,14 +3,15 @@ const ApiError = require("../utils/apiError");
 
 const findUsers = async (req, res, next) => {
   try {
-    const Users = await User.findAll({
+    const users = await User.findAll({
       include: ["Auth"],
     });
 
     res.status(200).json({
-      status: "Success",
+      success: true,
+      message: "Success, fetch",
       data: {
-        Users,
+        users,
       },
     });
   } catch (err) {
@@ -28,7 +29,8 @@ const findUserById = async (req, res, next) => {
     });
 
     res.status(200).json({
-      status: "Success",
+      success: true,
+      message: "Success, fetch",
       data: {
         user,
       },
@@ -55,8 +57,8 @@ const updateUser = async (req, res, next) => {
     );
 
     res.status(200).json({
-      status: "Success",
-      message: "User updated successfully",
+      success: true,
+      message: "Success, updated",
     });
   } catch (err) {
     next(new ApiError(err.message, 500));
@@ -78,8 +80,8 @@ const deleteUser = async (req, res, next) => {
     });
 
     res.status(200).json({
-      status: "Success",
-      message: "sukses delete user",
+      success: true,
+      message: "Success, deleted",
     });
   } catch (err) {
     next(new ApiError(err.message, 500));
