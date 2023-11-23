@@ -54,7 +54,7 @@ const getModules = async (req, res, next) => {
 	}
 }
 
-const deleteModule = async (req, res) => {
+const deleteModule = async (req, res, next) => {
 	const { id } = req.params
 	try {
 		await Module.destroy({ where: { id } })
