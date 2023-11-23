@@ -1,16 +1,19 @@
 const { Module, Video, Course } = require("../models")
+const ApiError = require("../utils/apiError")
 
-const createModule = async (req, res) => {
+const createModule = async (req, res, next) => {
 	const { title, duration, courseId } = req.body
 	try {
 		let idCourse
 		if (courseId) {
 			const course = await Course.findOne({ where: { id: courseId } })
 			if (!course) {
-				return res.status(400).json({
-					success: false,
-					message: `Bad request / cause course with id ${courseId} not found`,
-				})
+				return next(
+					new ApiError(
+						`Bad request / cause course with id ${courseId} not found`,
+						400
+					)
+				)
 			}
 			idCourse = course.id
 		}
@@ -28,15 +31,11 @@ const createModule = async (req, res) => {
 			},
 		})
 	} catch (error) {
-		res.status(500).json({
-			success: false,
-			message: error.message,
-		})
-		console.log(error.message)
+		return next(new ApiError(error.message, 500))
 	}
 }
 
-const getModules = async (req, res) => {
+const getModules = async (req, res, next) => {
 	try {
 		const modules = await Module.findAll({
 			include: [
@@ -51,11 +50,7 @@ const getModules = async (req, res) => {
 			},
 		})
 	} catch (error) {
-		res.status(500).json({
-			success: false,
-			message: error.message,
-		})
-		console.log(error.message)
+		return next(new ApiError(error.message, 500))
 	}
 }
 
@@ -69,15 +64,11 @@ const deleteModule = async (req, res) => {
 			data: null,
 		})
 	} catch (error) {
-		res.status(500).json({
-			success: false,
-			message: error.message,
-		})
-		console.log(error.message)
+		return next(new ApiError(error.message, 500))
 	}
 }
 
-const updateModule = async (req, res) => {
+const updateModule = async (req, res, next) => {
 	const { id } = req.params
 	const { title, duration, courseId } = req.body
 	try {
@@ -85,10 +76,12 @@ const updateModule = async (req, res) => {
 		if (courseId) {
 			const course = await Course.findOne({ where: { id: courseId } })
 			if (!course) {
-				return res.status(400).json({
-					success: false,
-					message: `Bad request / cause course with id ${courseId} not found`,
-				})
+				return next(
+					new ApiError(
+						`Bad request / cause course with id ${courseId} not found`,
+						400
+					)
+				)
 			}
 			idCourse = course.id
 		}
@@ -109,11 +102,7 @@ const updateModule = async (req, res) => {
 			},
 		})
 	} catch (error) {
-		res.status(500).json({
-			success: false,
-			message: error.message,
-		})
-		console.log(error.message)
+		return next(new ApiError(error.message, 500))
 	}
 }
 
@@ -132,11 +121,7 @@ const getModule = async (req, res) => {
 			},
 		})
 	} catch (error) {
-		res.status(500).json({
-			success: false,
-			message: error.message,
-		})
-		console.log(error.message)
+		return next(new ApiError(error.message, 500))
 	}
 }
 

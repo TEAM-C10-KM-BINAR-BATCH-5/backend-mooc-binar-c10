@@ -1,16 +1,19 @@
 const { Video, Module } = require("../models")
+const ApiError = require("../utils/apiError")
 
-const createVid = async (req, res) => {
+const createVid = async (req, res, next) => {
 	const { title, videoUrl, duration, moduleId } = req.body
 	try {
 		let idModule
 		if (moduleId) {
 			const module = await Module.findOne({ where: { id: moduleId } })
 			if (!module) {
-				return res.status(400).json({
-					success: false,
-					message: `Bad request / cause module with id ${moduleId} not found`,
-				})
+				return next(
+					new ApiError(
+						`Bad request / cause module with id ${moduleId} not found`,
+						400
+					)
+				)
 			}
 			idModule = module.id
 		}
@@ -29,15 +32,11 @@ const createVid = async (req, res) => {
 			},
 		})
 	} catch (error) {
-		res.status(500).json({
-			success: false,
-			message: error.message,
-		})
-		console.log(error.message)
+		return next(new ApiError(error.message, 500))
 	}
 }
 
-const getVideos = async (req, res) => {
+const getVideos = async (req, res, next) => {
 	try {
 		const videos = await Video.findAll()
 		res.status(200).json({
@@ -48,15 +47,11 @@ const getVideos = async (req, res) => {
 			},
 		})
 	} catch (error) {
-		res.status(500).json({
-			success: false,
-			message: error.message,
-		})
-		console.log(error.message)
+		return next(new ApiError(error.message, 500))
 	}
 }
 
-const deleteVideo = async (req, res) => {
+const deleteVideo = async (req, res, next) => {
 	const { id } = req.params
 	try {
 		await Video.destroy({ where: { id } })
@@ -66,15 +61,11 @@ const deleteVideo = async (req, res) => {
 			data: null,
 		})
 	} catch (error) {
-		res.status(500).json({
-			success: false,
-			message: error.message,
-		})
-		console.log(error.message)
+		return next(new ApiError(error.message, 500))
 	}
 }
 
-const updateVideo = async (req, res) => {
+const updateVideo = async (req, res, next) => {
 	const { id } = req.params
 	const { title, videoUrl, moduleId } = req.body
 	try {
@@ -82,10 +73,12 @@ const updateVideo = async (req, res) => {
 		if (moduleId) {
 			const module = await Module.findOne({ where: { id: moduleId } })
 			if (!module) {
-				return res.status(400).json({
-					success: false,
-					message: `Bad request / cause module with id ${moduleId} not found`,
-				})
+				return next(
+					new ApiError(
+						`Bad request / cause module with id ${moduleId} not found`,
+						400
+					)
+				)
 			}
 			idModule = module.id
 		}
@@ -106,15 +99,11 @@ const updateVideo = async (req, res) => {
 			},
 		})
 	} catch (error) {
-		res.status(500).json({
-			success: false,
-			message: error.message,
-		})
-		console.log(error.message)
+		return next(new ApiError(error.message, 500))
 	}
 }
 
-const getVideo = async (req, res) => {
+const getVideo = async (req, res, next) => {
 	const { id } = req.params
 	try {
 		const video = await Video.findOne({ where: { id } })
@@ -126,11 +115,7 @@ const getVideo = async (req, res) => {
 			},
 		})
 	} catch (error) {
-		res.status(500).json({
-			success: false,
-			message: error.message,
-		})
-		console.log(error.message)
+		return next(new ApiError(error.message, 500))
 	}
 }
 

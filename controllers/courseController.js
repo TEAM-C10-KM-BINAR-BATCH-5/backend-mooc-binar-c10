@@ -1,6 +1,7 @@
 const { Course, Module, Video } = require("../models")
+const ApiError = require("../utils/apiError")
 
-const createCourse = async (req, res) => {
+const createCourse = async (req, res, next) => {
 	const {
 		title,
 		category,
@@ -41,15 +42,11 @@ const createCourse = async (req, res) => {
 			},
 		})
 	} catch (error) {
-		res.status(500).json({
-			success: false,
-			message: error.message,
-		})
-		console.log(error.message)
+		return next(new ApiError(error.message, 500))
 	}
 }
 
-const getCourses = async (req, res) => {
+const getCourses = async (req, res, next) => {
 	try {
 		const coursesData = await Course.findAll({
 			include: [
@@ -71,15 +68,11 @@ const getCourses = async (req, res) => {
 			courses: coursesData,
 		})
 	} catch (error) {
-		res.status(500).json({
-			success: false,
-			message: error.message,
-		})
-		console.log(error.message)
+		return next(new ApiError(error.message, 500))
 	}
 }
 
-const deleteCourse = async (req, res) => {
+const deleteCourse = async (req, res, next) => {
 	const { id } = req.params
 	try {
 		await Course.destroy({ where: { id } })
@@ -89,11 +82,7 @@ const deleteCourse = async (req, res) => {
 			data: null,
 		})
 	} catch (error) {
-		res.status(500).json({
-			success: false,
-			message: error.message,
-		})
-		console.log(error.message)
+		return next(new ApiError(error.message, 500))
 	}
 }
 
