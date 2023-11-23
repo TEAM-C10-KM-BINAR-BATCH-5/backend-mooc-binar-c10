@@ -106,7 +106,7 @@ const updateModule = async (req, res, next) => {
 	}
 }
 
-const getModule = async (req, res) => {
+const getModule = async (req, res, next) => {
 	const { id } = req.params
 	try {
 		const module = await Module.findOne({
