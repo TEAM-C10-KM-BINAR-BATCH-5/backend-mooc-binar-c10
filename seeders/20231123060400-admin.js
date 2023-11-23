@@ -18,6 +18,7 @@ module.exports = {
         {
           email: "admin@gmail.com",
           password: process.env.ADMIN_PASSWORD,
+          phoneNumber: 628989891122,
           userId: newSuperadmin.id,
           createdAt: new Date(),
           updatedAt: new Date(),

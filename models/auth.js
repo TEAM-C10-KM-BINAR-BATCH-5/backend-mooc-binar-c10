@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Auth.init(
     {
-      phoneNumber: DataTypes.INTEGER,
+      phoneNumber: DataTypes.BIGINT,
       email: DataTypes.STRING,
       password: DataTypes.STRING,
       userId: DataTypes.INTEGER,
