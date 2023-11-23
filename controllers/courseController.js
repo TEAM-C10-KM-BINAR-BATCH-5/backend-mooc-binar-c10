@@ -64,6 +64,10 @@ const getCourses = async (req, res, next) => {
 const deleteCourse = async (req, res, next) => {
   const { id } = req.params
   try {
+    const course = await Course.findOne({ where: { id } })
+    if (!course) {
+      return next(new ApiError(`Id with ${id} are not exist!`, 404))
+    }
     await Course.destroy({ where: { id } })
     res.status(200).json({
       success: true,
@@ -108,9 +112,62 @@ const getCourse = async (req, res, next) => {
   }
 }
 
+const updateCourse = async (req, res, next) => {
+  const { id } = req.params
+  const {
+    title,
+    category,
+    level,
+    courseType,
+    imageUrl,
+    rating,
+    instructor,
+    duration,
+    telegramLink,
+    moduleCount,
+    about,
+    objective,
+    price
+  } = req.body
+  try {
+    const course = await Course.findOne({ where: { id } })
+    if (!course) {
+      return next(new ApiError(`Id with ${id} are not exist!`, 404))
+    }
+    const updatedCourse = await Course.update(
+      {
+        title,
+        category,
+        level,
+        courseType,
+        imageUrl,
+        rating,
+        instructor,
+        duration,
+        telegramLink,
+        moduleCount,
+        about,
+        objective,
+        price
+      },
+      { where: { id }, returning: true }
+    )
+    res.status(200).json({
+      success: true,
+      message: "Success, updated",
+      data: {
+        updatedCourse
+      }
+    })
+  } catch (error) {
+    return next(new ApiError(error.message, 500))
+  }
+}
+
 module.exports = {
   createCourse,
   getCourses,
   deleteCourse,
-  getCourse
+  getCourse,
+  updateCourse
 }

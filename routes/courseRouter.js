@@ -3,6 +3,10 @@ const courseController = require("../controllers/courseController")
 
 router.route("/").post(courseController.createCourse).get(courseController.getCourses)
 
-router.route("/:id").delete(courseController.deleteCourse).get(courseController.getCourse)
+router
+  .route("/:id")
+  .delete(courseController.deleteCourse)
+  .get(courseController.getCourse)
+  .put(courseController.updateCourse)
 
 module.exports = router
