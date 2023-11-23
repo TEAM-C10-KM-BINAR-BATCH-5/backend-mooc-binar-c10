@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User, Auth } = require("../models");
 const ApiError = require("../utils/apiError");
 
 const findUsers = async (req, res, next) => {
@@ -66,6 +66,11 @@ const updateUser = async (req, res, next) => {
 const deleteUser = async (req, res, next) => {
   const { name, price, stock } = req.body;
   try {
+    await Auth.destroy({
+      where: {
+        userId: req.params.id,
+      },
+    });
     await User.destroy({
       where: {
         id: req.params.id,

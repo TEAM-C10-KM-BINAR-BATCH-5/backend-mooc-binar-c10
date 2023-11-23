@@ -47,6 +47,7 @@ const register = async (req, res, next) => {
       status: "Success",
       data: {
         ...newUser,
+        phoneNumber,
         email,
         password: hashedPassword,
       },
