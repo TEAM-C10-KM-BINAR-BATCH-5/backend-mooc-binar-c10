@@ -1,5 +1,6 @@
 const { Course, Module, Video } = require("../models")
 const ApiError = require("../utils/apiError")
+const imagekit = require("../lib/imageKit")
 
 const createCourse = async (req, res, next) => {
   const {
@@ -7,17 +8,27 @@ const createCourse = async (req, res, next) => {
     category,
     level,
     courseType,
-    imageUrl,
     rating,
     instructor,
     duration,
     telegramLink,
-    moduleCount,
     about,
     objective,
     price
   } = req.body
+  const file = req.file
+  let image
   try {
+    if (file) {
+      const split = file.originalname.split(".")
+      const extension = split[split.length - 1]
+
+      const img = await imagekit.upload({
+        file: file.buffer,
+        fileName: `IMG-${Date.now()}.${extension}`
+      })
+      image = img.url
+    }
     const newCourse = await Course.create({
       title,
       about,
@@ -25,12 +36,12 @@ const createCourse = async (req, res, next) => {
       category,
       level,
       courseType,
-      imageUrl,
+      imageUrl: image,
       rating,
       instructor,
       duration,
       telegramLink,
-      moduleCount,
+      moduleCount: 0,
       price
     })
 

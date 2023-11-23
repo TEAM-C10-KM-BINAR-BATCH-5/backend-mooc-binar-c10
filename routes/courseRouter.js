@@ -1,11 +1,13 @@
 const router = require("express").Router()
 const courseController = require("../controllers/courseController")
-
+const { Course } = require("../models")
+const upload = require("../middlewares/uploader")
 const checkId = require("../middlewares/checkId")
 
-const { Course } = require("../models")
-
-router.route("/").post(courseController.createCourse).get(courseController.getCourses)
+router
+  .route("/")
+  .post(upload.single("image"), courseController.createCourse)
+  .get(courseController.getCourses)
 
 router
   .route("/:id")
