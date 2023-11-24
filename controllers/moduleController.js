@@ -2,7 +2,7 @@ const { Module, Video, Course } = require("../models")
 const ApiError = require("../utils/apiError")
 
 const createModule = async (req, res, next) => {
-  const { title, duration, courseId } = req.body
+  const { title, courseId } = req.body
   try {
     let idCourse
     if (courseId) {
@@ -14,7 +14,7 @@ const createModule = async (req, res, next) => {
     }
     const newModule = await Module.create({
       title,
-      duration,
+      duration: 0,
       courseId: idCourse
     })
     if (newModule) {
@@ -60,7 +60,21 @@ const getModules = async (req, res, next) => {
 const deleteModule = async (req, res, next) => {
   const { id } = req.params
   try {
-    await Module.destroy({ where: { id } })
+    const module = await Module.findOne({
+      where: { id }
+    })
+    const idCourse = module.courseId
+    const course = await Course.findOne({ where: { id: idCourse } })
+    let decrementModuleCount = course.moduleCount
+    const deletedModule = await Module.destroy({ where: { id } })
+    if (deletedModule) {
+      await Course.update(
+        {
+          moduleCount: --decrementModuleCount
+        },
+        { where: { id: idCourse } }
+      )
+    }
     res.status(200).json({
       success: true,
       message: "Success, deleted",

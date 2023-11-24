@@ -10,7 +10,6 @@ const createCourse = async (req, res, next) => {
     courseType,
     rating,
     instructor,
-    duration,
     telegramLink,
     about,
     objective,
@@ -39,7 +38,7 @@ const createCourse = async (req, res, next) => {
       imageUrl: image,
       rating,
       instructor,
-      duration,
+      duration: 0,
       telegramLink,
       moduleCount: 0,
       price
