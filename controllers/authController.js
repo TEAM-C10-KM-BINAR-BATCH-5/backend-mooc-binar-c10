@@ -48,7 +48,7 @@ const register = async (req, res, next) => {
       country,
       city,
       role: "user",
-      memberType: "free",
+      membership: "free",
       profileUrl: "adadadadad",
     });
 
