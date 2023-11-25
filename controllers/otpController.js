@@ -6,8 +6,8 @@ const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
   service: "gmail",
   host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
+  port: 485,
+  secure: true,
   auth: {
     user: process.env.USER_EMAIL,
     pass: process.env.APP_PASSWORD,
@@ -18,13 +18,14 @@ const createOtp = async (req, res, next) => {
   try {
     const otp = otpGenerator.generate(6, {
       upperCaseAlphabets: false,
+      lowerCaseAlphabets: false,
       specialChars: false,
     });
+
     await transporter.sendMail({
       from: '"arfiano" <arfianoj@gmail.com>', // sender address
       to: req.body.email, // list of receivers
-      subject: "OTP", // Subject line
-      text: `Your OTP is: ${otp}`, // plain text body
+      subject: "Email Verification OTP", // Subject line
       html: `<b>Your OTP is: ${otp}</b>`, // html body
     });
 
@@ -36,7 +37,7 @@ const createOtp = async (req, res, next) => {
       data: otp,
     });
   } catch (err) {
-    next(new ApiError(err.message, 500));
+    return next(new ApiError(err.message, 500));
   }
 };
 
