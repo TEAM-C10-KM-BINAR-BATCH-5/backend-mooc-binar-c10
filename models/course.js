@@ -14,6 +14,13 @@ module.exports = (sequelize, DataTypes) => {
           name: "courseId"
         }
       })
+
+      Course.belongsTo(models.Category, {
+        foreignKey: {
+          name: "categoryId",
+          allowNull: false
+        }
+      })
     }
   }
   Course.init(
@@ -21,16 +28,8 @@ module.exports = (sequelize, DataTypes) => {
       title: DataTypes.STRING,
       about: DataTypes.STRING,
       objective: DataTypes.STRING,
-      category: DataTypes.ENUM([
-        "Product Manager",
-        "UI/UX",
-        "Web Development",
-        "Android Development",
-        "Data Science",
-        "Bussines Intelligence",
-        "Ios Development",
-        "Lainnya"
-      ]),
+      onboarding: DataTypes.STRING,
+      categoryId: DataTypes.STRING,
       level: DataTypes.ENUM(["Beginner", "Intermediate", "Advance"]),
       courseType: DataTypes.ENUM(["Free", "Premium"]),
       imageUrl: DataTypes.STRING,

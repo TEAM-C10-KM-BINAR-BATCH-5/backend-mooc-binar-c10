@@ -18,17 +18,11 @@ module.exports = {
       objective: {
         type: Sequelize.STRING
       },
-      category: {
-        type: Sequelize.ENUM([
-          "Product Manager",
-          "UI/UX",
-          "Web Development",
-          "Android Development",
-          "Data Science",
-          "Bussines Intelligence",
-          "Ios Development",
-          "Lainnya"
-        ])
+      onboarding: {
+        type: Sequelize.STRING
+      },
+      categoryId: {
+        type: Sequelize.STRING
       },
       level: {
         type: Sequelize.ENUM(["Beginner", "Intermediate", "Advance"])
