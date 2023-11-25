@@ -23,7 +23,7 @@ const createOtp = async (req, res, next) => {
     });
 
     await transporter.sendMail({
-      from: '"arfiano" <arfianoj@gmail.com>', // sender address
+      from: '"Team C10 Binar" <binar.team.c10@gmail.com>', // sender address
       to: req.body.email, // list of receivers
       subject: "Email Verification OTP", // Subject line
       html: `<b>Your OTP is: ${otp}</b>`, // html body
