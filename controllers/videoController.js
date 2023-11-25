@@ -2,14 +2,14 @@ const { Video, Module } = require("../models")
 const ApiError = require("../utils/apiError")
 
 const createVid = async (req, res, next) => {
-  const { title, videoUrl, duration, moduleId } = req.body
+  const { title, no, videoUrl, duration, moduleId } = req.body
   try {
     let idModule
     let moduleDuration
     if (moduleId) {
       const module = await Module.findOne({ where: { id: moduleId } })
       if (!module) {
-        return next(new ApiError(`Bad request / cause module with id ${moduleId} not found`, 400))
+        return next(new ApiError(`Cause module with id ${moduleId} not found`, 404))
       }
       idModule = module.id
       moduleDuration = module.duration
@@ -17,6 +17,7 @@ const createVid = async (req, res, next) => {
 
     const newVid = await Video.create({
       title,
+      no,
       videoUrl,
       duration,
       moduleId: idModule

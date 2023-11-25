@@ -1,18 +1,18 @@
-const { Course, Module, Video } = require("../models")
+const { Course, Module, Video, Category } = require("../models")
 const ApiError = require("../utils/apiError")
 const imagekit = require("../lib/imageKit")
 
 const createCourse = async (req, res, next) => {
   const {
     title,
-    category,
+    categoryId,
     level,
-    courseType,
     rating,
     instructor,
     telegramLink,
     about,
     objective,
+    onboarding,
     price
   } = req.body
   const file = req.file
@@ -28,13 +28,19 @@ const createCourse = async (req, res, next) => {
       })
       image = img.url
     }
+    const category = await Category.findOne({ where: { id: categoryId } })
+    if (!category) {
+      return next(new ApiError(`Cause category with id ${categoryId} not found`, 404))
+    }
+    const idCategory = category.id
     const newCourse = await Course.create({
       title,
       about,
       objective,
-      category,
+      categoryId: idCategory,
+      onboarding,
       level,
-      courseType,
+      courseType: price > 0 ? "Premium" : "Free",
       imageUrl: image,
       rating,
       instructor,
@@ -119,8 +125,8 @@ const updateCourse = async (req, res, next) => {
   const { id } = req.params
   const {
     title,
-    category,
     level,
+    categoryId,
     courseType,
     imageUrl,
     rating,
@@ -130,13 +136,22 @@ const updateCourse = async (req, res, next) => {
     moduleCount,
     about,
     objective,
+    onboarding,
     price
   } = req.body
   try {
+    let idCategory
+    if (categoryId) {
+      const category = await Category.findOne({ where: { id: categoryId } })
+      if (!category) {
+        return next(new ApiError(`Cause course with id ${categoryId} not found`, 404))
+      }
+      idCategory = category.id
+    }
     const updatedCourse = await Course.update(
       {
         title,
-        category,
+        categoryId: idCategory,
         level,
         courseType,
         imageUrl,
@@ -147,6 +162,7 @@ const updateCourse = async (req, res, next) => {
         moduleCount,
         about,
         objective,
+        onboarding,
         price
       },
       { where: { id }, returning: true }

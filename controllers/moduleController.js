@@ -8,7 +8,7 @@ const createModule = async (req, res, next) => {
     if (courseId) {
       const course = await Course.findOne({ where: { id: courseId } })
       if (!course) {
-        return next(new ApiError(`Bad request / cause course with id ${courseId} not found`, 400))
+        return next(new ApiError(`Cause course with id ${courseId} not found`, 404))
       }
       idCourse = course.id
     }
@@ -93,7 +93,7 @@ const updateModule = async (req, res, next) => {
     if (courseId) {
       const course = await Course.findOne({ where: { id: courseId } })
       if (!course) {
-        return next(new ApiError(`Bad request / cause course with id ${courseId} not found`, 400))
+        return next(new ApiError(`Cause course with id ${courseId} not found`, 404))
       }
       idCourse = course.id
     }
