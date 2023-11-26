@@ -15,6 +15,12 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false,
         },
       });
+      User.hasMany(models.Payment, {
+        foreignKey: {
+          name: "userId",
+          allowNull: false
+        }
+      })
     }
   }
   User.init(
