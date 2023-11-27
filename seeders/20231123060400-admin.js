@@ -1,5 +1,5 @@
-const { User } = require("../models");
-("use strict");
+const { User } = require("../models")
+;("use strict")
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
 
         role: "admin",
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       },
       { returning: true }
     ).then(function (newAdmin) {
@@ -21,12 +21,12 @@ module.exports = {
           phoneNumber: 628989891122,
           userId: newAdmin.id,
           createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      ]);
-    });
+          updatedAt: new Date()
+        }
+      ])
+    })
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete("User", null, {});
-  },
-};
+    await queryInterface.bulkDelete("Users", null, {})
+  }
+}
