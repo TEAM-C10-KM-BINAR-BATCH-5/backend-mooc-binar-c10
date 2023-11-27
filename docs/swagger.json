@@ -1,0 +1,854 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Backend API Documentation Team C10",
+    "description": "Swagger Documentation",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "Course",
+      "description": "Course API resources"
+    },
+    {
+      "name": "Auth",
+      "description": "Auth API resources"
+    }
+  ],
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local Server"
+    }
+  ],
+  "paths": {
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Login",
+        "description": "Login untuk User",
+        "requestBody": {
+          "description": "Request body success login",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "syifa@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "1234567"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success, login user"
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6InN5aWZhIiwiZW1haWwiOiJzeWlmYUBnbWFpbC5jb20iLCJyb2xlIjoic3VwZXJhZG1pbiIsImlhdCI6MTY5Nzc4OTQxOSwiZXhwIjoxNjk3ODc1ODE5fQ.NNsHI5PxuT0hJiUHsygYiG1nqYniUfF1KfktmF1E0FM"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request! user login tanpa email dan password atau password tidak salah",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Email and password are requred for login"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error login, Unauthorized! karena email tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Email does not exist, register instead"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/course": {
+      "get": {
+        "tags": ["Course"],
+        "summary": "User mendapatkan semua list Courses",
+        "description": "User dan Admin mendapatkan semua list course yang tersedia",
+        "responses": {
+          "200": {
+            "description": "Success get list courses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success, fetch"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "courses": {
+                          "type": "array",
+                          "items": {
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 2
+                              },
+                              "title": {
+                                "type": "string",
+                                "example": "HTML & CSS Tutorial"
+                              },
+                              "about": {
+                                "type": "string",
+                                "example": "Html dan Css adalah pondasi dasar dalam web"
+                              },
+                              "objective": {
+                                "type": "string",
+                                "example": "Course ini ditujuakn untuk orang yang bertekad untuk menjadi web developer"
+                              },
+                              "onboaring": {
+                                "type": "string",
+                                "example": "alskhdalksdhaksdjhaksdjhaskdjhaskd"
+                              },
+                              "categoryId": {
+                                "type": "string",
+                                "example": "C-0WEB"
+                              },
+                              "level": {
+                                "type": "string",
+                                "example": "Beginner"
+                              },
+                              "courseType": {
+                                "type": "string",
+                                "example": "Premium"
+                              },
+                              "imageUrl": {
+                                "type": "string",
+                                "example": "https://ik.imagekit.io/yxctvbjvh/IMG-1701109924009_sfjlLIV9w.png"
+                              },
+                              "rating": {
+                                "type": "float",
+                                "example": 4.5
+                              },
+                              "instructor": {
+                                "type": "string",
+                                "example": "Sandika Galih"
+                              },
+                              "telegramLink": {
+                                "type": "string",
+                                "example": "https://jahdkjhaslkdja.com"
+                              },
+                              "moduleCount": {
+                                "type": "integer",
+                                "example": 2
+                              },
+                              "price": {
+                                "type": "integer",
+                                "example": 90000
+                              },
+                              "totalDuration": {
+                                "type": "string",
+                                "example": 50
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "example": "2023-10-20T19:01:02.829Z"
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "example": "2023-10-20T19:01:02.829Z"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Course"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Admin membuat course baru ",
+        "description": "Admin membuat course baru untuk user",
+        "requestBody": {
+          "description": "Request body success create course",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Html & Css Full Course"
+                  },
+                  "level": {
+                    "type": "string",
+                    "example": "Beginner"
+                  },
+                  "rating": {
+                    "type": "float",
+                    "example": 4.5
+                  },
+                  "instructor": {
+                    "type": "string",
+                    "example": "Eko Kurniawan"
+                  },
+                  "telegramLink": {
+                    "type": "string",
+                    "example": "https://ahldaushdl.com"
+                  },
+                  "about": {
+                    "type": "string",
+                    "example": "Course html terupdat saat ini"
+                  },
+                  "objective": {
+                    "type": "string",
+                    "example": "Course html sangat cocok untuk orang yang mau menjadi web designer"
+                  },
+                  "price": {
+                    "type": "integer",
+                    "example": 50000
+                  },
+                  "imageUrl": {
+                    "type": "string",
+                    "example": "https://ik.imagekit.io/yxctvbjvh/IMG-1701109924009_sfjlLIV9w.png"
+                  },
+                  "onboarding": {
+                    "type": "string",
+                    "example": "iasdiuansdiausndiuansdiausndoiuansd"
+                  },
+                  "categoryId": {
+                    "type": "string",
+                    "example": "C-0WEB"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Admin success create course",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success, create course"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newCourse": {
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 2
+                            },
+                            "title": {
+                              "type": "string",
+                              "example": "HTML & CSS Tutorial"
+                            },
+                            "about": {
+                              "type": "string",
+                              "example": "Html dan Css adalah pondasi dasar dalam web"
+                            },
+                            "objective": {
+                              "type": "string",
+                              "example": "Course ini ditujuakn untuk orang yang bertekad untuk menjadi web developer"
+                            },
+                            "onboaring": {
+                              "type": "string",
+                              "example": "alskhdalksdhaksdjhaksdjhaskdjhaskd"
+                            },
+                            "categoryId": {
+                              "type": "string",
+                              "example": "C-0WEB"
+                            },
+                            "level": {
+                              "type": "string",
+                              "example": "Beginner"
+                            },
+                            "courseType": {
+                              "type": "string",
+                              "example": "Premium"
+                            },
+                            "imageUrl": {
+                              "type": "string",
+                              "example": "https://ik.imagekit.io/yxctvbjvh/IMG-1701109924009_sfjlLIV9w.png"
+                            },
+                            "rating": {
+                              "type": "float",
+                              "example": 4.5
+                            },
+                            "instructor": {
+                              "type": "string",
+                              "example": "Sandika Galih"
+                            },
+                            "telegramLink": {
+                              "type": "string",
+                              "example": "https://jahdkjhaslkdja.com"
+                            },
+                            "moduleCount": {
+                              "type": "integer",
+                              "example": 2
+                            },
+                            "price": {
+                              "type": "integer",
+                              "example": 90000
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "example": "2023-10-20T19:01:02.829Z"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "example": "2023-10-20T19:01:02.829Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error create course, karena id category tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Cause category with id C-0PI not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/course/{id}": {
+      "get": {
+        "tags": ["Course"],
+        "summary": "User mendapatkan course by Id",
+        "description": "User dan Admin mendapatkan data course by id yang dipilih",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Numeric ID required",
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get course by id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success, fetch"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "course": {
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 2
+                            },
+                            "title": {
+                              "type": "string",
+                              "example": "HTML & CSS Tutorial"
+                            },
+                            "about": {
+                              "type": "string",
+                              "example": "Html dan Css adalah pondasi dasar dalam web"
+                            },
+                            "objective": {
+                              "type": "string",
+                              "example": "Course ini ditujuakn untuk orang yang bertekad untuk menjadi web developer"
+                            },
+                            "onboaring": {
+                              "type": "string",
+                              "example": "alskhdalksdhaksdjhaksdjhaskdjhaskd"
+                            },
+                            "categoryId": {
+                              "type": "string",
+                              "example": "C-0WEB"
+                            },
+                            "level": {
+                              "type": "string",
+                              "example": "Beginner"
+                            },
+                            "courseType": {
+                              "type": "string",
+                              "example": "Premium"
+                            },
+                            "imageUrl": {
+                              "type": "string",
+                              "example": "https://ik.imagekit.io/yxctvbjvh/IMG-1701109924009_sfjlLIV9w.png"
+                            },
+                            "rating": {
+                              "type": "float",
+                              "example": 4.5
+                            },
+                            "instructor": {
+                              "type": "string",
+                              "example": "Sandika Galih"
+                            },
+                            "telegramLink": {
+                              "type": "string",
+                              "example": "https://jahdkjhaslkdja.com"
+                            },
+                            "moduleCount": {
+                              "type": "integer",
+                              "example": 2
+                            },
+                            "price": {
+                              "type": "integer",
+                              "example": 90000
+                            },
+                            "duration": {
+                              "type": "string",
+                              "example": 50
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "example": "2023-10-20T19:01:02.829Z"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "example": "2023-10-20T19:01:02.829Z"
+                            },
+                            "Modules": {
+                              "type": "array",
+                              "items": {
+                                "properties": {
+                                  "id": {
+                                    "type": "integer",
+                                    "example": 1
+                                  },
+                                  "title:": {
+                                    "type": "string",
+                                    "example": "Chapter 1 Html Dasar"
+                                  },
+                                  "duration": {
+                                    "type": "integer",
+                                    "example": 50
+                                  },
+                                  "courseId": {
+                                    "type": "integer",
+                                    "example": 2
+                                  },
+                                  "Videos": {
+                                    "type": "array",
+                                    "items": {
+                                      "properties": {
+                                        "id": {
+                                          "type": "integer",
+                                          "example": 1
+                                        },
+                                        "title": {
+                                          "type": "string",
+                                          "example": "Tag tag dasar html"
+                                        },
+                                        "no": {
+                                          "type": "integer",
+                                          "example": 1
+                                        },
+                                        "videoUrl": {
+                                          "type": "string",
+                                          "example": "https://ahldaushdl.com"
+                                        },
+                                        "duration": {
+                                          "type": "integer",
+                                          "example": 50
+                                        },
+                                        "moduleId": {
+                                          "type": "integer",
+                                          "example": 1
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error, Not found! id are not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "id does not exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Course"],
+        "summary": "Admin Mengedit Course by Id",
+        "description": "Admin melakukan edit data pada course",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Numeric ID required",
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "requestBody": {
+          "description": "Request body success update",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Html & Css Full Course"
+                  },
+                  "level": {
+                    "type": "string",
+                    "example": "Beginner"
+                  },
+                  "rating": {
+                    "type": "float",
+                    "example": 4.5
+                  },
+                  "instructor": {
+                    "type": "string",
+                    "example": "Eko Kurniawan"
+                  },
+                  "telegramLink": {
+                    "type": "string",
+                    "example": "https://ahldaushdl.com"
+                  },
+                  "courseType": {
+                    "type": "string",
+                    "example": "Free"
+                  },
+                  "moduleCount": {
+                    "type": "integer",
+                    "example": 4
+                  },
+                  "about": {
+                    "type": "string",
+                    "example": "Course html terupdat saat ini"
+                  },
+                  "objective": {
+                    "type": "string",
+                    "example": "Course html sangat cocok untuk orang yang mau menjadi web designer"
+                  },
+                  "price": {
+                    "type": "integer",
+                    "example": 50000
+                  },
+                  "imageUrl": {
+                    "type": "string",
+                    "example": "https://ik.imagekit.io/yxctvbjvh/IMG-1701109924009_sfjlLIV9w.png"
+                  },
+                  "onboarding": {
+                    "type": "string",
+                    "example": "iasdiuansdiausndiuansdiausndoiuansd"
+                  },
+                  "categoryId": {
+                    "type": "string",
+                    "example": "C-0WEB"
+                  },
+                  "duration": {
+                    "type": "integer",
+                    "example": 80
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Admin Success meng update course by Id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success, updated"
+                    },
+
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "updatedCourse": {
+                          "type": "array",
+                          "items": {
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "example": "Html & Css Full Course"
+                              },
+                              "level": {
+                                "type": "string",
+                                "example": "Beginner"
+                              },
+                              "rating": {
+                                "type": "float",
+                                "example": 4.5
+                              },
+                              "instructor": {
+                                "type": "string",
+                                "example": "Eko Kurniawan"
+                              },
+                              "telegramLink": {
+                                "type": "string",
+                                "example": "https://ahldaushdl.com"
+                              },
+                              "courseType": {
+                                "type": "string",
+                                "example": "Free"
+                              },
+                              "moduleCount": {
+                                "type": "integer",
+                                "example": 4
+                              },
+                              "about": {
+                                "type": "string",
+                                "example": "Course html terupdat saat ini"
+                              },
+                              "objective": {
+                                "type": "string",
+                                "example": "Course html sangat cocok untuk orang yang mau menjadi web designer"
+                              },
+                              "price": {
+                                "type": "integer",
+                                "example": 50000
+                              },
+                              "imageUrl": {
+                                "type": "string",
+                                "example": "https://ik.imagekit.io/yxctvbjvh/IMG-1701109924009_sfjlLIV9w.png"
+                              },
+                              "onboarding": {
+                                "type": "string",
+                                "example": "iasdiuansdiausndiuansdiausndoiuansd"
+                              },
+                              "categoryId": {
+                                "type": "string",
+                                "example": "C-0WEB"
+                              },
+                              "duration": {
+                                "type": "integer",
+                                "example": 80
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error, Not found! id are not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "id does not exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Course"],
+        "summary": "Admin Menghapus Course by Id",
+        "description": "Admin menghapus course berdasarkan id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Numeric ID required",
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success delete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success, deleted"
+                    },
+                    "data": {
+                      "type": "null",
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error, Not found! id are not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "id does not exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
