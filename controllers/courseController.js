@@ -68,6 +68,7 @@ const getCourses = async (req, res, next) => {
   const categoryIds = req.query.categoryIds ? req.query.categoryIds.split(",") : []
   const titleSearch = req.query.title || ""
   const courseTypeSearch = req.query.courseType || ""
+  const levelSearch = req.query.level || ""
   const whereClause = {}
 
   if (categoryIds.length > 0) {
@@ -84,6 +85,10 @@ const getCourses = async (req, res, next) => {
 
   if (courseTypeSearch) {
     whereClause.courseType = courseTypeSearch
+  }
+
+  if (levelSearch) {
+    whereClause.level = levelSearch
   }
   try {
     const courses = await Course.findAll({

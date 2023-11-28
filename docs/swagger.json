@@ -344,6 +344,15 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "level",
+            "in": "query",
+            "description": "Search courses by the level kesulitan, melakukan pencarian course berdasarkan level course dimana ada 3 level course yaitu: Beginner, Intermediate, dan Advance",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
