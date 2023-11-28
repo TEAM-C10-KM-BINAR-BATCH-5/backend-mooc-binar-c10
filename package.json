@@ -7,10 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "db:create": "sequelize db:create --env production",
-    "db:migrate": "sequelize db:migrate --env production",
-    "db:seed": "sequelize db:seed:all --env production",
-    "db:seed:undo": "sequelize db:seed:undo:all --env production"
+    "db:create": "sequelize db:create",
+    "db:migrate": "sequelize db:migrate",
+    "db:seed": "sequelize db:seed:all",
+    "db:seed:undo": "sequelize db:seed:undo:all"
   },
   "author": "",
   "license": "ISC",
