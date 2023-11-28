@@ -9,6 +9,7 @@
     "dev": "nodemon server.js",
     "db:create": "sequelize db:create",
     "db:migrate": "sequelize db:migrate",
+    "db:migdate:undo": "sequelize db:migrate:undo:all",
     "db:seed": "sequelize db:seed:all",
     "db:seed:undo": "sequelize db:seed:undo:all"
   },
