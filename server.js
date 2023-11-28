@@ -3,16 +3,6 @@ const express = require("express");
 const session = require("express-session");
 
 const app = express();
-app.use(
-  session({
-    secret: "your-secret-key",
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      maxAge: 60000, // 60 seconds
-    },
-  })
-);
 
 const PORT = process.env.PORT || 4000;
 const ApiError = require("./utils/apiError");
@@ -27,6 +17,19 @@ app.use(router);
 app.all("*", (req, res, next) => {
   next(new ApiError(`Routes does not exist`, 404));
 });
+
+app.use(
+  session({
+    secret: "your-secret-key",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: true,
+      maxAge: 60000, // 60 seconds
+    },
+    store: new RedisStore(),
+  })
+);
 
 app.use(errorHandler);
 
