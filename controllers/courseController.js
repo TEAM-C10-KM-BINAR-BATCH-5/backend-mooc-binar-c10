@@ -1,4 +1,4 @@
-const { Course, Module, Video, Category } = require("../models")
+const { Course, Module, Video, Category, sequelize } = require("../models")
 const ApiError = require("../utils/apiError")
 const imagekit = require("../lib/imageKit")
 
@@ -66,7 +66,23 @@ const createCourse = async (req, res, next) => {
 
 const getCourses = async (req, res, next) => {
 	try {
-		const courses = await Course.findAll()
+		const courses = await Course.findAll({
+			include: [
+				{
+					model: Module,
+					attributes: [],
+				},
+			],
+			raw: true,
+			group: ["Course.id"],
+			attributes: [
+				"*",
+				[
+					sequelize.fn("SUM", sequelize.col("Modules.duration")),
+					"totalDuration",
+				],
+			],
+		})
 		res.status(200).json({
 			success: true,
 			message: "Success, fetch",
@@ -111,11 +127,19 @@ const getCourse = async (req, res, next) => {
 				},
 			],
 		})
+		const totalDuration = await Module.sum("duration", {
+			where: {
+				courseId: id,
+			},
+		})
 		res.status(200).json({
 			success: true,
 			message: "Success, fetch",
 			data: {
-				course,
+				course: {
+					...course.toJSON(),
+					totalduration: totalDuration,
+				},
 			},
 		})
 	} catch (error) {
