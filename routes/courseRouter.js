@@ -3,6 +3,7 @@ const courseController = require("../controllers/courseController")
 const { Course } = require("../models")
 const upload = require("../middlewares/uploader")
 const checkId = require("../middlewares/checkId")
+const authenticate = require("../middlewares/authenticate")
 
 router
   .route("/")

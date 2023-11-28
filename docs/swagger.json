@@ -7,12 +7,16 @@
   },
   "tags": [
     {
-      "name": "Course",
-      "description": "Course API resources"
+      "name": "Otp",
+      "description": "Otp API resources"
     },
     {
       "name": "Auth",
       "description": "Auth API resources"
+    },
+    {
+      "name": "Course",
+      "description": "Course API resources"
     }
   ],
   "servers": [
@@ -22,6 +26,194 @@
     }
   ],
   "paths": {
+    "/api/v1/otp": {
+      "post": {
+        "tags": ["Otp"],
+        "summary": "Send Otp",
+        "description": "User menyertakan email untuk mendapatkan otp, jika otp sudah dikirm dan user mendapatkan email berisi kode otp, user akan diarahkan ke register untuk mengisi data buat register dan otp yang sudah dikirimkan agar di verifikasi apakah otpnya sama seperti yg di kirimkan di email atau tidak ",
+        "requestBody": {
+          "description": "Request body untuk mengirimkan kode otp",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "syifa@gmail.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Otp berhasil dikirimkan ke email user dan user mendapatkan kode otp tersebut",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success, sent"
+                    },
+                    "data": {
+                      "type": "string",
+                      "example": "339742"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Register",
+        "description": "Register untuk user dimana user menyertakan data data nya untuk membuat akun dan menyertakan kode otp yang sudah dikirimkan",
+        "requestBody": {
+          "description": "Request body success register",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "phoneNumber": {
+                    "type": "integer",
+                    "example": 6289696078486
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Jhordy"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "syifa@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "1234567"
+                  },
+                  "otp": {
+                    "type": "integer",
+                    "example": 272614
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success, register user"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "dataValues": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 4
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "Arfiano Jordhy"
+                            },
+                            "role": {
+                              "type": "string",
+                              "example": "user"
+                            },
+                            "membership": {
+                              "type": "string",
+                              "example": "free"
+                            },
+                            "profileUrl": {
+                              "type": "null",
+                              "example": null
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "example": "2023-10-20T19:01:02.829Z"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "example": "2023-10-20T19:01:02.829Z"
+                            },
+                            "country": {
+                              "type": "null",
+                              "example": null
+                            },
+                            "city": {
+                              "type": "null",
+                              "example": null
+                            }
+                          }
+                        },
+                        "phoneNumber": {
+                          "type": "integer",
+                          "example": 6289696078486
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "syifa@gmail.com"
+                        },
+                        "password": {
+                          "type": "string",
+                          "example": "$2b$10$g6UCXJ81WaqHD5bwFL5WcevfRuW6yUuV53Mua5sdA2ihxUwTXQeUi"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request! ada 4 skenario user gagal register: user register ke email yang sudah ada atau otp yang di sertakan user salah atau user menyertakan invalid email atau user menyertakan invalid phone number",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid otp"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/auth/login": {
       "post": {
         "tags": ["Auth"],
@@ -235,7 +427,7 @@
         "requestBody": {
           "description": "Request body success create course",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -271,9 +463,9 @@
                     "type": "integer",
                     "example": 50000
                   },
-                  "imageUrl": {
+                  "image": {
                     "type": "string",
-                    "example": "https://ik.imagekit.io/yxctvbjvh/IMG-1701109924009_sfjlLIV9w.png"
+                    "format": "binary"
                   },
                   "onboarding": {
                     "type": "string",
@@ -562,6 +754,10 @@
                                   }
                                 }
                               }
+                            },
+                            "totalDuration": {
+                              "type": "string",
+                              "example": 50
                             }
                           }
                         }

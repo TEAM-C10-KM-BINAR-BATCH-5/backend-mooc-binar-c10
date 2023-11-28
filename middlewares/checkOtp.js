@@ -1,16 +1,16 @@
-const ApiError = require("../utils/apiError");
+const ApiError = require("../utils/apiError")
 
 const checkOtp = () => {
   return async (req, res, next) => {
     try {
       if (req.body.otp != req.session.otp) {
-        next(new ApiError(`invalid otp`, 400));
+        return next(new ApiError(`invalid otp`, 400))
       }
-      next();
+      next()
     } catch (err) {
-      next(new ApiError(err.message, 500));
+      next(new ApiError(err.message, 500))
     }
-  };
-};
+  }
+}
 
-module.exports = checkOtp;
+module.exports = checkOtp

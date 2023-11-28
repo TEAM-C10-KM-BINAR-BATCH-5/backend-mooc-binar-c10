@@ -5,7 +5,7 @@ const checkId = (db) => {
     try {
       const find = await db.findByPk(req.params.id)
       if (!find) {
-        next(new ApiError(`id does not exist`, 404))
+        return next(new ApiError(`id does not exist`, 404))
       }
       next()
     } catch (err) {
