@@ -138,7 +138,7 @@ const getCourse = async (req, res, next) => {
 			data: {
 				course: {
 					...course.toJSON(),
-					totalduration: totalDuration,
+					totalDuration: totalDuration,
 				},
 			},
 		})
