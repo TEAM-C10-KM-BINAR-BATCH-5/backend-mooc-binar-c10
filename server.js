@@ -1,35 +1,35 @@
-require("dotenv").config();
-const express = require("express");
-const session = require("express-session");
+require("dotenv").config()
+const express = require("express")
+const session = require("express-session")
 
-const app = express();
+const app = express()
 app.use(
   session({
     secret: "your-secret-key",
     resave: false,
     saveUninitialized: true,
     cookie: {
-      maxAge: 60000, // 60 seconds
-    },
+      maxAge: 60000 // 60 seconds
+    }
   })
-);
+)
 
-const PORT = process.env.PORT || 4000;
-const ApiError = require("./utils/apiError");
-const errorHandler = require("./controllers/errorController");
-const router = require("./routes");
-const setHeaders = require("./middlewares/setHeaders");
+const PORT = process.env.PORT || 4000
+const ApiError = require("./utils/apiError")
+const errorHandler = require("./controllers/errorController")
+const router = require("./routes")
+const setHeaders = require("./middlewares/setHeaders")
 
-app.use(express.json());
-app.use(setHeaders);
-app.use(router);
+app.use(express.json())
+app.use(setHeaders)
+app.use(router)
 
 app.all("*", (req, res, next) => {
-  next(new ApiError(`Routes does not exist`, 404));
-});
+  next(new ApiError(`Routes does not exist`, 404))
+})
 
-app.use(errorHandler);
+app.use(errorHandler)
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port : ${PORT}`);
-});
+  console.log(`Server is running on port : ${PORT}`)
+})
