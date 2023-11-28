@@ -335,6 +335,15 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "courseType",
+            "in": "query",
+            "description": "Search courses by the type of course, melakukan pencarian course berdasarkan tipe course dimana ada 2 tipe course yaitu: Free dan Premium",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {

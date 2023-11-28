@@ -67,6 +67,7 @@ const createCourse = async (req, res, next) => {
 const getCourses = async (req, res, next) => {
   const categoryIds = req.query.categoryIds ? req.query.categoryIds.split(",") : []
   const titleSearch = req.query.title || ""
+  const courseTypeSearch = req.query.courseType || ""
   const whereClause = {}
 
   if (categoryIds.length > 0) {
@@ -79,6 +80,10 @@ const getCourses = async (req, res, next) => {
     whereClause.title = {
       [Op.iLike]: `%${titleSearch}%`
     }
+  }
+
+  if (courseTypeSearch) {
+    whereClause.courseType = courseTypeSearch
   }
   try {
     const courses = await Course.findAll({
