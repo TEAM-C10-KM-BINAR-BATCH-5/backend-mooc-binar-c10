@@ -312,6 +312,31 @@
         "tags": ["Course"],
         "summary": "User mendapatkan semua list Courses",
         "description": "User dan Admin mendapatkan semua list course yang tersedia",
+        "parameters": [
+          {
+            "name": "categoryIds",
+            "in": "query",
+            "description": "Filter courses by categoryId, berikut daftar id course = Web Development: C-0WEB, Android Development: C-0AND, Product Management: C-0PM, UI/UX: C-0UIX, Data Science: C-0DS, Business Intelligence: C-0BI, Ios Development: C-0IOS, Digital Marketing: C-0DM, Lainnya: C-0OT. Jika ingin melakukan banyak filter bisa inputkan di sebelah langsung menggunakan koma, seperti contoh melakukan filter banyak category = C-0WEB,C-0AND,C-0PM, maka dengan query tersebut api akan memberikan respone sesuai filter tsb yaitu mendapatkan course dgn category web development, anroid development, produtc management",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "style": "form",
+            "explode": true
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "description": "Search courses by title, melakukan pencarian course berdasarkan title course",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success get list courses",
