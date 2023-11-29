@@ -47,8 +47,7 @@ const register = async (req, res, next) => {
     const newUser = await User.create({
       name,
       role: "user",
-      membership: "free",
-      profileUrl: "adadadadad"
+      membership: "free"
     })
 
     await Auth.create({
@@ -98,7 +97,10 @@ const login = async (req, res, next) => {
     if (auth && comparePassword) {
       const token = jwt.sign(
         {
-          user: auth
+          id: auth.User.id,
+          name: auth.User.name,
+          email: auth.email,
+          role: auth.User.role
         },
         process.env.JWT_SECRET,
         { expiresIn: process.env.JWT_EXPIREDIN }
