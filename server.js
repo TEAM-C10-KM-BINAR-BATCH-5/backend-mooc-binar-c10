@@ -27,7 +27,6 @@ app.use(
       secure: true,
       maxAge: 60000, // 60 seconds
     },
-    store: new RedisStore(),
   })
 );
 
