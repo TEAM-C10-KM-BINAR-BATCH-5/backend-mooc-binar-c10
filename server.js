@@ -1,6 +1,6 @@
 require("dotenv").config();
 const express = require("express");
-const session = require("express-session");
+const cookieSession = require("cookie-session");
 
 const app = express();
 
@@ -10,6 +10,15 @@ const errorHandler = require("./controllers/errorController");
 const router = require("./routes");
 const setHeaders = require("./middlewares/setHeaders");
 
+app.use(
+  cookieSession({
+    name: "session",
+    keys: ["secret"],
+
+    maxAge: 60 * 1000,
+  })
+);
+
 app.use(express.json());
 app.use(setHeaders);
 app.use(router);
@@ -17,18 +26,6 @@ app.use(router);
 app.all("*", (req, res, next) => {
   next(new ApiError(`Routes does not exist`, 404));
 });
-
-app.use(
-  session({
-    secret: "your-secret-key",
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      secure: true,
-      maxAge: 60000, // 60 seconds
-    },
-  })
-);
 
 app.use(errorHandler);
 
