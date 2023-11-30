@@ -9,7 +9,6 @@ const PORT = process.env.PORT || 4000;
 const ApiError = require("./utils/apiError");
 const errorHandler = require("./controllers/errorController");
 const router = require("./routes");
-const setHeaders = require("./middlewares/setHeaders");
 
 app.use(
   cookieSession({
