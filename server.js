@@ -20,7 +20,6 @@ app.use(
 );
 
 app.use(express.json());
-app.use(setHeaders);
 app.use(router);
 
 app.all("*", (req, res, next) => {
