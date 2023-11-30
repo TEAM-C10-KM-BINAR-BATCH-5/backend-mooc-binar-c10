@@ -25,7 +25,7 @@ const sendOtpForgotPassword = async (req, res, next) => {
       }
     })
     if (Email === null) {
-      return next(new ApiError(`Email ${email} does not exist`, 400))
+      return next(new ApiError(`Please input email that you use for register!`, 400))
     }
     const otp = otpGenerator.generate(6, {
       upperCaseAlphabets: false,
@@ -53,13 +53,13 @@ const sendOtpForgotPassword = async (req, res, next) => {
 
 const resetPassword = async (req, res, next) => {
   try {
-    const { email, password } = req.body
-    if (!email || !password) {
-      return next(new ApiError("email and password required", 400))
+    const { email, otp, password } = req.body
+    if (!email || !otp || !password) {
+      return next(new ApiError("email, otp, and password required", 400))
     }
     const user = await Auth.findOne({ where: { email } })
     if (!user) {
-      return next(new ApiError(`User with email ${email} are not exist`, 404))
+      return next(new ApiError(`Please input email that you use for register!`, 404))
     }
     const passwordLength = password <= 8
     if (passwordLength) {

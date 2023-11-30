@@ -15,8 +15,12 @@
       "description": "Auth API resources"
     },
     {
-      "name": "ResetPassword",
+      "name": "Reset-Password",
       "description": "Otp For Reset Password API resources"
+    },
+    {
+      "name": "Auth-Admin",
+      "description": "Login for Admin"
     },
     {
       "name": "Course",
@@ -33,6 +37,10 @@
     {
       "name": "Category",
       "description": "Category of Courses resources"
+    },
+    {
+      "name": "User",
+      "description": "User API resources"
     }
   ],
   "servers": [
@@ -49,7 +57,7 @@
     "/api/v1/otp": {
       "post": {
         "tags": ["Otp"],
-        "summary": "Send Otp",
+        "summary": "Send Otp for Register",
         "description": "User menyertakan email untuk mendapatkan otp, jika otp sudah dikirm dan user mendapatkan email berisi kode otp, user akan diarahkan ke register untuk mengisi data buat register dan otp yang sudah dikirimkan agar di verifikasi apakah otpnya sama seperti yg di kirimkan di email atau tidak ",
         "requestBody": {
           "description": "Request body untuk mengirimkan kode otp",
@@ -91,6 +99,26 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Error, user tidak mengisi email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No recipients defined"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -98,7 +126,7 @@
     "/api/v1/auth/register": {
       "post": {
         "tags": ["Auth"],
-        "summary": "Register dan Verifikasi OTP",
+        "summary": "Register User dan Verifikasi OTP",
         "description": "Register untuk user dimana user menyertakan data data nya untuk membuat akun dan menyertakan kode otp yang sudah dikirimkan",
         "requestBody": {
           "description": "Request body success register",
@@ -109,6 +137,7 @@
                 "properties": {
                   "phoneNumber": {
                     "type": "integer",
+                    "format": "int64",
                     "example": 6289696078486
                   },
                   "name": {
@@ -212,7 +241,7 @@
             }
           },
           "400": {
-            "description": "Bad request! ada 4 skenario user gagal register: user register ke email yang sudah ada atau otp yang di sertakan user salah atau user menyertakan invalid email atau user menyertakan invalid phone number",
+            "description": "Bad request! ada 5 skenario user gagal register: 1. user register ke email yang sudah ada, 2.otp yang di sertakan user salah, 3.user tidak mengisi otp 4.user menyertakan invalid email, 5.user menyertakan invalid phone number",
             "content": {
               "application/json": {
                 "schema": {
@@ -237,7 +266,7 @@
     "/api/v1/auth/login": {
       "post": {
         "tags": ["Auth"],
-        "summary": "Login",
+        "summary": "Login User",
         "description": "Login untuk User",
         "requestBody": {
           "description": "Request body success login",
@@ -285,7 +314,7 @@
             }
           },
           "400": {
-            "description": "Bad request! user login tanpa email dan password atau password tidak salah",
+            "description": "Bad request! user login tanpa email dan password atau password salah",
             "content": {
               "application/json": {
                 "schema": {
@@ -327,9 +356,206 @@
         }
       }
     },
+    "/api/v1/auth/profile": {
+      "get": {
+        "tags": ["Auth"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "User data yang login",
+        "description": "Data-data user yang login",
+        "responses": {
+          "200": {
+            "description": "Success get data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 3
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "bagus"
+                        },
+                        "role": {
+                          "type": "string",
+                          "example": "user"
+                        },
+                        "country": {
+                          "type": "string",
+                          "example": "indonesia"
+                        },
+                        "city": {
+                          "type": "string",
+                          "example": "jakarta"
+                        },
+                        "membership": {
+                          "type": "string",
+                          "example": "free"
+                        },
+                        "profileUrl": {
+                          "type": "string",
+                          "example": "https://ik.imagekit.io/yxctvbjvh/IMG-1701291979406_3fuqlvEKb.png"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-10-20T19:01:02.829Z"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-10-20T19:01:02.829Z"
+                        },
+                        "Auth": {
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 3
+                            },
+                            "phoneNumber": {
+                              "type": "integer",
+                              "example": 6289696078486
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "example2@gmail.com"
+                            },
+                            "password": {
+                              "type": "string",
+                              "example": "$2b$10$F6tzBfXuKypqGPMxVaW4.u.JiyoEpihnrohmc7vjb2blIMDYqdmAi"
+                            },
+                            "userId": {
+                              "type": "integer",
+                              "example": 3
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "example": "2023-10-20T19:01:02.829Z"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "example": "2023-10-20T19:01:02.829Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No token!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/update-profile": {
+      "patch": {
+        "tags": ["Auth"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "User mengupdate data miliknya",
+        "description": "User mengupdate data miliknya by id",
+        "requestBody": {
+          "description": "Request body success update",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Gilang"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "example2@gmail.com"
+                  },
+                  "phoneNumber": {
+                    "type": "integer",
+                    "format": "int64",
+                    "example": 6288165524724
+                  },
+                  "country": {
+                    "type": "string",
+                    "example": "indonesia"
+                  },
+                  "city": {
+                    "type": "string",
+                    "example": "bandung"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Admin Success meng update course by Id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success, updated"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/reset-password/send-otp": {
       "post": {
-        "tags": ["ResetPassword"],
+        "tags": ["Reset-Password"],
         "summary": "Send OTP Forgot Passwod",
         "description": "User menyertakan email untuk mendapatkan otp, jika otp sudah dikirm dan user mendapatkan email berisi kode otp, user akan diarahkan ke endpoint reset-password/verify untuk mereset password",
         "requestBody": {
@@ -372,13 +598,33 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Error, user tidak mengisi email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No recipients defined"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/api/v1/reset-password/verify": {
       "post": {
-        "tags": ["ResetPassword"],
+        "tags": ["Reset-Password"],
         "summary": "Api for reset Passwod",
         "description": "User menginputkan email, otp yang sudah dikirimkan ke email, dan password baru",
         "requestBody": {
@@ -420,6 +666,139 @@
                     "message": {
                       "type": "string",
                       "example": "Password changed successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error, user tidak mengisi email, otp, atau password atau user mengisi password kurang dari 8 character",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Email, otp, and password required!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error, user mengisi email yang tidak digunakan pas register",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Please input email that you use for register!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/admin/login": {
+      "post": {
+        "tags": ["Auth-Admin"],
+        "summary": "Login Admin",
+        "description": "Login untuk Admin",
+        "requestBody": {
+          "description": "Request body success login",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "syifa@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "1234567"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success, login admin"
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6InN5aWZhIiwiZW1haWwiOiJzeWlmYUBnbWFpbC5jb20iLCJyb2xlIjoic3VwZXJhZG1pbiIsImlhdCI6MTY5Nzc4OTQxOSwiZXhwIjoxNjk3ODc1ODE5fQ.NNsHI5PxuT0hJiUHsygYiG1nqYniUfF1KfktmF1E0FM"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request! admin login tanpa email dan password atau password salah",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Email and password are requred for login"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error login, Unauthorized! karena email tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Email does not exist, register instead"
                     }
                   }
                 }
@@ -577,6 +956,11 @@
       },
       "post": {
         "tags": ["Course"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
         "summary": "Admin membuat course baru ",
         "description": "Admin membuat course baru untuk user",
         "requestBody": {
@@ -940,8 +1324,13 @@
           }
         }
       },
-      "put": {
+      "patch": {
         "tags": ["Course"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
         "summary": "Admin Mengedit Course by Id",
         "description": "Admin melakukan edit data pada course",
         "parameters": [
@@ -957,7 +1346,7 @@
         "requestBody": {
           "description": "Request body success update",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -1001,9 +1390,9 @@
                     "type": "integer",
                     "example": 50000
                   },
-                  "imageUrl": {
+                  "image": {
                     "type": "string",
-                    "example": "https://ik.imagekit.io/yxctvbjvh/IMG-1701109924009_sfjlLIV9w.png"
+                    "format": "binary"
                   },
                   "onboarding": {
                     "type": "string",
@@ -1136,6 +1525,11 @@
       },
       "delete": {
         "tags": ["Course"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
         "summary": "Admin Menghapus Course by Id",
         "description": "Admin menghapus course berdasarkan id",
         "parameters": [
@@ -1293,6 +1687,11 @@
       },
       "post": {
         "tags": ["Module"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
         "summary": "Admin membuat module baru ",
         "description": "Admin membuat module baru untuk course",
         "requestBody": {
@@ -1516,6 +1915,11 @@
       },
       "put": {
         "tags": ["Module"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
         "summary": "Admin Mengedit module by Id",
         "description": "Admin melakukan edit data pada module",
         "parameters": [
@@ -1622,6 +2026,11 @@
       },
       "delete": {
         "tags": ["Module"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
         "summary": "Admin Menghapus module by Id",
         "description": "Admin menghapus module berdasarkan id",
         "parameters": [
@@ -1756,6 +2165,11 @@
       },
       "post": {
         "tags": ["Video"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
         "summary": "Admin membuat video baru ",
         "description": "Admin membuat video baru untuk module",
         "requestBody": {
@@ -1978,6 +2392,11 @@
       },
       "put": {
         "tags": ["Video"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
         "summary": "Admin Mengedit video by Id",
         "description": "Admin melakukan edit data pada video",
         "parameters": [
@@ -2100,6 +2519,11 @@
       },
       "delete": {
         "tags": ["Video"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
         "summary": "Admin Menghapus video by Id",
         "description": "Admin menghapus video berdasarkan id",
         "parameters": [
@@ -2218,6 +2642,11 @@
       },
       "post": {
         "tags": ["Category"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
         "summary": "Admin membuat category baru ",
         "description": "Admin membuat category baru untuk course",
         "requestBody": {
@@ -2450,6 +2879,11 @@
       },
       "put": {
         "tags": ["Category"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
         "summary": "Admin Mengedit category by Id",
         "description": "Admin melakukan edit data pada category",
         "parameters": [
@@ -2547,6 +2981,11 @@
       },
       "delete": {
         "tags": ["Category"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
         "summary": "Admin Menghapus category by Id",
         "description": "Admin menghapus category berdasarkan id",
         "parameters": [
@@ -2604,6 +3043,408 @@
             }
           }
         }
+      }
+    },
+    "/api/v1/user": {
+      "get": {
+        "tags": ["User"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Admin mendapatkan semua list users",
+        "description": "Admin mendapatkan semua list user",
+        "responses": {
+          "200": {
+            "description": "Success get list users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success, fetch"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 3
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "gilang"
+                          },
+                          "role": {
+                            "type": "string",
+                            "example": "user"
+                          },
+                          "country": {
+                            "type": "string",
+                            "example": "jepang"
+                          },
+                          "city": {
+                            "type": "string",
+                            "example": "osaka"
+                          },
+                          "membership": {
+                            "type": "string",
+                            "example": "free"
+                          },
+                          "profileUrl": {
+                            "type": "string",
+                            "example": "https://ahldaushdl.com"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "example": "2023-10-20T19:01:02.829Z"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "example": "2023-10-20T19:01:02.829Z"
+                          },
+                          "Auth": {
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 3
+                              },
+                              "phoneNumber": {
+                                "type": "integer",
+                                "example": 6289696078486
+                              },
+                              "email": {
+                                "type": "string",
+                                "example": "example2@gmail.com"
+                              },
+                              "password": {
+                                "type": "string",
+                                "example": "$2b$10$F6tzBfXuKypqGPMxVaW4.u.JiyoEpihnrohmc7vjb2blIMDYqdmAi"
+                              },
+                              "userId": {
+                                "type": "integer",
+                                "example": 3
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "example": "2023-10-20T19:01:02.829Z"
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "example": "2023-10-20T19:01:02.829Z"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/{id}": {
+      "get": {
+        "tags": ["User"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Admin mendapatkan user by Id",
+        "description": "Admin mendapatkan data user by id yang dipilih",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Numeric ID required",
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get course by id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success, fetch"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 3
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "gilang"
+                            },
+                            "role": {
+                              "type": "string",
+                              "example": "user"
+                            },
+                            "country": {
+                              "type": "string",
+                              "example": "jepang"
+                            },
+                            "city": {
+                              "type": "string",
+                              "example": "osaka"
+                            },
+                            "membership": {
+                              "type": "string",
+                              "example": "free"
+                            },
+                            "profileUrl": {
+                              "type": "string",
+                              "example": "https://ahldaushdl.com"
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "example": "2023-10-20T19:01:02.829Z"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "example": "2023-10-20T19:01:02.829Z"
+                            },
+                            "Auth": {
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 3
+                                },
+                                "phoneNumber": {
+                                  "type": "integer",
+                                  "example": 6289696078486
+                                },
+                                "email": {
+                                  "type": "string",
+                                  "example": "example2@gmail.com"
+                                },
+                                "password": {
+                                  "type": "string",
+                                  "example": "$2b$10$F6tzBfXuKypqGPMxVaW4.u.JiyoEpihnrohmc7vjb2blIMDYqdmAi"
+                                },
+                                "userId": {
+                                  "type": "integer",
+                                  "example": 3
+                                },
+                                "updatedAt": {
+                                  "type": "string",
+                                  "example": "2023-10-20T19:01:02.829Z"
+                                },
+                                "createdAt": {
+                                  "type": "string",
+                                  "example": "2023-10-20T19:01:02.829Z"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error, Not found! id are not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "id does not exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["User"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Admin mengupdate data user",
+        "description": "Admin mampu mengupdate data user by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Numeric ID required",
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "requestBody": {
+          "description": "Request body success update",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Gilang"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "example2@gmail.com"
+                  },
+                  "phoneNumber": {
+                    "type": "integer",
+                    "example": 6288165524724
+                  },
+                  "country": {
+                    "type": "string",
+                    "example": "indonesia"
+                  },
+                  "city": {
+                    "type": "string",
+                    "example": "bandung"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Admin Success meng update course by Id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success, updated"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["User"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Admin Menghapus User by Id",
+        "description": "Admin menghapus User berdasarkan id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Numeric ID required",
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success delete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success, deleted"
+                    },
+                    "data": {
+                      "type": "null",
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error, Not found! id are not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "id does not exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerToken": {
+        "type": "http",
+        "scheme": "bearer"
       }
     }
   }

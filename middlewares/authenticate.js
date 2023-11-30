@@ -7,7 +7,7 @@ module.exports = async (req, res, next) => {
     const bearerToken = req.headers.authorization
 
     if (!bearerToken) {
-      return next(new ApiError("token nya gak ada", 401))
+      return next(new ApiError("No token", 401))
     }
 
     const token = bearerToken.split("Bearer ")[1]
@@ -18,7 +18,7 @@ module.exports = async (req, res, next) => {
     })
 
     if (!user) {
-      return next(new ApiError("User dengan token login ini tidak ditemukan", 404))
+      return next(new ApiError("User with this token is not found", 404))
     }
 
     req.user = user

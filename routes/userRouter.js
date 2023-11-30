@@ -1,14 +1,27 @@
-const router = require("express").Router();
+const router = require("express").Router()
 
-const user = require("../controllers/userController");
+const user = require("../controllers/userController")
 
-const checkId = require("../middlewares/checkId");
+const checkId = require("../middlewares/checkId")
+const upload = require("../middlewares/uploader")
 
-const { User } = require("../models");
+const { User } = require("../models")
+const authenticate = require("../middlewares/authenticate")
+const checkRole = require("../middlewares/checkRole")
 
-router.get("/", user.findUsers);
-router.get("/:id", checkId(User), user.findUserById);
-router.patch("/:id", checkId(User), user.updateUser);
-router.delete("/:id", checkId(User), user.deleteUser);
+// user can access
+router.get("/:id", authenticate, checkRole("admin"), checkId(User), user.findUserById)
+router.patch(
+  "/:id",
+  authenticate,
+  checkRole("admin"),
+  checkId(User),
+  upload.single("image"),
+  user.updateUser
+)
 
-module.exports = router;
+// admin can access
+router.get("/", authenticate, checkRole("admin"), user.findUsers)
+router.delete("/:id", authenticate, checkRole("admin"), checkId(User), user.deleteUser)
+
+module.exports = router

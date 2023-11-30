@@ -91,17 +91,29 @@ const getCourses = async (req, res, next) => {
     whereClause.level = levelSearch
   }
   try {
-    const data = await Course.findAll({
+    const dataCourse = await Course.findAll({
       include: [
         {
           model: Module,
           attributes: []
+        },
+        {
+          model: Category,
+          attributes: ["name"]
         }
       ],
       where: whereClause,
       raw: true,
-      group: ["Course.id"],
+      group: ["Course.id", "Category.id"],
       attributes: ["*", [sequelize.fn("SUM", sequelize.col("Modules.duration")), "totalDuration"]]
+    })
+
+    const data = dataCourse.map((course) => {
+      const categoryInfo = {
+        name: course["Category.name"]
+      }
+      delete course["Category.name"]
+      return { ...course, Category: categoryInfo }
     })
     res.status(200).json({
       success: true,
@@ -133,6 +145,10 @@ const getCourse = async (req, res, next) => {
     const data = await Course.findOne({
       where: { id },
       include: [
+        {
+          model: Category,
+          attributes: { exclude: ["id", "createdAt", "updatedAt"] }
+        },
         {
           model: Module,
           attributes: { exclude: ["createdAt", "updatedAt"] },
@@ -170,7 +186,6 @@ const updateCourse = async (req, res, next) => {
     level,
     categoryId,
     courseType,
-    imageUrl,
     rating,
     instructor,
     duration,
@@ -181,7 +196,19 @@ const updateCourse = async (req, res, next) => {
     onboarding,
     price
   } = req.body
+  const file = req.file
+  let image
   try {
+    if (file) {
+      const split = file.originalname.split(".")
+      const extension = split[split.length - 1]
+
+      const img = await imagekit.upload({
+        file: file.buffer,
+        fileName: `IMG-${Date.now()}.${extension}`
+      })
+      image = img.url
+    }
     let idCategory
     if (categoryId) {
       const category = await Category.findOne({ where: { id: categoryId } })
@@ -196,7 +223,7 @@ const updateCourse = async (req, res, next) => {
         categoryId: idCategory,
         level,
         courseType,
-        imageUrl,
+        imageUrl: image,
         rating,
         instructor,
         duration,

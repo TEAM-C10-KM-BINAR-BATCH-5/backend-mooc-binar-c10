@@ -4,16 +4,23 @@ const { Course } = require("../models")
 const upload = require("../middlewares/uploader")
 const checkId = require("../middlewares/checkId")
 const authenticate = require("../middlewares/authenticate")
+const checkRole = require("../middlewares/checkRole")
 
 router
   .route("/")
-  .post(upload.single("image"), courseController.createCourse)
+  .post(authenticate, checkRole("admin"), upload.single("image"), courseController.createCourse)
   .get(courseController.getCourses)
 
 router
   .route("/:id")
-  .delete(checkId(Course), courseController.deleteCourse)
+  .delete(authenticate, checkRole("admin"), checkId(Course), courseController.deleteCourse)
   .get(checkId(Course), courseController.getCourse)
-  .put(checkId(Course), courseController.updateCourse)
+  .patch(
+    authenticate,
+    checkRole("admin"),
+    checkId(Course),
+    upload.single("image"),
+    courseController.updateCourse
+  )
 
 module.exports = router

@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const { Auth, User } = require("../models")
 const ApiError = require("../utils/apiError")
+const imagekit = require("../lib/imageKit")
 
 const register = async (req, res, next) => {
   try {
@@ -90,6 +91,10 @@ const login = async (req, res, next) => {
     if (!auth) {
       return next(new ApiError("Email does not exist, register instead", 401))
     }
+
+    if (auth.User.role === "admin") {
+      return next(new ApiError("This only accept register for user only", 400))
+    }
     const comparePassword = await bcrypt.compare(password, auth.password)
     if (comparePassword === false) {
       return next(new ApiError("Password doesn't match", 400))
@@ -116,7 +121,118 @@ const login = async (req, res, next) => {
   }
 }
 
+const profile = async (req, res, next) => {
+  try {
+    res.status(200).json({
+      success: true,
+      message: "Success",
+      data: req.user
+    })
+  } catch (error) {
+    next(new ApiError(error.message, 500))
+  }
+}
+
+const updateAccount = async (req, res, next) => {
+  const { name, country, city, email, phoneNumber } = req.body
+  const file = req.file
+  let image
+  try {
+    if (file) {
+      const split = file.originalname.split(".")
+      const extension = split[split.length - 1]
+
+      const img = await imagekit.upload({
+        file: file.buffer,
+        fileName: `IMG-${Date.now()}.${extension}`
+      })
+      image = img.url
+    }
+    const user = await User.findOne({ where: { id: req.user.id }, include: [{ model: Auth }] })
+    const authId = user.Auth.id
+    await User.update(
+      {
+        name,
+        country,
+        city,
+        profileUrl: image
+      },
+      {
+        where: {
+          id: req.user.id
+        }
+      }
+    )
+
+    await Auth.update(
+      {
+        email,
+        phoneNumber
+      },
+      { where: { id: authId } }
+    )
+
+    res.status(200).json({
+      success: true,
+      message: "Success, updated"
+    })
+  } catch (err) {
+    next(new ApiError(err.message, 500))
+  }
+}
+
+const loginAdmin = async (req, res, next) => {
+  const { email, password } = req.body
+  try {
+    if (!email || !password) {
+      return next(new ApiError("Email and password are requred for login", 400))
+    }
+    const auth = await Auth.findOne({
+      where: { email },
+      include: [
+        {
+          model: User,
+          attributes: { exclude: ["createdAt", "updatedAt"] }
+        }
+      ]
+    })
+    if (!auth) {
+      return next(new ApiError("Email does not exist, register instead", 401))
+    }
+
+    if (auth.User.role === "user") {
+      return next(new ApiError("This only accept register for admin only", 400))
+    }
+    const comparePassword = await bcrypt.compare(password, auth.password)
+    if (comparePassword === false) {
+      return next(new ApiError("Password doesn't match", 400))
+    }
+    if (auth && comparePassword) {
+      const token = jwt.sign(
+        {
+          id: auth.User.id,
+          name: auth.User.name,
+          email: auth.email,
+          role: auth.User.role
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIREDIN }
+      )
+      res.status(200).json({
+        success: true,
+        message: "Success, login admin",
+        token: token
+      })
+    }
+  } catch (error) {
+    next(new ApiError(error.message, 500))
+  }
+}
+
 module.exports = {
   register,
-  login
+  login,
+  profile,
+  updateAccount,
+  loginAdmin
 }
