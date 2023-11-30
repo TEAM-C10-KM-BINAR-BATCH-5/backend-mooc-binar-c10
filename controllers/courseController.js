@@ -91,7 +91,7 @@ const getCourses = async (req, res, next) => {
     whereClause.level = levelSearch
   }
   try {
-    const courses = await Course.findAll({
+    const data = await Course.findAll({
       include: [
         {
           model: Module,
@@ -106,9 +106,7 @@ const getCourses = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: "Success, fetch",
-      data: {
-        courses
-      }
+      data
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
@@ -132,7 +130,7 @@ const deleteCourse = async (req, res, next) => {
 const getCourse = async (req, res, next) => {
   const { id } = req.params
   try {
-    const course = await Course.findOne({
+    const data = await Course.findOne({
       where: { id },
       include: [
         {
@@ -156,10 +154,8 @@ const getCourse = async (req, res, next) => {
       success: true,
       message: "Success, fetch",
       data: {
-        course: {
-          ...course.toJSON(),
-          totalDuration: totalDuration
-        }
+        ...data.toJSON(),
+        totalDuration: totalDuration
       }
     })
   } catch (error) {

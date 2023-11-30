@@ -13,7 +13,6 @@ module.exports = async (req, res, next) => {
     const token = bearerToken.split("Bearer ")[1]
 
     const payload = jwt.verify(token, process.env.JWT_SECRET)
-    console.log(payload)
     const user = await User.findByPk(payload.id, {
       include: [{ model: Auth }]
     })
