@@ -23,7 +23,7 @@ const buyCourse = async (req, res, next) => {
 			},
 			customer_details: {
 				first_name: req.user.name,
-				email: req.user.email,
+				email: req.user.Auth.email,
 			},
 		}
 
