@@ -3452,6 +3452,16 @@
 					}
 				],
 				"summary": "Buy Course to get payment link",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "Numeric ID required",
+						"type": "integer",
+						"format": "int64"
+					}
+				],
 				"description": "User membeli course lalu mengirimkan course id sesuai yang dibeli",
 				"responses": {
 					"200": {
