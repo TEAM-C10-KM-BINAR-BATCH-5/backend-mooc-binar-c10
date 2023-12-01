@@ -40,7 +40,7 @@ const buyCourse = async (req, res, next) => {
 			}
 		)
 
-		const { redirect_url } = await transaction.json()
+		const transactionResponse = await transaction.json()
 
 		await Payment.create({
 			id: orderId,
@@ -57,7 +57,7 @@ const buyCourse = async (req, res, next) => {
 			success: true,
 			message: "Success initiating payment",
 			data: {
-				redirect_url,
+				...transactionResponse,
 			},
 		})
 	} catch (err) {
