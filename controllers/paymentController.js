@@ -27,18 +27,15 @@ const buyCourse = async (req, res, next) => {
 			},
 		}
 
-		const transaction = await fetch(
-			"https://app.sandbox.midtrans.com/snap/v1/transactions",
-			{
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					Accept: "application/json",
-					Authorization: `Basic ${process.env.MIDTRANS_SERVER_KEY_HASHED}`,
-				},
-				body: JSON.stringify(dataTransaction),
-			}
-		)
+		const transaction = await fetch(process.env.MIDTRANS_SERVER_URL, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Accept: "application/json",
+				Authorization: `Basic ${process.env.MIDTRANS_SERVER_KEY_HASHED}`,
+			},
+			body: JSON.stringify(dataTransaction),
+		})
 
 		const transactionResponse = await transaction.json()
 
