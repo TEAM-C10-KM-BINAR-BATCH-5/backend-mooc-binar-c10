@@ -3452,6 +3452,7 @@
 					}
 				],
 				"summary": "Buy Course to get payment link",
+				"description": "User membeli course lalu mengirimkan course id sesuai yang dibeli",
 				"parameters": [
 					{
 						"name": "id",
@@ -3462,7 +3463,6 @@
 						"format": "int64"
 					}
 				],
-				"description": "User membeli course lalu mengirimkan course id sesuai yang dibeli",
 				"responses": {
 					"200": {
 						"description": "Success response",
