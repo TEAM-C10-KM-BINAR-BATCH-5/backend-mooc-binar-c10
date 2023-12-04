@@ -181,6 +181,43 @@ const updateAccount = async (req, res, next) => {
   }
 }
 
+const ubahPassword = async (req, res, next) => {
+  const { oldPassword, newPassword, repeatNewPassword } = req.body
+  try {
+    const auth = await Auth.findOne({
+      where: { userId: req.user.id }
+    })
+    const comparePassword = await bcrypt.compare(oldPassword, auth.password)
+    if (comparePassword === false) {
+      return next(
+        new ApiError(
+          "Your old password is not match with this account, if you forgot the password, go to reset the password feature",
+          400
+        )
+      )
+    }
+    if (newPassword !== repeatNewPassword) {
+      return next(new ApiError("New password must be the same with new repeating password", 400))
+    }
+    const saltRounds = 10
+    const hashedPassword = bcrypt.hashSync(newPassword, saltRounds)
+    if (auth && comparePassword) {
+      await Auth.update(
+        {
+          password: hashedPassword
+        },
+        { where: { id: auth.id } }
+      )
+    }
+    res.status(200).json({
+      success: true,
+      message: "Success, your password successfully changed"
+    })
+  } catch (err) {
+    next(new ApiError(err.message, 500))
+  }
+}
+
 const loginAdmin = async (req, res, next) => {
   const { email, password } = req.body
   try {
@@ -234,5 +271,6 @@ module.exports = {
   login,
   profile,
   updateAccount,
+  ubahPassword,
   loginAdmin
 }

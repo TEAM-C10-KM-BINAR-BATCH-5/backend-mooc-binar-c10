@@ -91,7 +91,7 @@ const deleteVideo = async (req, res, next) => {
 
 const updateVideo = async (req, res, next) => {
   const { id } = req.params
-  const { title, videoUrl, moduleId } = req.body
+  const { title, videoUrl, moduleId, no, duration } = req.body
   try {
     let idModule
     if (moduleId) {
@@ -105,6 +105,8 @@ const updateVideo = async (req, res, next) => {
     const updatedVideo = await Video.update(
       {
         title,
+        no,
+        duration,
         videoUrl,
         moduleId: idModule
       },

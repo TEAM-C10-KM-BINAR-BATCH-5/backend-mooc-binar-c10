@@ -36,15 +36,23 @@ const sendOtpForgotPassword = async (req, res, next) => {
       from: '"Learn Hub" <binar.team.c10@gmail.com>', // sender address
       to: email, // list of receivers
       subject: "Email Verification OTP", // Subject line
-      html: `<b>Your OTP for reset password is: ${otp}</b>` // html body
+      html: `<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
+      <div style="margin:50px auto;width:70%;padding:20px 0">
+      <hr style="border:none;border-top:1px solid #eee" />
+        <p style="font-size:1.1em">Hi,</p>
+        <p>Thank you for using Learn Hub. Use the following OTP to complete your reset password. OTP is valid for 60 seconds</p>
+        <h2 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 8px;">${otp}</h2>
+        <p style="font-size:0.9em;">Learn Hub</p>
+        <hr style="border:none;border-top:1px solid #eee" />
+      </div>
+    </div>`
     })
 
     req.session.otp = otp
 
     return res.status(200).json({
       success: true,
-      message: "Success, sent",
-      data: otp
+      message: "Success, sent"
     })
   } catch (err) {
     return next(new ApiError(err.message, 500))
