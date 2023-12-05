@@ -52,7 +52,7 @@ const createCourse = async (req, res, next) => {
       price
     })
 
-    res.status(200).json({
+    res.status(201).json({
       success: true,
       message: "Success, create course",
       data: {

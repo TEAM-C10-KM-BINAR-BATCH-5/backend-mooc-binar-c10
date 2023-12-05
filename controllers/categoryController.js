@@ -8,7 +8,7 @@ const createCategory = async (req, res, next) => {
       id,
       name
     })
-    res.status(200).json({
+    res.status(201).json({
       success: true,
       message: "Success, create category",
       data: {

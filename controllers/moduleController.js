@@ -28,7 +28,7 @@ const createModule = async (req, res, next) => {
       )
     }
 
-    res.status(200).json({
+    res.status(201).json({
       success: true,
       message: "Success, create module",
       data: {

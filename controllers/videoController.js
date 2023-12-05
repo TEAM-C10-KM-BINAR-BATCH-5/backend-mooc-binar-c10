@@ -31,7 +31,7 @@ const createVid = async (req, res, next) => {
         { where: { id: idModule } }
       )
     }
-    res.status(200).json({
+    res.status(201).json({
       success: true,
       message: "Success, create video",
       data: {

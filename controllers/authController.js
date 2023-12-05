@@ -58,7 +58,7 @@ const register = async (req, res, next) => {
       userId: newUser.id
     })
 
-    res.status(200).json({
+    res.status(201).json({
       success: true,
       message: "Success, register user",
       data: {
