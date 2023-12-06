@@ -1,4 +1,4 @@
-module.exports = (err, req, res) => {
+module.exports = (err, req, res, next) => {
   // eslint-disable-next-line no-param-reassign
   err.statusCode = err.statusCode || 500
   // eslint-disable-next-line no-param-reassign, no-self-assign
