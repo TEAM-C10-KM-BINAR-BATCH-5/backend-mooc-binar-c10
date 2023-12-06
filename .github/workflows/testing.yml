@@ -3,7 +3,7 @@ on:
   pull_request:
     types: [opened, edited, synchronize]
     branches:
-      - development
+      - main
 jobs:
   test:
     environment: test
