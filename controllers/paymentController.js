@@ -2,7 +2,7 @@
 const uuidv4 = require('uuid').v4
 const fetch = require('node-fetch')
 const crypto = require('crypto')
-const { Course, Payment } = require('../models')
+const { Course, Payment, UserCourse } = require('../models')
 const ApiError = require('../utils/apiError')
 
 const buyCourse = async (req, res, next) => {
@@ -51,7 +51,7 @@ const buyCourse = async (req, res, next) => {
       date: new Date(),
     })
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: 'Success initiating payment',
       data: {
@@ -59,7 +59,7 @@ const buyCourse = async (req, res, next) => {
       },
     })
   } catch (err) {
-    next(new ApiError(err.message, 400))
+    return next(new ApiError(err.message, 400))
   }
 }
 
@@ -87,7 +87,7 @@ const paymentHook = async (req, res, next) => {
     if (!order_id) {
       return next(new ApiError('invalid order id', 400))
     }
-    await Payment.update(
+    const payment = await Payment.update(
       {
         status: transaction_status,
         amount: Number(gross_amount),
@@ -98,8 +98,15 @@ const paymentHook = async (req, res, next) => {
         where: {
           id: order_id,
         },
+        returning: true,
       },
     )
+    if (['capture', 'settlement'].includes(transaction_status)) {
+      await UserCourse.create({
+        userId: payment.userId,
+        courseId: payment.courseId,
+      })
+    }
     return res.status(200).json({
       success: true,
       message: 'Success completing payment',

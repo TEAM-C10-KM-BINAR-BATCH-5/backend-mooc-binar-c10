@@ -21,6 +21,12 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false,
         },
       })
+      User.hasMany(models.UserCourse, {
+        foreignKey: {
+          name: 'userId',
+          allowNull: false,
+        },
+      })
     }
   }
   User.init(

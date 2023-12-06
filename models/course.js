@@ -22,6 +22,13 @@ module.exports = (sequelize, DataTypes) => {
         },
       })
 
+      Course.hasMany(models.UserCourse, {
+        foreignKey: {
+          name: 'courseId',
+          allowNull: false,
+        },
+      })
+
       Course.hasMany(models.Payment, {
         foreignKey: {
           name: 'courseId',
