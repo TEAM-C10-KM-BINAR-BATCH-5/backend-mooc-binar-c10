@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 module.exports = (err, req, res, next) => {
   // eslint-disable-next-line no-param-reassign
   err.statusCode = err.statusCode || 500
