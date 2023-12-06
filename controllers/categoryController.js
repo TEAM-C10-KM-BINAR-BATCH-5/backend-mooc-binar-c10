@@ -1,19 +1,19 @@
-const { Category, Course } = require("../models")
-const ApiError = require("../utils/apiError")
+const { Category, Course } = require('../models')
+const ApiError = require('../utils/apiError')
 
 const createCategory = async (req, res, next) => {
   const { id, name } = req.body
   try {
     const newCategory = await Category.create({
       id,
-      name
+      name,
     })
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
-      message: "Success, create category",
+      message: 'Success, create category',
       data: {
-        newCategory
-      }
+        newCategory,
+      },
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
@@ -23,12 +23,12 @@ const createCategory = async (req, res, next) => {
 const getCategories = async (req, res, next) => {
   try {
     const categories = await Category.findAll()
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
-      message: "Success, fetch",
+      message: 'Success, fetch',
       data: {
-        categories
-      }
+        categories,
+      },
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
@@ -39,10 +39,10 @@ const deleteCategory = async (req, res, next) => {
   const { id } = req.params
   try {
     await Category.destroy({ where: { id } })
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
-      message: "Success, deleted",
-      data: null
+      message: 'Success, deleted',
+      data: null,
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
@@ -55,16 +55,16 @@ const updateCategory = async (req, res, next) => {
   try {
     const updatedCategory = await Category.update(
       {
-        name
+        name,
       },
-      { where: { id }, returning: true }
+      { where: { id }, returning: true },
     )
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
-      message: "Success, updated",
+      message: 'Success, updated',
       data: {
-        updatedCategory
-      }
+        updatedCategory,
+      },
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
@@ -74,13 +74,16 @@ const updateCategory = async (req, res, next) => {
 const getCategory = async (req, res, next) => {
   const { id } = req.params
   try {
-    const category = await Category.findOne({ where: { id }, include: [{ model: Course }] })
-    res.status(200).json({
+    const category = await Category.findOne({
+      where: { id },
+      include: [{ model: Course }],
+    })
+    return res.status(200).json({
       success: true,
-      message: "Success, fetch",
+      message: 'Success, fetch',
       data: {
-        category
-      }
+        category,
+      },
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
@@ -92,5 +95,5 @@ module.exports = {
   getCategories,
   deleteCategory,
   updateCategory,
-  getCategory
+  getCategory,
 }

@@ -1,8 +1,7 @@
-"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Users", {
+    await queryInterface.createTable('Users', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -14,7 +13,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       role: {
-        type: Sequelize.ENUM(["admin", "user"]),
+        type: Sequelize.ENUM(['admin', 'user']),
       },
       country: {
         allowNull: true,
@@ -26,7 +25,7 @@ module.exports = {
       },
       membership: {
         allowNull: true,
-        type: Sequelize.ENUM(["free", "premium"]),
+        type: Sequelize.ENUM(['free', 'premium']),
       },
       profileUrl: {
         allowNull: true,
@@ -40,9 +39,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-    });
+    })
   },
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Users");
+  async down(queryInterface) {
+    await queryInterface.dropTable('Users')
   },
-};
+}

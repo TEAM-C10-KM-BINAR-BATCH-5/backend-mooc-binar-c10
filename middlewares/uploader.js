@@ -1,19 +1,19 @@
-const multer = require("multer")
-const ApiError = require("../utils/apiError")
+const multer = require('multer')
+const ApiError = require('../utils/apiError')
 
 const multerFiltering = (req, file, cb) => {
+  // prettier-ignore
   if (
-    file.mimetype == "image/png" ||
-    file.mimetype == "image/jpg" ||
-    file.mimetype == "image/jpeg"
+    file.mimetype === 'image/png'
+    || file.mimetype === 'image/jpg'
+    || file.mimetype === 'image/jpeg'
   ) {
-    cb(null, true)
-  } else {
-    return cb(new ApiError("Wrong image format", 400))
+    return cb(null, true)
   }
+  return cb(new ApiError('Wrong image format', 400))
 }
 
 const upload = multer({
-  fileFilter: multerFiltering
+  fileFilter: multerFiltering,
 })
 module.exports = upload

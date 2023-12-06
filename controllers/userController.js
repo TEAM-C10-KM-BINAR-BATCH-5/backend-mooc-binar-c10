@@ -1,19 +1,19 @@
-const { User, Auth } = require("../models")
-const ApiError = require("../utils/apiError")
-const imagekit = require("../lib/imageKit")
+const { User, Auth } = require('../models')
+const ApiError = require('../utils/apiError')
+const imagekit = require('../lib/imageKit')
 
 const findUsers = async (req, res, next) => {
   try {
     const users = await User.findAll({
-      include: ["Auth"]
+      include: ['Auth'],
     })
 
     res.status(200).json({
       success: true,
-      message: "Success, fetch",
+      message: 'Success, fetch',
       data: {
-        users
-      }
+        users,
+      },
     })
   } catch (err) {
     next(new ApiError(err.message, 400))
@@ -24,17 +24,17 @@ const findUserById = async (req, res, next) => {
   try {
     const user = await User.findOne({
       where: {
-        id: req.params.id
+        id: req.params.id,
       },
-      include: ["Auth"]
+      include: ['Auth'],
     })
 
     res.status(200).json({
       success: true,
-      message: "Success, fetch",
+      message: 'Success, fetch',
       data: {
-        user
-      }
+        user,
+      },
     })
   } catch (err) {
     next(new ApiError(err.message, 400))
@@ -42,50 +42,56 @@ const findUserById = async (req, res, next) => {
 }
 
 const updateUser = async (req, res, next) => {
-  const { name, country, city, email, phoneNumber } = req.body
-  const file = req.file
+  // prettier-ignore
+  const {
+    name, country, city, email, phoneNumber,
+  } = req.body
+  const { file } = req
   let image
   try {
     if (file) {
-      const split = file.originalname.split(".")
+      const split = file.originalname.split('.')
       const extension = split[split.length - 1]
 
       const img = await imagekit.upload({
         file: file.buffer,
-        fileName: `IMG-${Date.now()}.${extension}`
+        fileName: `IMG-${Date.now()}.${extension}`,
       })
       image = img.url
     }
-    const user = await User.findOne({ where: { id: req.params.id }, include: [{ model: Auth }] })
+    const user = await User.findOne({
+      where: { id: req.params.id },
+      include: [{ model: Auth }],
+    })
     const authId = user.Auth.id
     await User.update(
       {
         name,
         country,
         city,
-        profileUrl: image
+        profileUrl: image,
       },
       {
         where: {
-          id: req.params.id
-        }
-      }
+          id: req.params.id,
+        },
+      },
     )
 
     await Auth.update(
       {
         email,
-        phoneNumber
+        phoneNumber,
       },
-      { where: { id: authId } }
+      { where: { id: authId } },
     )
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
-      message: "Success, updated"
+      message: 'Success, updated',
     })
   } catch (err) {
-    next(new ApiError(err.message, 500))
+    return next(new ApiError(err.message, 500))
   }
 }
 
@@ -93,18 +99,18 @@ const deleteUser = async (req, res, next) => {
   try {
     await Auth.destroy({
       where: {
-        userId: req.params.id
-      }
+        userId: req.params.id,
+      },
     })
     await User.destroy({
       where: {
-        id: req.params.id
-      }
+        id: req.params.id,
+      },
     })
 
     res.status(200).json({
       success: true,
-      message: "Success, deleted"
+      message: 'Success, deleted',
     })
   } catch (err) {
     next(new ApiError(err.message, 500))
@@ -115,5 +121,5 @@ module.exports = {
   findUsers,
   findUserById,
   updateUser,
-  deleteUser
+  deleteUser,
 }

@@ -1,8 +1,11 @@
-const { Op } = require("sequelize")
+const { Op } = require('sequelize')
 
-const { Course, Module, Video, Category, sequelize } = require("../models")
-const ApiError = require("../utils/apiError")
-const imagekit = require("../lib/imageKit")
+// prettier-ignore
+const {
+  Course, Module, Video, Category, sequelize,
+} = require('../models')
+const ApiError = require('../utils/apiError')
+const imagekit = require('../lib/imageKit')
 
 const createCourse = async (req, res, next) => {
   const {
@@ -15,24 +18,26 @@ const createCourse = async (req, res, next) => {
     about,
     objective,
     onboarding,
-    price
+    price,
   } = req.body
-  const file = req.file
+  const { file } = req
   let image
   try {
     if (file) {
-      const split = file.originalname.split(".")
+      const split = file.originalname.split('.')
       const extension = split[split.length - 1]
 
       const img = await imagekit.upload({
         file: file.buffer,
-        fileName: `IMG-${Date.now()}.${extension}`
+        fileName: `IMG-${Date.now()}.${extension}`,
       })
       image = img.url
     }
     const category = await Category.findOne({ where: { id: categoryId } })
     if (!category) {
-      return next(new ApiError(`Cause category with id ${categoryId} not found`, 404))
+      return next(
+        new ApiError(`Cause category with id ${categoryId} not found`, 404),
+      )
     }
     const idCategory = category.id
     const newCourse = await Course.create({
@@ -42,22 +47,22 @@ const createCourse = async (req, res, next) => {
       categoryId: idCategory,
       onboarding,
       level,
-      courseType: price > 0 ? "Premium" : "Free",
+      courseType: price > 0 ? 'Premium' : 'Free',
       imageUrl: image,
       rating,
       instructor,
       duration: 0,
       telegramLink,
       moduleCount: 0,
-      price
+      price,
     })
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
-      message: "Success, create course",
+      message: 'Success, create course',
       data: {
-        newCourse
-      }
+        newCourse,
+      },
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
@@ -65,21 +70,23 @@ const createCourse = async (req, res, next) => {
 }
 
 const getCourses = async (req, res, next) => {
-  const categoryIds = req.query.categoryIds ? req.query.categoryIds.split(",") : []
-  const titleSearch = req.query.title || ""
-  const courseTypeSearch = req.query.courseType || ""
-  const levelSearch = req.query.level || ""
+  const categoryIds = req.query.categoryIds
+    ? req.query.categoryIds.split(',')
+    : []
+  const titleSearch = req.query.title || ''
+  const courseTypeSearch = req.query.courseType || ''
+  const levelSearch = req.query.level || ''
   const whereClause = {}
 
   if (categoryIds.length > 0) {
     whereClause.categoryId = {
-      [Op.in]: categoryIds
+      [Op.in]: categoryIds,
     }
   }
 
   if (titleSearch) {
     whereClause.title = {
-      [Op.iLike]: `%${titleSearch}%`
+      [Op.iLike]: `%${titleSearch}%`,
     }
   }
 
@@ -95,30 +102,35 @@ const getCourses = async (req, res, next) => {
       include: [
         {
           model: Module,
-          attributes: []
+          attributes: [],
         },
         {
           model: Category,
-          attributes: ["name"]
-        }
+          attributes: ['name'],
+        },
       ],
       where: whereClause,
       raw: true,
-      group: ["Course.id", "Category.id"],
-      attributes: ["*", [sequelize.fn("SUM", sequelize.col("Modules.duration")), "totalDuration"]]
+      group: ['Course.id', 'Category.id'],
+      attributes: [
+        '*',
+        [
+          sequelize.fn('SUM', sequelize.col('Modules.duration')),
+          'totalDuration',
+        ],
+      ],
     })
 
     const data = dataCourse.map((course) => {
       const categoryInfo = {
-        name: course["Category.name"]
+        name: course['Category.name'],
       }
-      delete course["Category.name"]
-      return { ...course, Category: categoryInfo }
+      return { ...course, 'Category.name': undefined, Category: categoryInfo }
     })
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
-      message: "Success, fetch",
-      data
+      message: 'Success, fetch',
+      data,
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
@@ -129,10 +141,10 @@ const deleteCourse = async (req, res, next) => {
   const { id } = req.params
   try {
     await Course.destroy({ where: { id } })
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
-      message: "Success, deleted",
-      data: null
+      message: 'Success, deleted',
+      data: null,
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
@@ -147,32 +159,32 @@ const getCourse = async (req, res, next) => {
       include: [
         {
           model: Category,
-          attributes: { exclude: ["id", "createdAt", "updatedAt"] }
+          attributes: { exclude: ['id', 'createdAt', 'updatedAt'] },
         },
         {
           model: Module,
-          attributes: { exclude: ["createdAt", "updatedAt"] },
+          attributes: { exclude: ['createdAt', 'updatedAt'] },
           include: [
             {
               model: Video,
-              attributes: { exclude: ["createdAt", "updatedAt"] }
-            }
-          ]
-        }
-      ]
+              attributes: { exclude: ['createdAt', 'updatedAt'] },
+            },
+          ],
+        },
+      ],
     })
-    const totalDuration = await Module.sum("duration", {
+    const totalDuration = await Module.sum('duration', {
       where: {
-        courseId: id
-      }
+        courseId: id,
+      },
     })
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
-      message: "Success, fetch",
+      message: 'Success, fetch',
       data: {
         ...data.toJSON(),
-        totalDuration: totalDuration
-      }
+        totalDuration,
+      },
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
@@ -194,18 +206,18 @@ const updateCourse = async (req, res, next) => {
     about,
     objective,
     onboarding,
-    price
+    price,
   } = req.body
-  const file = req.file
+  const { file } = req
   let image
   try {
     if (file) {
-      const split = file.originalname.split(".")
+      const split = file.originalname.split('.')
       const extension = split[split.length - 1]
 
       const img = await imagekit.upload({
         file: file.buffer,
-        fileName: `IMG-${Date.now()}.${extension}`
+        fileName: `IMG-${Date.now()}.${extension}`,
       })
       image = img.url
     }
@@ -213,7 +225,9 @@ const updateCourse = async (req, res, next) => {
     if (categoryId) {
       const category = await Category.findOne({ where: { id: categoryId } })
       if (!category) {
-        return next(new ApiError(`Cause course with id ${categoryId} not found`, 404))
+        return next(
+          new ApiError(`Cause course with id ${categoryId} not found`, 404),
+        )
       }
       idCategory = category.id
     }
@@ -232,16 +246,16 @@ const updateCourse = async (req, res, next) => {
         about,
         objective,
         onboarding,
-        price
+        price,
       },
-      { where: { id }, returning: true }
+      { where: { id }, returning: true },
     )
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
-      message: "Success, updated",
+      message: 'Success, updated',
       data: {
-        updatedCourse
-      }
+        updatedCourse,
+      },
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
@@ -253,5 +267,5 @@ module.exports = {
   getCourses,
   deleteCourse,
   getCourse,
-  updateCourse
+  updateCourse,
 }
