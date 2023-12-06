@@ -1,6 +1,6 @@
 const ApiError = require('../utils/apiError')
 
-const checkOtp = () => async (req, res, next) => {
+const checkOtp = async (req, res, next) => {
   try {
     if (!req.body.otp) {
       return next(new ApiError('Otp required!', 400))
