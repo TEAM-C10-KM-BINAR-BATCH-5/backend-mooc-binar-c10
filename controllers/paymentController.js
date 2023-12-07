@@ -15,7 +15,7 @@ const buyCourse = async (req, res, next) => {
       },
     })
 
-    const alreadyEnrolled = await UserCourse.create({
+    const alreadyEnrolled = await UserCourse.findOne({
       userId: req.user.id,
       courseId,
     })
