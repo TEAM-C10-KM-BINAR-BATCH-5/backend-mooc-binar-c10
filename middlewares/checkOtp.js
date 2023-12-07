@@ -5,7 +5,7 @@ const checkOtp = () => async (req, res, next) => {
     if (!req.body.otp) {
       return next(new ApiError('Otp required!', 400))
     }
-    if (req.body.otp !== `${req.session.otp}`) {
+    if (`${req.body.otp}` !== req.session.otp) {
       return next(new ApiError('invalid or expired otp', 400))
     }
     return next()
