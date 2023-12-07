@@ -61,14 +61,25 @@ const getUserCourses = async (req, res, next) => {
         ],
       },
       raw: true,
+      distinct: true,
       group: ['UserCourse.id', 'Course.id', 'Course.Category.id'],
     })
 
     const data = dataUserCourse.map((course) => {
-      const categoryInfo = {
-        name: course['Category.name'],
+      const replaceProps = {
+        'Course.Category.name': undefined,
+        'Course.Category.id': undefined,
+        'Course.totalDuration': undefined,
       }
-      return { ...course, 'Category.name': undefined, Category: categoryInfo }
+      const categoryInfo = {
+        name: course['Course.Category.name'],
+      }
+      return {
+        ...course,
+        ...replaceProps,
+        Category: categoryInfo,
+        totalDuration: course['Course.totalDuration'],
+      }
     })
     return res.status(200).json({
       success: true,
