@@ -61,9 +61,9 @@ const getUserCourses = async (req, res, next) => {
         ],
       },
       raw: true,
+      group: ['UserCourse.id', 'Course.id', 'Course.Category.id'],
       distinct: true,
       subQuery: false,
-      group: ['UserCourse.id', 'Course.id', 'Course.Category.id'],
     })
 
     const data = dataUserCourse.map((course) => {
