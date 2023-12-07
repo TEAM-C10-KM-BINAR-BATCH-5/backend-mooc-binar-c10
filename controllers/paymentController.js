@@ -111,16 +111,15 @@ const paymentHook = async (req, res, next) => {
         plain: true,
       },
     )
-    // if (['capture', 'settlement'].includes(transaction_status)) {
-    //   await UserCourse.create({
-    //     userId: payment.userId,
-    //     courseId: payment.courseId,
-    //   })
-    // }
+    if (['capture', 'settlement'].includes(transaction_status)) {
+      await UserCourse.create({
+        userId: payment[1].userId,
+        courseId: payment[1].courseId,
+      })
+    }
     return res.status(200).json({
       success: true,
       message: 'Success completing payment',
-      data: payment,
     })
   } catch (err) {
     return next(new ApiError(err.message, 400))
