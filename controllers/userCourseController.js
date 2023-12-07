@@ -60,7 +60,7 @@ const getUserCourses = async (req, res, next) => {
           ],
         ],
       },
-      raw: true,
+      // raw: true,
       group: ['UserCourse.id', 'Course.id', 'Course.Category.id'],
       subQuery: false,
       distinct: true,
