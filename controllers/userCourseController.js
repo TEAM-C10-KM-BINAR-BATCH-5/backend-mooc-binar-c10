@@ -41,7 +41,6 @@ const getUserCourses = async (req, res, next) => {
       },
       include: {
         model: Course,
-        separate: true,
         include: [
           {
             model: Module,
@@ -62,8 +61,8 @@ const getUserCourses = async (req, res, next) => {
         ],
       },
       raw: true,
+      separate: true,
       group: ['UserCourse.id', 'Course.id', 'Course.Category.id'],
-      subQuery: false,
     })
 
     const data = dataUserCourse.map((course) => {
