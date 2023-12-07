@@ -57,7 +57,7 @@ const getUserCourses = async (req, res, next) => {
         attributes: [
           '*',
           [
-            sequelize.fn('SUM', sequelize.col('Modules.duration')),
+            sequelize.fn('SUM', sequelize.col('Course.Modules.duration')),
             'totalDuration',
           ],
         ],
