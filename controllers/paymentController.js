@@ -120,6 +120,7 @@ const paymentHook = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       message: 'Success completing payment',
+      data: payment,
     })
   } catch (err) {
     return next(new ApiError(err.message, 400))
