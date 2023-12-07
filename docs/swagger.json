@@ -94,10 +94,6 @@
                     "message": {
                       "type": "string",
                       "example": "Success, sent"
-                    },
-                    "data": {
-                      "type": "string",
-                      "example": "339742"
                     }
                   }
                 }
@@ -157,8 +153,8 @@
                     "example": "1234567"
                   },
                   "otp": {
-                    "type": "integer",
-                    "example": 272614
+                    "type": "string",
+                    "example": "272614"
                   }
                 }
               }
@@ -166,7 +162,7 @@
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Success login",
             "content": {
               "application/json": {
@@ -1102,7 +1098,7 @@
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Admin success create course",
             "content": {
               "application/json": {
@@ -1797,7 +1793,7 @@
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Admin success create module",
             "content": {
               "application/json": {
@@ -2287,7 +2283,7 @@
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Admin success create module",
             "content": {
               "application/json": {
