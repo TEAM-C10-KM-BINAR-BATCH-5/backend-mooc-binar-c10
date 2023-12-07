@@ -39,29 +39,34 @@ const getUserCourses = async (req, res, next) => {
       where: {
         userId: req.user.id,
       },
-      raw: true,
-      group: ['Course.id', 'Category.id', 'UserCourse.id'],
-      include: {
-        model: Course,
-        include: [
-          {
-            model: Category,
-            attributes: ['name'],
-          },
-          {
-            model: Module,
-            attributes: [],
-          },
-        ],
-        where: whereClause,
-        attributes: [
-          '*',
-          [
-            sequelize.fn('SUM', sequelize.col('Course.Modules.duration')),
-            'totalDuration',
+      include: [
+        {
+          model: Course,
+          as: 'course',
+          include: [
+            {
+              model: Category,
+              as: 'category',
+              attributes: ['name'],
+            },
+            {
+              model: Module,
+              as: 'modules', // Add the alias for modules
+              attributes: [],
+            },
           ],
-        ],
-      },
+          where: whereClause,
+          attributes: [
+            '*',
+            [
+              sequelize.fn('SUM', sequelize.col('course.modules.duration')),
+              'totalDuration',
+            ],
+          ],
+        },
+      ],
+      group: ['course.id', 'category.id', 'UserCourse.id'],
+      raw: true,
     })
     // const dataCourse = await Course.findAll({
     //   include: [
