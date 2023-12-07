@@ -99,6 +99,7 @@ const paymentHook = async (req, res, next) => {
           id: order_id,
         },
         returning: true,
+        plain: true,
       },
     )
     if (['capture', 'settlement'].includes(transaction_status)) {
