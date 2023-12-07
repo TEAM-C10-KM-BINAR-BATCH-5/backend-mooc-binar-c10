@@ -85,7 +85,7 @@ const getUserCourses = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       message: 'Success, fetch',
-      data,
+      data: dataUserCourse,
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
