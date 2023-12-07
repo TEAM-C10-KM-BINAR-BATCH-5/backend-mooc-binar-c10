@@ -39,59 +39,30 @@ const getUserCourses = async (req, res, next) => {
       where: {
         userId: req.user.id,
       },
-      include: [
-        {
-          model: Course,
-          include: [
-            {
-              model: Category,
-              attributes: ['name'],
-            },
-            {
-              model: Module,
-              attributes: [],
-            },
+      include: {
+        model: Course,
+        include: [
+          {
+            model: Module,
+            attributes: [],
+          },
+          {
+            model: Category,
+            attributes: ['name'],
+          },
+        ],
+        where: whereClause,
+        attributes: [
+          '*',
+          [
+            sequelize.fn('SUM', sequelize.col('Course.Modules.duration')),
+            'totalDuration',
           ],
-          where: whereClause,
-          attributes: [
-            '*',
-            [
-              sequelize.fn('SUM', sequelize.col('Module.duration')),
-              'totalDuration',
-            ],
-          ],
-        },
-      ],
-      group: ['Courses.id', 'Category.id', 'UserCourse.id'],
+        ],
+      },
+      raw: true,
+      group: ['UserCourse.id', 'Course.id', 'Course.Category.id'],
     })
-    // const dataCourse = await Course.findAll({
-    //   include: [
-    //     {
-    //       model: Module,
-    //       attributes: [],
-    //     },
-    //     {
-    //       model: Category,
-    //       attributes: ['name'],
-    //     },
-    //     // {
-    //     //   model: UserCourse,
-    //     //   attributes: [],
-    //     // },
-    //   ],
-    //   where: {
-    //     ...whereClause,
-    //   },
-    //   raw: true,
-    //   group: ['Course.id', 'Category.id'],
-    //   attributes: [
-    //     '*',
-    //     [
-    //       sequelize.fn('SUM', sequelize.col('Modules.duration')),
-    //       'totalDuration',
-    //     ],
-    //   ],
-    // })
 
     const data = dataUserCourse.map((course) => {
       const categoryInfo = {
