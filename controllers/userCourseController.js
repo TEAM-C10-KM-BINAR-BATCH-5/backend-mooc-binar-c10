@@ -60,10 +60,10 @@ const getUserCourses = async (req, res, next) => {
           ],
         ],
       },
-      // raw: true,
+      raw: true,
       group: ['UserCourse.id', 'Course.id', 'Course.Category.id'],
-      // subQuery: false,
-      // distinct: true,
+      subQuery: false,
+      distinct: true,
     })
 
     const data = dataUserCourse.map((course) => {
@@ -85,7 +85,7 @@ const getUserCourses = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       message: 'Success, fetch',
-      data: dataUserCourse,
+      data,
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
