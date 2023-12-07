@@ -35,38 +35,38 @@ const getUserCourses = async (req, res, next) => {
     whereClause.level = levelSearch
   }
   try {
-    const dataUserCourse = await UserCourse.findAll({
-      where: {
-        userId: req.user.id,
-      },
-      include: {
-        model: Course,
-        include: [
-          {
-            model: Module,
-            attributes: [],
-          },
-          {
-            model: Category,
-            attributes: ['name'],
-          },
-        ],
-        where: whereClause,
-        attributes: [
-          '*',
-          [
-            sequelize.fn('SUM', sequelize.col('Course.Modules.duration')),
-            'totalDuration',
-          ],
-        ],
-      },
-      raw: true,
-      group: ['UserCourse.id', 'Course.id', 'Course.Category.id'],
-      subQuery: false,
-      distinct: true,
-    })
+    // const dataUserCourse = await UserCourse.findAll({
+    //   where: {
+    //     userId: req.user.id,
+    //   },
+    //   include: {
+    //     model: Course,
+    //     include: [
+    //       {
+    //         model: Module,
+    //         attributes: [],
+    //       },
+    //       {
+    //         model: Category,
+    //         attributes: ['name'],
+    //       },
+    //     ],
+    //     where: whereClause,
+    //     attributes: [
+    //       '*',
+    //       [
+    //         sequelize.fn('SUM', sequelize.col('Course.Modules.duration')),
+    //         'totalDuration',
+    //       ],
+    //     ],
+    //   },
+    //   raw: true,
+    //   group: ['UserCourse.id', 'Course.id', 'Course.Category.id'],
+    //   subQuery: false,
+    //   distinct: true,
+    // })
 
-    const userCourse = await Course.findAll({
+    const dataUserCourse = await Course.findAll({
       include: [
         {
           model: Module,
@@ -97,25 +97,18 @@ const getUserCourses = async (req, res, next) => {
     })
 
     const data = dataUserCourse.map((course) => {
-      const replaceProps = {
-        'Course.Category.name': undefined,
-        'Course.Category.id': undefined,
-        'Course.totalDuration': undefined,
-      }
       const categoryInfo = {
-        name: course['Course.Category.name'],
+        name: course['Category.name'],
       }
       return {
         ...course,
-        ...replaceProps,
         Category: categoryInfo,
-        totalDuration: course['Course.totalDuration'],
       }
     })
     return res.status(200).json({
       success: true,
       message: 'Success, fetch',
-      data: userCourse,
+      data,
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
