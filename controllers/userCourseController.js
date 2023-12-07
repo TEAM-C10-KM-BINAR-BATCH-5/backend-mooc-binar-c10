@@ -41,7 +41,6 @@ const getUserCourses = async (req, res, next) => {
       },
       include: {
         model: Course,
-        limit: 1,
         include: [
           {
             model: Module,
