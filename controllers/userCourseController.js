@@ -66,6 +66,36 @@ const getUserCourses = async (req, res, next) => {
       distinct: true,
     })
 
+    const userCourse = await Course.findAll({
+      include: [
+        {
+          model: Module,
+          attributes: [],
+        },
+        {
+          model: Category,
+          attributes: ['name'],
+        },
+        {
+          model: UserCourse,
+          attributes: [],
+          where: {
+            userId: req.user.id,
+          },
+        },
+      ],
+      where: whereClause,
+      raw: true,
+      group: ['Course.id', 'Category.id'],
+      attributes: [
+        '*',
+        [
+          sequelize.fn('SUM', sequelize.col('Modules.duration')),
+          'totalDuration',
+        ],
+      ],
+    })
+
     const data = dataUserCourse.map((course) => {
       const replaceProps = {
         'Course.Category.name': undefined,
@@ -85,7 +115,7 @@ const getUserCourses = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       message: 'Success, fetch',
-      data,
+      data: userCourse,
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
