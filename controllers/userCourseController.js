@@ -54,15 +54,11 @@ const getUserCourses = async (req, res, next) => {
         where: whereClause,
       },
       raw: true,
-      group: [
-        'UserCourse.Course.id',
-        'UserCourse.Category.id',
-        'UserCourse.id',
-      ],
+      group: ['Course.id', 'Category.id'],
       attributes: [
         '*',
         [
-          sequelize.fn('SUM', sequelize.col('Course.Modules.duration')),
+          sequelize.fn('SUM', sequelize.col('Modules.duration')),
           'totalDuration',
         ],
       ],
