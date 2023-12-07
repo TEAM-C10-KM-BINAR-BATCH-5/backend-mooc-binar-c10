@@ -42,16 +42,13 @@ const getUserCourses = async (req, res, next) => {
       include: [
         {
           model: Course,
-          as: 'course',
           include: [
             {
               model: Category,
-              as: 'category',
               attributes: ['name'],
             },
             {
               model: Module,
-              as: 'modules', // Add the alias for modules
               attributes: [],
             },
           ],
@@ -59,14 +56,13 @@ const getUserCourses = async (req, res, next) => {
           attributes: [
             '*',
             [
-              sequelize.fn('SUM', sequelize.col('course.modules.duration')),
+              sequelize.fn('SUM', sequelize.col('Module.duration')),
               'totalDuration',
             ],
           ],
         },
       ],
-      group: ['course.id', 'category.id', 'UserCourse.id'],
-      raw: true,
+      group: ['Courses.id', 'Category.id', 'UserCourse.id'],
     })
     // const dataCourse = await Course.findAll({
     //   include: [
