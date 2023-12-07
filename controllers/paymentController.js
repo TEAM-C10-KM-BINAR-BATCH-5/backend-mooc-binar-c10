@@ -15,14 +15,14 @@ const buyCourse = async (req, res, next) => {
       },
     })
 
-    const alreadyEnrolled = await UserCourse.findOne({
-      userId: req.user.id,
-      courseId,
-    })
+    // const alreadyEnrolled = await UserCourse.findOne({
+    //   userId: req.user.id,
+    //   courseId,
+    // })
 
-    if (alreadyEnrolled) {
-      return next(new ApiError('Course already enrolled', 400))
-    }
+    // if (alreadyEnrolled) {
+    //   return next(new ApiError('Course already enrolled', 400))
+    // }
 
     const orderId = uuidv4()
 
