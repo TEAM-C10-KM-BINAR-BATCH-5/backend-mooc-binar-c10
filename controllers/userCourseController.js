@@ -39,7 +39,7 @@ const getUserCourses = async (req, res, next) => {
       where: {
         userId: req.user.id,
       },
-      group: ['UserCourse.id'],
+      group: ['Course.id', 'Category.id', 'UserCourse.id'],
       include: {
         model: Course,
         include: [
@@ -54,7 +54,6 @@ const getUserCourses = async (req, res, next) => {
         ],
         where: whereClause,
         raw: true,
-        group: ['Course.id', 'Category.id'],
         attributes: [
           '*',
           [
