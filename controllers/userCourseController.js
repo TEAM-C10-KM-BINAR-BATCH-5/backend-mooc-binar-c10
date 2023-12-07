@@ -41,6 +41,7 @@ const getUserCourses = async (req, res, next) => {
       },
       include: {
         model: Course,
+        limit: 1,
         include: [
           {
             model: Module,
@@ -61,7 +62,6 @@ const getUserCourses = async (req, res, next) => {
         ],
       },
       raw: true,
-      separate: true,
       group: ['UserCourse.id', 'Course.id', 'Course.Category.id'],
     })
 
