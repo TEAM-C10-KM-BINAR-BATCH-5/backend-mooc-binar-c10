@@ -55,6 +55,8 @@ const getUserCourses = async (req, res, next) => {
         raw: true,
         group: ['Course.id', 'Category.id', 'UserCourse.id'],
         attributes: [
+          'UserCourse.id', // Include UserCourse.id in GROUP BY or use an aggregate function
+          'UserCourse.userId', // Include other relevant columns from UserCourse
           '*',
           [
             sequelize.fn('SUM', sequelize.col('Course.Modules.duration')),
