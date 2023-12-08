@@ -206,6 +206,10 @@ const ubahPassword = async (req, res, next) => {
         ),
       )
     }
+    const passwordLength = newPassword.length < 8
+    if (passwordLength) {
+      return next(new ApiError('Minimum password must be 8 character', 400))
+    }
     if (newPassword !== repeatNewPassword) {
       return next(
         new ApiError(

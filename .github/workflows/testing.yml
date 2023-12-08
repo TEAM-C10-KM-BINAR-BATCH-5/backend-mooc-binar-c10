@@ -1,6 +1,6 @@
-name: Lint and Test Before Merge
+name: Lint and Test When There's Push in Main
 on:
-  pull_request:
+  push:
     types: [opened, edited, synchronize]
     branches:
       - main
@@ -10,18 +10,18 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     env:
-      DB_HOST: roundhouse.proxy.rlwy.net
-      DB_NAME: railway
-      DB_PASSWORD: FB3-C-cBE261Gcaab*66352bdgB5d212
-      DB_PORT: 36206
-      DB_USERNAME: postgres
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_PORT: ${{ secrets.DB_PORT }}
+      DB_USERNAME: ${{ secrets.DB_USERNAME }}
       PUBLIC_KEY: public_DVITNf+5XTiO9Y3dKRqIlhuE58Q=
-      PRIVATE_KEY: private_fNqHqD5ocFxgaoj8uWVeiJdXf9s=
+      PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
       URL_ENDPOINT: https://ik.imagekit.io/dpmd80fxd
       USER_EMAIL: jacksparrow133333@gmail.com
-      APP_PASSWORD: ofwf sdep whgd mrbt
+      APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
       PORT: 3000
-      JWT_SECRET: rahasia
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
       JWT_EXPIREDIN: 1d
       ADMIN_PASSWORD: admin123
     steps:

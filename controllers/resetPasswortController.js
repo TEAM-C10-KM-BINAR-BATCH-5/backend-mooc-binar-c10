@@ -72,7 +72,7 @@ const resetPassword = async (req, res, next) => {
         new ApiError('Please input email that you use for register!', 404),
       )
     }
-    const passwordLength = password.length <= 8
+    const passwordLength = password.length < 8
     if (passwordLength) {
       return next(new ApiError('Minimum password must be 8 character', 400))
     }

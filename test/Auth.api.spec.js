@@ -11,12 +11,11 @@ describe('API Register', () => {
       password: '12345678',
       name: 'imam',
       phoneNumber: '01234567',
-      country: 'Indonesia',
-      city: 'Bandung',
     }
     const response = await request(app).post('/api/v1/auth/register').send(user)
-    expect(response.statusCode).toBe(200)
-    expect(response.body.status).toBe('Register successful')
+    expect(response.statusCode).toBe(201)
+    expect(response.body.success).toBe(true)
+    expect(response.body.status).toBe('Success, register user')
   })
 
   it('Failed register because user password minimum not match', async () => {
@@ -25,13 +24,10 @@ describe('API Register', () => {
       password: '123',
       name: 'imam',
       phoneNumber: '01234567',
-      country: 'Indonesia',
-      city: 'Bandung',
     }
-    const response = await request(app)
-      .post('/api/v1/auth/member/register')
-      .send(user)
+    const response = await request(app).post('/api/v1/auth/register').send(user)
     expect(response.statusCode).toBe(400)
+    expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Minimum password must be 8 characters')
   })
 
@@ -41,13 +37,10 @@ describe('API Register', () => {
       password: '1234567890',
       name: 'imam',
       phoneNumber: '01234567',
-      country: 'Indonesia',
-      city: 'Bandung',
     }
-    const response = await request(app)
-      .post('/api/v1/auth/member/register')
-      .send(user)
+    const response = await request(app).post('/api/v1/auth/register').send(user)
     expect(response.statusCode).toBe(400)
+    expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('User email already taken')
   })
 })
@@ -55,53 +48,44 @@ describe('API Register', () => {
 describe('API Login', () => {
   it('success login', async () => {
     const user = {
-      email: 'imam.user@gmail.com',
-      password: 'admin123',
+      email: 'syifa@gmail.com',
+      password: 'usersyifa123',
     }
-    const response = await request(app)
-      .post('/api/v1/auth/member/login')
-      .send(user)
+    const response = await request(app).post('/api/v1/auth/login').send(user)
     expect(response.statusCode).toBe(200)
-    expect(response.body.status).toBe('Success')
-    expect(response.body.message).toBe('Login successful')
+    expect(response.body.success).toBe(true)
+    expect(response.body.message).toBe('Success, login user')
   })
 
-  it('Failed login because user not verified', async () => {
-    const user = {
-      email: 'imamtaufiq133@gmail.com',
-      password: '123',
-    }
-    const response = await request(app)
-      .post('/api/v1/auth/member/login')
-      .send(user)
-    expect(response.statusCode).toBe(401)
-    expect(response.body.status).toBe('Failed')
-    expect(response.body.message).toBe('User not verified')
+  it('Failed login because user not including email or password', async () => {
+    const user = {}
+    const response = await request(app).post('/api/v1/auth/login').send(user)
+    expect(response.statusCode).toBe(400)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe(
+      'Email and password are requred for login',
+    )
   })
 
-  it('Failed login because email not found', async () => {
+  it('Failed login because email does not exist, please register first', async () => {
     const user = {
       email: 'zzz@gmail.com',
       password: '123456789',
     }
-    const response = await request(app)
-      .post('/api/v1/auth/member/login')
-      .send(user)
-    expect(response.statusCode).toBe(404)
-    expect(response.body.status).toBe('Failed')
-    expect(response.body.message).toBe('Email not found')
+    const response = await request(app).post('/api/v1/auth/login').send(user)
+    expect(response.statusCode).toBe(401)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('Email does not exist, register instead')
   })
 
   it('Failed login because wrong password', async () => {
     const user = {
-      email: 'imam.user@gmail.com',
+      email: 'syifa@gmail.com',
       password: 'salahpassword',
     }
-    const response = await request(app)
-      .post('/api/v1/auth/member/login')
-      .send(user)
-    expect(response.statusCode).toBe(401)
-    expect(response.body.status).toBe('Failed')
-    expect(response.body.message).toBe('Incorrect password')
+    const response = await request(app).post('/api/v1/auth/login').send(user)
+    expect(response.statusCode).toBe(400)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('Password doesnt match')
   })
 })
