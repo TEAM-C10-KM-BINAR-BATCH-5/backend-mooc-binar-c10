@@ -126,6 +126,13 @@ const getUserCourse = async (req, res, next) => {
           attributes: { exclude: ['id', 'createdAt', 'updatedAt'] },
         },
         {
+          model: UserCourse,
+          attributes: [],
+          where: {
+            userId: req.user.id,
+          },
+        },
+        {
           model: Module,
           attributes: { exclude: ['createdAt', 'updatedAt'] },
           include: [
@@ -137,6 +144,11 @@ const getUserCourse = async (req, res, next) => {
         },
       ],
     })
+
+    if (!data) {
+      return next(new ApiError('You have not purchased this course yet', 404))
+    }
+
     const totalDuration = await Module.sum('duration', {
       where: {
         courseId: id,
@@ -155,12 +167,7 @@ const getUserCourse = async (req, res, next) => {
   }
 }
 
-// const updateCourseProgress = async (req, res, next) => {
-//   const { id } = req.params
-// }
-
 module.exports = {
   getUserCourses,
   getUserCourse,
-  // updateCourseProgress,
 }
