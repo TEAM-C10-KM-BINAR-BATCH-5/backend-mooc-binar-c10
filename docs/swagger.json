@@ -15,6 +15,10 @@
       "description": "Auth API resources"
     },
     {
+      "name": "Notification",
+      "description": "Notification API resources"
+    },
+    {
       "name": "Reset-Password",
       "description": "Otp For Reset Password API resources"
     },
@@ -622,6 +626,560 @@
                     "message": {
                       "type": "string",
                       "example": "Your old password is not match with this account, if you forgot the password, go to reset the password feature"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/notification/my": {
+      "get": {
+        "tags": ["Notification"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "User mendapatkan notifikasi mereka",
+        "description": "Notifikasi yang dimiliki user yang login",
+        "responses": {
+          "200": {
+            "description": "Success get data notifikasi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 3
+                        },
+                        "title": {
+                          "type": "string",
+                          "example": "Promo 12.12"
+                        },
+                        "description": {
+                          "type": "string",
+                          "example": "Promo flashSale 12.12 Diskon 50% khusus untuk adella"
+                        },
+                        "isRead": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-10-20T19:01:02.829Z"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-10-20T19:01:02.829Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No token!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/notification/my/markasread/{id}": {
+      "patch": {
+        "tags": ["Notification"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "User menandai salah satu notifikasi mereka sebagai dibaca by id",
+        "description": "User menandai salah satu notifikasi mereka sebagai dibaca by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Numeric ID required",
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success menandai sebagai dibaca",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success, mark notification as read"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User hanya bisa menandai notifikasi mereka",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You only have access to access your notification"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No token!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error, Not found! id are not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "id does not exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/notification/my/markallasread": {
+      "patch": {
+        "tags": ["Notification"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "User menandai semua notifikasi mereka sebagai dibaca",
+        "description": "User menandai semua notifikasi mereka sebagai dibaca",
+        "responses": {
+          "200": {
+            "description": "Success menandai sebagai dibaca",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success, mark all the notification as read"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No token!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/notification/my/{id}": {
+      "delete": {
+        "tags": ["Notification"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "User menghapus salah satu notifikasi mereka by id, dan admin juga bisa menghapusnya",
+        "description": "User menghapus salah satu notifikasi mereka by id, dan admin juga bisa menghapusnya",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Numeric ID required",
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success menghapus notifikasi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success, notification deleted"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User hanya bisa menghapus notifikasi mereka",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You only have access to delete your notification"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No token!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error, Not found! id are not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "id does not exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/notification": {
+      "get": {
+        "tags": ["Notification"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Admin mendapatkan semua list notifikasi dari berbagai user",
+        "description": "Admin mendapatkan semua list notifikasi dari berbagai user",
+        "responses": {
+          "200": {
+            "description": "Success get list notifikasi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success, fetch notification"
+                    },
+                    "data": {
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 3
+                        },
+                        "title": {
+                          "type": "string",
+                          "example": "Promo 12.12"
+                        },
+                        "description": {
+                          "type": "string",
+                          "example": "Promo flashSale 12.12 Diskon 50% khusus untuk adella"
+                        },
+                        "isRead": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-10-20T19:01:02.829Z"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-10-20T19:01:02.829Z"
+                        },
+                        "User": {
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 3
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "Gilang"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Notification"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Admin membuat notifikasi kepada semua user",
+        "description": "Admin membuat notifikasi kepada semua user",
+        "requestBody": {
+          "description": "Request body success create notifikasi",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "notifivation title.."
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "notification description.."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Admin success create notifikasi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Notification created and sent to all users"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/notification/{id}": {
+      "post": {
+        "tags": ["Notification"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Admin membuat notifikasi kepada salah satu user by id",
+        "description": "Admin membuat notifikasi kepada salah satu user by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Numeric ID required",
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "requestBody": {
+          "description": "Request body success create notifikasi",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "notifivation title.."
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "notification description.."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Admin success create notifikasi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Notification created and sent to user with id 3"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error, Not found! id user tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User with id 999 not exist"
                     }
                   }
                 }
@@ -2284,7 +2842,7 @@
         },
         "responses": {
           "201": {
-            "description": "Admin success create module",
+            "description": "Admin success create video",
             "content": {
               "application/json": {
                 "schema": {

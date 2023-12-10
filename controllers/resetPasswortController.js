@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt')
 const otpGenerator = require('otp-generator')
 const nodemailer = require('nodemailer')
-const { Auth } = require('../models')
+const { Auth, Notification, User } = require('../models')
 const ApiError = require('../utils/apiError')
 
 const transporter = nodemailer.createTransport({
@@ -66,10 +66,20 @@ const resetPassword = async (req, res, next) => {
     if (!email || !otp || !password) {
       return next(new ApiError('email, otp, and password required', 400))
     }
-    const user = await Auth.findOne({ where: { email } })
+    const user = await Auth.findOne({
+      where: { email },
+      include: [
+        {
+          model: User,
+        },
+      ],
+    })
     if (!user) {
       return next(
-        new ApiError('Please input email that you use for register!', 404),
+        new ApiError(
+          'Email not registered!, Please input email that you use for register!',
+          404,
+        ),
       )
     }
     const passwordLength = password.length < 8
@@ -79,7 +89,7 @@ const resetPassword = async (req, res, next) => {
 
     const saltRounds = 10
     const hashedPassword = bcrypt.hashSync(password, saltRounds)
-    await Auth.update(
+    const resetedPassword = await Auth.update(
       {
         password: hashedPassword,
       },
@@ -89,9 +99,18 @@ const resetPassword = async (req, res, next) => {
         },
       },
     )
+    if (resetedPassword) {
+      await Notification.create({
+        title: 'Reseting Password',
+        description:
+          'Your password is successfully reseted!, please remember the password carefully',
+        isRead: false,
+        userId: user.User.id,
+      })
+    }
     return res.status(200).json({
       success: true,
-      message: 'Password changed successfully',
+      message: 'Reseting your password successfully',
     })
   } catch (err) {
     return next(new ApiError(err.message, 500))

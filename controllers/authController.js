@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const { Auth, User } = require('../models')
+const { Auth, User, Notification } = require('../models')
 const ApiError = require('../utils/apiError')
 const imagekit = require('../lib/imageKit')
 
@@ -274,12 +274,21 @@ const ubahPassword = async (req, res, next) => {
     const saltRounds = 10
     const hashedPassword = bcrypt.hashSync(newPassword, saltRounds)
     if (auth && comparePassword) {
-      await Auth.update(
+      const updatedPassword = await Auth.update(
         {
           password: hashedPassword,
         },
         { where: { id: auth.id } },
       )
+      if (updatedPassword) {
+        await Notification.create({
+          title: 'Password Changed',
+          description:
+            'Your password is successfully updated!, please remember the password carefully',
+          isRead: false,
+          userId: req.user.id,
+        })
+      }
     }
     return res.status(200).json({
       success: true,

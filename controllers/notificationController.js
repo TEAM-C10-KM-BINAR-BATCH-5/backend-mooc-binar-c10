@@ -57,9 +57,6 @@ const getMyNotification = async (req, res, next) => {
     const data = await Notification.findAll({
       where: { userId: req.user.id },
     })
-    if (!data) {
-      return next(new ApiError("You don't have any notitication yet", 404))
-    }
     return res.status(200).json({
       success: true,
       message: 'Success, fetch notification',
@@ -105,13 +102,49 @@ const deleteNotification = async (req, res, next) => {
   }
 }
 
-// const markNotificationAsRead = async(req,res,next)=>{
-//   try {
+const markNotificationAsRead = async (req, res, next) => {
+  try {
+    const notif = await Notification.findOne({ where: { id: req.params.id } })
+    if (notif.userId !== req.user.id && req.user.role !== 'admin') {
+      return next(
+        new ApiError('You only have access to access your notification', 400),
+      )
+    }
+    await Notification.update(
+      {
+        isRead: true,
+      },
+      { where: { id: req.params.id } },
+    )
+    return res.status(200).json({
+      success: true,
+      message: 'Success, mark notification as read',
+    })
+  } catch (error) {
+    return next(new ApiError(error.message, 500))
+  }
+}
 
-//   } catch (error) {
-//     return next(new ApiError(error.message, 500))
-//   }
-// }
+const markAllNotificationAsRead = async (req, res, next) => {
+  try {
+    const data = await Notification.findAll({
+      where: { userId: req.user.id },
+    })
+    await Promise.all(
+      data.map((notification) => {
+        return notification.update({
+          isRead: true,
+        })
+      }),
+    )
+    return res.status(200).json({
+      success: true,
+      message: 'Success, mark all the notification as read',
+    })
+  } catch (error) {
+    return next(new ApiError(error.message, 500))
+  }
+}
 
 module.exports = {
   createNotificationToAllUsers,
@@ -119,4 +152,6 @@ module.exports = {
   getAllNotification,
   deleteNotification,
   createNotificationToSpesificUser,
+  markNotificationAsRead,
+  markAllNotificationAsRead,
 }

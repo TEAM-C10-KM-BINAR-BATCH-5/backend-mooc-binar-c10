@@ -2,7 +2,10 @@
 const uuidv4 = require('uuid').v4
 const fetch = require('node-fetch')
 const crypto = require('crypto')
-const { Course, Payment, UserCourse } = require('../models')
+// prettier-ignore
+const {
+  Course, Payment, UserCourse, Notification, User,
+} = require('../models')
 const ApiError = require('../utils/apiError')
 
 const buyCourse = async (req, res, next) => {
@@ -115,6 +118,21 @@ const paymentHook = async (req, res, next) => {
       await UserCourse.create({
         userId: payment[1].userId,
         courseId: payment[1].courseId,
+      })
+
+      await User.update(
+        {
+          membership: 'premium',
+        },
+        { where: { id: payment[1].userId } },
+      )
+
+      await Notification.create({
+        title: 'Transaction Success',
+        description:
+          'Congratulations, your course purchase has been successful. Lets continue to study the course you purchased',
+        isRead: false,
+        userId: payment[1].userId,
       })
     }
     return res.status(200).json({
