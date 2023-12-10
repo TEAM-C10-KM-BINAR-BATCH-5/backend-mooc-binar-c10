@@ -128,7 +128,7 @@ const profile = async (req, res, next) => {
   try {
     const data = {
       id: req.user.id,
-      name: req.user.role,
+      name: req.user.name,
       role: req.user.role,
       country: req.user.country,
       city: req.user.city,
