@@ -126,10 +126,21 @@ const login = async (req, res, next) => {
 
 const profile = async (req, res, next) => {
   try {
+    const data = {
+      id: req.user.id,
+      name: req.user.role,
+      role: req.user.role,
+      country: req.user.country,
+      city: req.user.city,
+      membership: req.user.membership,
+      profileUrl: req.user.profileUrl,
+      phoneNumber: req.user.Auth.phoneNumber,
+      email: req.user.Auth.email,
+    }
     return res.status(200).json({
       success: true,
       message: 'Success',
-      data: req.user,
+      data,
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
