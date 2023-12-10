@@ -2,7 +2,7 @@ const { Op } = require('sequelize')
 
 // prettier-ignore
 const {
-  Course, Module, Video, Category, sequelize, UserCourse,
+  Course, Module, Video, Category, sequelize, UserCourse, UserVideo,
 } = require('../models')
 const ApiError = require('../utils/apiError')
 
@@ -83,6 +83,13 @@ const getUserCourses = async (req, res, next) => {
             userId: req.user.id,
           },
         },
+        {
+          model: UserVideo,
+          attributes: [],
+          where: {
+            userId: req.user.id,
+          },
+        },
       ],
       where: whereClause,
       raw: true,
@@ -93,6 +100,7 @@ const getUserCourses = async (req, res, next) => {
           sequelize.fn('SUM', sequelize.col('Modules.duration')),
           'totalDuration',
         ],
+        [sequelize.fn('COUNT', sequelize.col('UserVideos.id')), 'progress'],
       ],
     })
 
@@ -103,6 +111,8 @@ const getUserCourses = async (req, res, next) => {
       return {
         ...course,
         Category: categoryInfo,
+        totalDuration: course.totalDuration === null ? 0 : course.totalDuration,
+        progress: course.progress / 100,
       }
     })
     return res.status(200).json({
@@ -154,12 +164,34 @@ const getUserCourse = async (req, res, next) => {
         courseId: id,
       },
     })
+
+    const watchedVideos = await UserVideo.findAll({
+      where: {
+        courseId: id,
+        userId: req.user.id,
+      },
+    })
+
+    const filteredModules = data.Modules.map((module) => {
+      const filteredVideos = module.Videos.map((video) => {
+        const videos = {
+          ...video,
+          isWatched: watchedVideos.includes(
+            watchedVideos.map((watchedVideo) => watchedVideo.id),
+          ),
+        }
+        return videos
+      })
+      return { ...module, Videos: filteredVideos }
+    })
+
     return res.status(200).json({
       success: true,
       message: 'Success, fetch',
       data: {
         ...data.toJSON(),
         totalDuration,
+        Modules: filteredModules,
       },
     })
   } catch (error) {

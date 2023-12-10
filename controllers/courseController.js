@@ -125,7 +125,12 @@ const getCourses = async (req, res, next) => {
       const categoryInfo = {
         name: course['Category.name'],
       }
-      return { ...course, 'Category.name': undefined, Category: categoryInfo }
+      return {
+        ...course,
+        'Category.name': undefined,
+        Category: categoryInfo,
+        totalDuration: course.totalDuration === null ? 0 : course.totalDuration,
+      }
     })
     return res.status(200).json({
       success: true,
@@ -183,7 +188,7 @@ const getCourse = async (req, res, next) => {
       message: 'Success, fetch',
       data: {
         ...data.toJSON(),
-        totalDuration,
+        totalDuration: totalDuration === null ? 0 : totalDuration,
       },
     })
   } catch (error) {
