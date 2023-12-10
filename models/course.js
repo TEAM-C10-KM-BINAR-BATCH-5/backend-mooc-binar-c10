@@ -35,6 +35,13 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false,
         },
       })
+
+      Course.hasMany(models.UserVideo, {
+        foreignKey: {
+          name: 'courseId',
+          allowNull: false,
+        },
+      })
     }
   }
   Course.init(

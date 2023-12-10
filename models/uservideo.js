@@ -1,20 +1,26 @@
 const { Model } = require('sequelize')
 
 module.exports = (sequelize, DataTypes) => {
-  class Video extends Model {
+  class UserVideo extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      Video.belongsTo(models.Module, {
+      UserVideo.belongsTo(models.User, {
         foreignKey: {
-          name: 'moduleId',
+          name: 'userId',
+          allowNull: false,
         },
       })
-      Video.hasMany(models.UserVideo, {
+      UserVideo.belongsTo(models.Course, {
+        foreignKey: {
+          name: 'courseId',
+          allowNull: false,
+        },
+      })
+      UserVideo.belongsTo(models.Video, {
         foreignKey: {
           name: 'videoId',
           allowNull: false,
@@ -22,18 +28,16 @@ module.exports = (sequelize, DataTypes) => {
       })
     }
   }
-  Video.init(
+  UserVideo.init(
     {
-      title: DataTypes.STRING,
-      no: DataTypes.INTEGER,
-      videoUrl: DataTypes.STRING,
-      duration: DataTypes.INTEGER,
-      moduleId: DataTypes.INTEGER,
+      userId: DataTypes.INTEGER,
+      videoId: DataTypes.INTEGER,
+      courseId: DataTypes.INTEGER,
     },
     {
       sequelize,
-      modelName: 'Video',
+      modelName: 'UserVideo',
     },
   )
-  return Video
+  return UserVideo
 }
