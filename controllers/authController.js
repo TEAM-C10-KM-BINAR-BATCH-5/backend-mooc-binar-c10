@@ -174,13 +174,22 @@ const updateAccount = async (req, res, next) => {
       },
     )
 
-    await Auth.update(
-      {
-        email,
-        phoneNumber,
-      },
-      { where: { id: authId } },
-    )
+    if (email) {
+      await Auth.update(
+        {
+          email,
+        },
+        { where: { id: authId } },
+      )
+    }
+    if (phoneNumber) {
+      await Auth.update(
+        {
+          phoneNumber,
+        },
+        { where: { id: authId } },
+      )
+    }
 
     res.status(200).json({
       success: true,
