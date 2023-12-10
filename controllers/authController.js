@@ -160,11 +160,44 @@ const updateAccount = async (req, res, next) => {
       include: [{ model: Auth }],
     })
     const authId = user.Auth.id
+    if (name) {
+      await User.update(
+        {
+          name,
+        },
+        {
+          where: {
+            id: req.user.id,
+          },
+        },
+      )
+    }
+    if (country) {
+      await User.update(
+        {
+          country,
+        },
+        {
+          where: {
+            id: req.user.id,
+          },
+        },
+      )
+    }
+    if (city) {
+      await User.update(
+        {
+          city,
+        },
+        {
+          where: {
+            id: req.user.id,
+          },
+        },
+      )
+    }
     await User.update(
       {
-        name,
-        country,
-        city,
         profileUrl: image,
       },
       {
