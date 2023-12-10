@@ -37,12 +37,7 @@ router.delete(
 )
 
 // user mendapatkan notif mereka
-router.get(
-  '/my',
-  authenticate,
-  checkRole('user'),
-  notificationController.getMyNotification,
-)
+router.get('/my', authenticate, notificationController.getMyNotification)
 
 // user mark notif as read by id
 router.patch(
