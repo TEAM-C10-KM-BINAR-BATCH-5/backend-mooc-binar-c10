@@ -70,7 +70,7 @@ const getUserCourses = async (req, res, next) => {
       include: [
         {
           model: Module,
-          attributes: ['id'],
+          attributes: [],
         },
         {
           model: Category,
@@ -90,7 +90,7 @@ const getUserCourses = async (req, res, next) => {
       ],
       where: whereClause,
       raw: true,
-      group: ['Course.id', 'Category.id', 'Modules.id'],
+      group: ['Course.id', 'Category.id'],
       attributes: [
         '*',
         [
@@ -98,24 +98,18 @@ const getUserCourses = async (req, res, next) => {
           'totalDuration',
         ],
         [sequelize.fn('COUNT', sequelize.col('UserVideos.id')), 'watchedVideo'],
+        [
+          sequelize.literal('COUNT(DISTINCT "Modules.Videos.id")'),
+          'totalVideo',
+        ],
       ],
     })
 
-    // const modulesId = []
+    const modulesId = []
 
-    // dataUserCourse.forEach((course) => {
-    //   course.Modules.forEach((module) => {
-    //     modulesId.push(module.id)
-    //   })
-    // })
-
-    // const totalVideo = await Video.count({
-    //   where: {
-    //     id: {
-    //       [Op.in]: modulesId,
-    //     },
-    //   },
-    // })
+    dataUserCourse.forEach((course) => {
+      modulesId.push(course['Modules.id'])
+    })
 
     const data = dataUserCourse.map((course) => {
       const categoryInfo = {
@@ -127,7 +121,7 @@ const getUserCourses = async (req, res, next) => {
         watchedVideo: undefined,
         Category: categoryInfo,
         totalDuration: course.totalDuration === null ? 0 : course.totalDuration,
-        // progress: (course.watchedVideo / totalVideo) * 100,
+        progress: (course.watchedVideo / course.totalVideo) * 100,
       }
     })
     return res.status(200).json({
