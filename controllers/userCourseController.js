@@ -124,6 +124,8 @@ const getUserCourses = async (req, res, next) => {
         ...course,
         'Category.name': undefined,
         Category: categoryInfo,
+        watchedVideo: undefined,
+        totalVideo: undefined,
         totalDuration: course.totalDuration === null ? 0 : course.totalDuration,
         progress: (course.watchedVideo / course.totalVideo) * 100,
       }
@@ -169,7 +171,12 @@ const getUserCourse = async (req, res, next) => {
     })
 
     if (!data) {
-      return next(new ApiError('You have not purchased this course yet', 404))
+      return next(
+        new ApiError(
+          'You have not purchased this course yet, or course not available',
+          404,
+        ),
+      )
     }
 
     const totalDuration = await Module.sum('duration', {
