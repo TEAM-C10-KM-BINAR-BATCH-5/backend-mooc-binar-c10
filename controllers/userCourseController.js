@@ -90,7 +90,7 @@ const getUserCourses = async (req, res, next) => {
       ],
       where: whereClause,
       raw: true,
-      group: ['Course.id', 'Category.id'],
+      group: ['Course.id', 'Category.id', 'Modules.id'],
       attributes: [
         '*',
         [
