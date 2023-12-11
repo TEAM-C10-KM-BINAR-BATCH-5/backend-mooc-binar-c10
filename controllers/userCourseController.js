@@ -126,7 +126,7 @@ const getUserCourses = async (req, res, next) => {
         'Category.name': undefined,
         Category: categoryInfo,
         totalDuration: course.totalDuration === null ? 0 : course.totalDuration,
-        progress: (course.progress / totalVideos()) * 100,
+        progress: (course.watchedVideo / totalVideos()) * 100,
       }
     })
     return res.status(200).json({
