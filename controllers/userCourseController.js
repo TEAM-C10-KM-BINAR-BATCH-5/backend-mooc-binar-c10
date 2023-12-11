@@ -71,6 +71,12 @@ const getUserCourses = async (req, res, next) => {
         {
           model: Module,
           attributes: [],
+          include: [
+            {
+              model: Video,
+              attributes: [],
+            },
+          ],
         },
         {
           model: Category,
@@ -97,7 +103,11 @@ const getUserCourses = async (req, res, next) => {
           sequelize.fn('SUM', sequelize.col('Modules.duration')),
           'totalDuration',
         ],
-        [sequelize.fn('COUNT', sequelize.col('UserVideos.id')), 'progress'],
+        [sequelize.fn('COUNT', sequelize.col('UserVideos.id')), 'watchedVideo'],
+        [
+          sequelize.fn('COUNT', sequelize.literal('"Modules.Videos"."id"')),
+          'totalVideos',
+        ],
       ],
     })
 
@@ -107,9 +117,11 @@ const getUserCourses = async (req, res, next) => {
       }
       return {
         ...course,
+        'Category.name': undefined,
+        totalVideos: undefined,
         Category: categoryInfo,
         totalDuration: course.totalDuration === null ? 0 : course.totalDuration,
-        progress: course.progress / 100,
+        progress: (course.progress / course.totalVideos) * 100,
       }
     })
     return res.status(200).json({
