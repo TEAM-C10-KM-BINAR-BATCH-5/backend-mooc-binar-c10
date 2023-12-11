@@ -67,6 +67,18 @@ const getUserCourses = async (req, res, next) => {
     // })
 
     const dataUserCourse = await Course.findAll({
+      attributes: [
+        '*',
+        [
+          sequelize.fn('SUM', sequelize.col('Modules.duration')),
+          'totalDuration',
+        ],
+        [sequelize.fn('COUNT', sequelize.col('UserVideos.id')), 'watchedVideo'],
+        [
+          sequelize.fn('COUNT', sequelize.literal('"Modules.Videos"."id"')),
+          'totalVideos',
+        ],
+      ],
       include: [
         {
           model: Module,
@@ -97,18 +109,6 @@ const getUserCourses = async (req, res, next) => {
       where: whereClause,
       raw: true,
       group: ['Course.id', 'Category.id'],
-      attributes: [
-        '*',
-        [
-          sequelize.fn('SUM', sequelize.col('Modules.duration')),
-          'totalDuration',
-        ],
-        [sequelize.fn('COUNT', sequelize.col('UserVideos.id')), 'watchedVideo'],
-        [
-          sequelize.fn('COUNT', sequelize.literal('"Modules.Videos"."id"')),
-          'totalVideos',
-        ],
-      ],
     })
 
     const data = dataUserCourse.map((course) => {
