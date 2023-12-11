@@ -171,11 +171,12 @@ const getUserCourse = async (req, res, next) => {
 
     const filteredModules = data.toJSON().Modules.map((module) => {
       const filteredVideos = module.Videos.map((video) => {
+        const watchedVideosId = watchedVideos.map(
+          (watchedVideo) => watchedVideo.videoId,
+        )
         const videos = {
           ...video,
-          isWatched: watchedVideos.includes(
-            watchedVideos.map((watchedVideo) => watchedVideo.id),
-          ),
+          isWatched: watchedVideosId.includes(video.id),
         }
         return videos
       })
