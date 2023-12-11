@@ -75,7 +75,6 @@ const getUserCourses = async (req, res, next) => {
             {
               model: Video,
               attributes: [],
-              required: false, // Use 'required: false' to perform a LEFT JOIN
             },
           ],
         },
