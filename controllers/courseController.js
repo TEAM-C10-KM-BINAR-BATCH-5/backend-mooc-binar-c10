@@ -231,7 +231,7 @@ const updateCourse = async (req, res, next) => {
       const category = await Category.findOne({ where: { id: categoryId } })
       if (!category) {
         return next(
-          new ApiError(`Cause course with id ${categoryId} not found`, 404),
+          new ApiError(`Cause category with id ${categoryId} not found`, 404),
         )
       }
       idCategory = category.id

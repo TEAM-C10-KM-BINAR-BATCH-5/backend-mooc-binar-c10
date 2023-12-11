@@ -64,11 +64,44 @@ const updateUser = async (req, res, next) => {
       include: [{ model: Auth }],
     })
     const authId = user.Auth.id
+    if (name) {
+      await User.update(
+        {
+          name,
+        },
+        {
+          where: {
+            id: req.params.id,
+          },
+        },
+      )
+    }
+    if (country) {
+      await User.update(
+        {
+          country,
+        },
+        {
+          where: {
+            id: req.params.id,
+          },
+        },
+      )
+    }
+    if (city) {
+      await User.update(
+        {
+          city,
+        },
+        {
+          where: {
+            id: req.params.id,
+          },
+        },
+      )
+    }
     await User.update(
       {
-        name,
-        country,
-        city,
         profileUrl: image,
       },
       {
@@ -78,13 +111,22 @@ const updateUser = async (req, res, next) => {
       },
     )
 
-    await Auth.update(
-      {
-        email,
-        phoneNumber,
-      },
-      { where: { id: authId } },
-    )
+    if (email) {
+      await Auth.update(
+        {
+          email,
+        },
+        { where: { id: authId } },
+      )
+    }
+    if (phoneNumber) {
+      await Auth.update(
+        {
+          phoneNumber,
+        },
+        { where: { id: authId } },
+      )
+    }
 
     return res.status(200).json({
       success: true,

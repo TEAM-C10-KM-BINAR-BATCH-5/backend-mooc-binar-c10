@@ -101,7 +101,7 @@ const login = async (req, res, next) => {
     }
     const comparePassword = await bcrypt.compare(password, auth.password)
     if (comparePassword === false) {
-      return next(new ApiError("Password doesn't match", 400))
+      return next(new ApiError('Password doesnt match', 400))
     }
 
     const token = jwt.sign(
