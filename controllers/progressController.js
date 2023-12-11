@@ -8,18 +8,14 @@ const updateProgress = async (req, res, next) => {
   const videoId = Number(req.params.id)
   try {
     const video = await Video.findByPk(videoId, {
-      include: [
-        {
-          model: Module,
-          attributes: [],
-          include: [
-            {
-              model: Course,
-              attributes: ['id'],
-            },
-          ],
+      include: {
+        model: Module,
+        attributes: [],
+        include: {
+          model: Course,
+          attributes: ['id'],
         },
-      ],
+      },
     })
     if (!video) {
       return next(new ApiError('id does not exist', 404))
