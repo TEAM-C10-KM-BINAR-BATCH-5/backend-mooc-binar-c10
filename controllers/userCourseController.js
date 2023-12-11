@@ -172,7 +172,7 @@ const getUserCourse = async (req, res, next) => {
       },
     })
 
-    const filteredModules = data.Modules.map((module) => {
+    const filteredModules = data.toJSON().Modules.map((module) => {
       const filteredVideos = module.Videos.map((video) => {
         const videos = {
           ...video,
