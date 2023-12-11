@@ -25,7 +25,6 @@ const updateProgress = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       message: 'Success update progress',
-      data: video,
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
