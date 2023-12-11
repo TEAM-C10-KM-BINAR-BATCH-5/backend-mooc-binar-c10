@@ -86,9 +86,6 @@ const getUserCourses = async (req, res, next) => {
         {
           model: UserVideo,
           attributes: [],
-          where: {
-            userId: req.user.id,
-          },
         },
       ],
       where: whereClause,
