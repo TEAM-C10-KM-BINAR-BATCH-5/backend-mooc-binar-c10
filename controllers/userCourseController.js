@@ -75,6 +75,12 @@ const getUserCourses = async (req, res, next) => {
             {
               model: Video,
               attributes: [],
+              include: [
+                {
+                  model: UserVideo,
+                  attributes: [],
+                },
+              ],
             },
           ],
         },
@@ -89,14 +95,6 @@ const getUserCourses = async (req, res, next) => {
             userId: req.user.id,
           },
         },
-        {
-          model: UserVideo,
-          attributes: [],
-          where: {
-            userId: req.user.id,
-          },
-          required: false,
-        },
       ],
       where: whereClause,
       raw: true,
@@ -107,7 +105,10 @@ const getUserCourses = async (req, res, next) => {
           sequelize.fn('SUM', sequelize.col('Modules.duration')),
           'totalDuration',
         ],
-        [sequelize.fn('COUNT', sequelize.col('UserVideos.id')), 'watchedVideo'],
+        [
+          sequelize.literal('COUNT(DISTINCT "Modules->Videos->UserVideos".id)'),
+          'watchedVideo',
+        ],
         [
           sequelize.literal('COUNT(DISTINCT "Modules->Videos".id)'),
           'totalVideo',
