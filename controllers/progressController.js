@@ -20,7 +20,7 @@ const updateProgress = async (req, res, next) => {
     }
     await UserVideo.create({
       userId: req.user.id,
-      courseId: video.Module.couseId,
+      courseId: video.Module.courseId,
     })
     return res.status(200).json({
       success: true,
