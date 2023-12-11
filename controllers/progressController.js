@@ -18,11 +18,22 @@ const updateProgress = async (req, res, next) => {
     if (!video) {
       return next(new ApiError('id does not exist', 404))
     }
-    await UserVideo.create({
-      userId: req.user.id,
-      videoId: video.id,
-      courseId: video.Module.courseId,
+    const checkUserVideo = await UserVideo.findOne({
+      where: {
+        userId: req.user.id,
+        videoId: video.id,
+        courseId: video.Module.courseId,
+      },
     })
+
+    if (!checkUserVideo) {
+      await UserVideo.create({
+        userId: req.user.id,
+        videoId: video.id,
+        courseId: video.Module.courseId,
+      })
+    }
+
     return res.status(200).json({
       success: true,
       message: 'Success update progress',
