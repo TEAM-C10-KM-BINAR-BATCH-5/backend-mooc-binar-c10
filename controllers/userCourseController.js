@@ -101,21 +101,21 @@ const getUserCourses = async (req, res, next) => {
       ],
     })
 
-    const modulesId = []
+    // const modulesId = []
 
-    dataUserCourse.map((course) => {
-      course.Modules.map((module) => {
-        modulesId.push(module.id)
-      })
-    })
+    // dataUserCourse.forEach((course) => {
+    //   course.Modules.forEach((module) => {
+    //     modulesId.push(module.id)
+    //   })
+    // })
 
-    const totalVideo = await Video.count({
-      where: {
-        id: {
-          [Op.in]: modulesId,
-        },
-      },
-    })
+    // const totalVideo = await Video.count({
+    //   where: {
+    //     id: {
+    //       [Op.in]: modulesId,
+    //     },
+    //   },
+    // })
 
     const data = dataUserCourse.map((course) => {
       const categoryInfo = {
@@ -127,7 +127,7 @@ const getUserCourses = async (req, res, next) => {
         watchedVideo: undefined,
         Category: categoryInfo,
         totalDuration: course.totalDuration === null ? 0 : course.totalDuration,
-        progress: (course.watchedVideo / totalVideo) * 100,
+        // progress: (course.watchedVideo / totalVideo) * 100,
       }
     })
     return res.status(200).json({
