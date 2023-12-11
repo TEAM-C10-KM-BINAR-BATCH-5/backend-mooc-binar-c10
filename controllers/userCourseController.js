@@ -71,6 +71,13 @@ const getUserCourses = async (req, res, next) => {
         {
           model: Module,
           attributes: [],
+          include: [
+            {
+              model: Video,
+              attributes: [],
+              required: false, // Use 'required: false' to perform a LEFT JOIN
+            },
+          ],
         },
         {
           model: Category,
@@ -103,12 +110,6 @@ const getUserCourses = async (req, res, next) => {
           'totalVideo',
         ],
       ],
-    })
-
-    const modulesId = []
-
-    dataUserCourse.forEach((course) => {
-      modulesId.push(course['Modules.id'])
     })
 
     const data = dataUserCourse.map((course) => {
