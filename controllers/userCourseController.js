@@ -105,7 +105,7 @@ const getUserCourses = async (req, res, next) => {
         ],
         [sequelize.fn('COUNT', sequelize.col('UserVideos.id')), 'watchedVideo'],
         [
-          sequelize.literal('COUNT(DISTINCT "Modules.Videos.id")'),
+          sequelize.literal('COUNT(DISTINCT "Modules->Videos".id)'),
           'totalVideo',
         ],
       ],
