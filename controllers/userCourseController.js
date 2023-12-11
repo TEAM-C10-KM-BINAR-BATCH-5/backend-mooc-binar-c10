@@ -103,8 +103,8 @@ const getUserCourses = async (req, res, next) => {
 
     const modulesId = []
 
-    dataUserCourse.forEach((course) => {
-      course.Modules.forEach((module) => {
+    dataUserCourse.map((course) => {
+      course.Modules.map((module) => {
         modulesId.push(module.id)
       })
     })
