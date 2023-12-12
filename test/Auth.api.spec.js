@@ -1,6 +1,5 @@
 /* eslint-disable */
 const request = require('supertest')
-const otpGenerator = require('otp-generator')
 const app = require('../server')
 const { faker } = require('@faker-js/faker')
 require('dotenv').config()
