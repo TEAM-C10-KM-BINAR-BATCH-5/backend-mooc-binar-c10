@@ -35,37 +35,6 @@ const getUserCourses = async (req, res, next) => {
     whereClause.level = levelSearch
   }
   try {
-    // const dataUserCourse = await UserCourse.findAll({
-    //   where: {
-    //     userId: req.user.id,
-    //   },
-    //   include: {
-    //     model: Course,
-    //     include: [
-    //       {
-    //         model: Module,
-    //         attributes: [],
-    //       },
-    //       {
-    //         model: Category,
-    //         attributes: ['name'],
-    //       },
-    //     ],
-    //     where: whereClause,
-    //     attributes: [
-    //       '*',
-    //       [
-    //         sequelize.fn('SUM', sequelize.col('Course.Modules.duration')),
-    //         'totalDuration',
-    //       ],
-    //     ],
-    //   },
-    //   raw: true,
-    //   group: ['UserCourse.id', 'Course.id', 'Course.Category.id'],
-    //   subQuery: false,
-    //   distinct: true,
-    // })
-
     const dataUserCourse = await Course.findAll({
       include: [
         {

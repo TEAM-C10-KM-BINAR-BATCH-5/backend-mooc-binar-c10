@@ -1,6 +1,7 @@
 const router = require('express').Router()
 
 const user = require('../controllers/userController')
+const transaction = require('../controllers/transactionController')
 
 const checkId = require('../middlewares/checkId')
 const upload = require('../middlewares/uploader')
@@ -28,6 +29,13 @@ router.patch(
 
 // admin can access
 router.get('/', authenticate, checkRole('admin'), user.findUsers)
+
+router.get(
+  '/transaction',
+  authenticate,
+  checkRole('user'),
+  transaction.getUserTransactions,
+)
 router.delete(
   '/:id',
   authenticate,
