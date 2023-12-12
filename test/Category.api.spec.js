@@ -10,8 +10,8 @@ let categoryId = ''
 
 beforeAll(async () => {
   const user = {
-    email: 'syifa@gmail.com',
-    password: 'usersyifa123',
+    email: 'khaled@gmail.com',
+    password: 'userkhaled123',
   }
   const response = await request(app).post('/api/v1/auth/login').send(user)
   tokenUser = response.body.token
@@ -60,6 +60,33 @@ describe('API Category', () => {
     )
   })
 
+  it('Failed create category because user role not admin', async () => {
+    const category = {
+      id: 'C-0AI',
+      name: 'Artificial intelligence',
+    }
+    const response = await request(app)
+      .post('/api/v1/category')
+      .set('Authorization', `Bearer ${tokenUser}`)
+      .send(category)
+    expect(response.statusCode).toBe(401)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe(
+      'You are not admin, your access to this is blocked',
+    )
+  })
+
+  it('Failed create category because no token', async () => {
+    const category = {
+      id: 'C-0AI',
+      name: 'Artificial intelligence',
+    }
+    const response = await request(app).post('/api/v1/category').send(category)
+    expect(response.statusCode).toBe(401)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('No token')
+  })
+
   it('Failed route does not exist', async () => {
     const response = await request(app)
       .post('/api/v1/category/10')
@@ -76,7 +103,7 @@ describe('API Category', () => {
     expect(response.body.message).toBe('Success, fetch')
   })
 
-  it('Failed create module because user role not admin', async () => {
+  it('Failed create category because user role not admin', async () => {
     const category = {
       id: 'C-0AI',
       name: 'Artificial intelligence',
@@ -99,7 +126,7 @@ describe('API Category', () => {
     expect(response.body.message).toBe('Success, fetch')
   })
 
-  it('Failed get course because id not found', async () => {
+  it('Failed get category because id not found', async () => {
     const response = await request(app).get('/api/v1/category/777')
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
@@ -147,6 +174,18 @@ describe('API Category', () => {
     )
   })
 
+  it('Failed update category because no token', async () => {
+    const category = {
+      name: 'Artificial intelligence',
+    }
+    const response = await request(app)
+      .put(`/api/v1/category/${categoryId}`)
+      .send(category)
+    expect(response.statusCode).toBe(401)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('No token')
+  })
+
   it('Failed route does not exist', async () => {
     const response = await request(app)
       .put('/api/v1/category')
@@ -154,15 +193,6 @@ describe('API Category', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
-  })
-
-  it('Success delete category', async () => {
-    const response = await request(app)
-      .delete(`/api/v1/category/${categoryId}`)
-      .set('Authorization', `Bearer ${tokenAdmin}`)
-    expect(response.statusCode).toBe(200)
-    expect(response.body.success).toBe(true)
-    expect(response.body.message).toBe('Success, deleted')
   })
 
   it('Failed delete category because user role not admin', async () => {
@@ -185,6 +215,13 @@ describe('API Category', () => {
     expect(response.body.message).toBe('id does not exist')
   })
 
+  it('Failed delete category because no token', async () => {
+    const response = await request(app).delete(`/api/v1/category/${categoryId}`)
+    expect(response.statusCode).toBe(401)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('No token')
+  })
+
   it('Failed route does not exist', async () => {
     const response = await request(app)
       .delete('/api/v1/category')
@@ -192,5 +229,14 @@ describe('API Category', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
+  })
+
+  it('Success delete category', async () => {
+    const response = await request(app)
+      .delete(`/api/v1/category/${categoryId}`)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
+    expect(response.statusCode).toBe(200)
+    expect(response.body.success).toBe(true)
+    expect(response.body.message).toBe('Success, deleted')
   })
 })

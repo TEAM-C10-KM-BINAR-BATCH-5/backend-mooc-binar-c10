@@ -6,6 +6,9 @@ const ApiError = require('../utils/apiError')
 const createNotificationToAllUsers = async (req, res, next) => {
   const { title, description } = req.body
   try {
+    if (!title || !description) {
+      return next(new ApiError('Title and description required', 400))
+    }
     const users = await User.findAll()
 
     await Promise.all(
@@ -19,12 +22,12 @@ const createNotificationToAllUsers = async (req, res, next) => {
       }),
     )
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       message: 'Notification created and sent to all users',
     })
   } catch (error) {
-    next(new ApiError(error.message, 500))
+    return next(new ApiError(error.message, 500))
   }
 }
 
@@ -32,6 +35,9 @@ const createNotificationToAllUsers = async (req, res, next) => {
 const createNotificationToSpesificUser = async (req, res, next) => {
   const { title, description } = req.body
   try {
+    if (!title || !description) {
+      return next(new ApiError('Title and description required', 400))
+    }
     const user = await User.findOne({ where: { id: req.params.id } })
     if (!user) {
       return next(new ApiError(`User with id ${req.params.id} not exist`, 404))

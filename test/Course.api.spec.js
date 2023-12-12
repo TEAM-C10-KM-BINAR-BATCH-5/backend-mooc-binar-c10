@@ -7,7 +7,6 @@ require('dotenv').config()
 let tokenUser = ''
 let tokenAdmin = ''
 let courseId = ''
-let courseIdForModule = ''
 
 beforeAll(async () => {
   const user = {
@@ -103,6 +102,28 @@ describe('API Course', () => {
     expect(response.body.message).toBe(
       'value too long for type character varying(255)',
     )
+  })
+
+  it('Failed create course because no token', async () => {
+    const course = {
+      title: 'Tutorial Html dan Css',
+      about:
+        'Html dan Css adalah sebuah kerangka dasar dalam membuat suatu web',
+      objective:
+        'Course ini ditujukan untuk orang yang mau berkarier di dunia IT khususnya di bidang pengembangan web',
+      categoryId: 'C-0WEB',
+      onboarding:
+        'Siapkan mental anda untuk menghadapi course ini, karena course ini sangat bagus sehingga membuat mental anda menjadi semangat',
+      level: 'Beginner',
+      rating: 4.5,
+      instructor: 'Sandika Galih',
+      telegramLink: 'http://www.telegramling.com',
+      price: 50000,
+    }
+    const response = await request(app).post('/api/v1/course').send(course)
+    expect(response.statusCode).toBe(401)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('No token')
   })
 
   it('Success get all course', async () => {
@@ -330,6 +351,19 @@ describe('API Course', () => {
     )
   })
 
+  it('Failed update course because no token', async () => {
+    const course = {
+      rating: 4.3,
+      price: 30000,
+    }
+    const response = await request(app)
+      .patch(`/api/v1/course/${courseId}`)
+      .send(course)
+    expect(response.statusCode).toBe(401)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('No token')
+  })
+
   it('Failed route does not exist', async () => {
     const response = await request(app)
       .patch('/api/v1/course')
@@ -337,15 +371,6 @@ describe('API Course', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
-  })
-
-  it('Success delete course', async () => {
-    const response = await request(app)
-      .delete(`/api/v1/course/${courseId}`)
-      .set('Authorization', `Bearer ${tokenAdmin}`)
-    expect(response.statusCode).toBe(200)
-    expect(response.body.success).toBe(true)
-    expect(response.body.message).toBe('Success, deleted')
   })
 
   it('Failed delete course because user role not admin', async () => {
@@ -357,6 +382,13 @@ describe('API Course', () => {
     expect(response.body.message).toBe(
       'You are not admin, your access to this is blocked',
     )
+  })
+
+  it('Failed delete course because no token', async () => {
+    const response = await request(app).delete(`/api/v1/course/${courseId}`)
+    expect(response.statusCode).toBe(401)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('No token')
   })
 
   it('Failed delete course because id not found', async () => {
@@ -375,5 +407,14 @@ describe('API Course', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
+  })
+
+  it('Success delete course', async () => {
+    const response = await request(app)
+      .delete(`/api/v1/course/${courseId}`)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
+    expect(response.statusCode).toBe(200)
+    expect(response.body.success).toBe(true)
+    expect(response.body.message).toBe('Success, deleted')
   })
 })

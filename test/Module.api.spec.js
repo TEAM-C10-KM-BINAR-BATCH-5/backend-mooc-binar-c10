@@ -11,8 +11,8 @@ let moduleId = ''
 
 beforeAll(async () => {
   const user = {
-    email: 'syifa@gmail.com',
-    password: 'usersyifa123',
+    email: 'yuzhong@gmail.com',
+    password: 'useryuzhong123',
   }
   const response = await request(app).post('/api/v1/auth/login').send(user)
   tokenUser = response.body.token
@@ -84,6 +84,17 @@ describe('API Module', () => {
     )
   })
 
+  it('Failed create module because no token', async () => {
+    const module = {
+      title: 'Tutorial Html dan Css',
+      courseId: courseIdForModule,
+    }
+    const response = await request(app).post('/api/v1/module').send(module)
+    expect(response.statusCode).toBe(401)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('No token')
+  })
+
   it('Success get all module', async () => {
     const response = await request(app).get('/api/v1/module')
     expect(response.statusCode).toBe(200)
@@ -142,7 +153,7 @@ describe('API Module', () => {
     expect(response.body.message).toBe('Success, fetch')
   })
 
-  it('Failed get course because id not found', async () => {
+  it('Failed get module because id not found', async () => {
     const response = await request(app).get('/api/v1/module/777')
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
@@ -160,6 +171,18 @@ describe('API Module', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, updated')
+  })
+
+  it('Failed update module because no token', async () => {
+    const module = {
+      title: 'Chapter 1 javascript async',
+    }
+    const response = await request(app)
+      .put(`/api/v1/module/${moduleId}`)
+      .send(module)
+    expect(response.statusCode).toBe(401)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('No token')
   })
 
   it('Failed update module because user role not admin', async () => {
@@ -218,15 +241,6 @@ describe('API Module', () => {
     expect(response.body.message).toBe('Routes does not exist')
   })
 
-  it('Success delete module', async () => {
-    const response = await request(app)
-      .delete(`/api/v1/module/${moduleId}`)
-      .set('Authorization', `Bearer ${tokenAdmin}`)
-    expect(response.statusCode).toBe(200)
-    expect(response.body.success).toBe(true)
-    expect(response.body.message).toBe('Success, deleted')
-  })
-
   it('Failed delete module because user role not admin', async () => {
     const response = await request(app)
       .delete(`/api/v1/module/${moduleId}`)
@@ -236,6 +250,13 @@ describe('API Module', () => {
     expect(response.body.message).toBe(
       'You are not admin, your access to this is blocked',
     )
+  })
+
+  it('Failed delete module because no token', async () => {
+    const response = await request(app).delete(`/api/v1/module/${moduleId}`)
+    expect(response.statusCode).toBe(401)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('No token')
   })
 
   it('Failed delete module because id not found', async () => {
@@ -254,5 +275,14 @@ describe('API Module', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
+  })
+
+  it('Success delete module', async () => {
+    const response = await request(app)
+      .delete(`/api/v1/module/${moduleId}`)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
+    expect(response.statusCode).toBe(200)
+    expect(response.body.success).toBe(true)
+    expect(response.body.message).toBe('Success, deleted')
   })
 })
