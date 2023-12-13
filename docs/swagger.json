@@ -4161,6 +4161,26 @@
               }
             }
           },
+          "400": {
+            "description": "Course already enrolled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Course already enrolled"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "401": {
             "description": "User tidak ada token",
             "content": {
