@@ -4868,7 +4868,8 @@
                             }
                           },
                           "transaction_date": {
-                            "type": "null"
+                            "type": "string",
+                            "example": "2023-12-12T16:11:07.137Z"
                           }
                         }
                       }
@@ -5098,7 +5099,8 @@
                             }
                           },
                           "transaction_date": {
-                            "type": "null"
+                            "type": "string",
+                            "example": "2023-12-12T16:11:07.137Z"
                           }
                         }
                       }
