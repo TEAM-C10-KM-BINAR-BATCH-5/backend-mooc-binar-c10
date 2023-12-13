@@ -46,7 +46,7 @@ const getAllTransactions = async (req, res, next) => {
       where: whereClausePayment,
     })
 
-    const data = dataTransaction.toJSON().map((transaction) => ({
+    const data = dataTransaction.map((transaction) => ({
       ...transaction,
       transaction_date: ['capture', 'settlement'].includes(
         transaction.transaction_status,
@@ -109,7 +109,7 @@ const getUserTransactions = async (req, res, next) => {
       where: whereClausePayment,
     })
 
-    const data = dataTransaction.toJSON().map((transaction) => ({
+    const data = dataTransaction.map((transaction) => ({
       ...transaction,
       transaction_date: ['capture', 'settlement'].includes(
         transaction.transaction_status,
