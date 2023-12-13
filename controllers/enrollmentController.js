@@ -3,7 +3,7 @@ const uuidv4 = require('uuid').v4
 const fetch = require('node-fetch')
 // prettier-ignore
 const {
-  Course, Module, Video, Category, sequelize, UserCourse, UserVideo, Payment,
+  Course, Module, Video, Category, sequelize, UserCourse, UserVideo, Payment, Notification,
 } = require('../models')
 const ApiError = require('../utils/apiError')
 
