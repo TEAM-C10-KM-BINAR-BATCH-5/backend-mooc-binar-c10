@@ -1,6 +1,6 @@
 const { Op } = require('sequelize')
 
-const { Payment, Course } = require('../models')
+const { Payment, Course, Category } = require('../models')
 const ApiError = require('../utils/apiError')
 
 const getAllTransactions = async (req, res, next) => {
@@ -41,6 +41,12 @@ const getAllTransactions = async (req, res, next) => {
         {
           model: Course,
           where: whereClauseCourse,
+          include: [
+            {
+              model: Category,
+              attributes: ['name'],
+            },
+          ],
         },
       ],
       where: whereClausePayment,
@@ -104,6 +110,12 @@ const getUserTransactions = async (req, res, next) => {
         {
           model: Course,
           where: whereClauseCourse,
+          include: [
+            {
+              model: Category,
+              attributes: ['name'],
+            },
+          ],
         },
       ],
       where: whereClausePayment,

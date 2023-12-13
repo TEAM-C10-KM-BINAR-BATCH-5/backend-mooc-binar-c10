@@ -57,6 +57,10 @@
     {
       "name": "Progress",
       "description": "Progress API resources"
+    },
+    {
+      "name": "Transaction",
+      "description": "Transaction API resources"
     }
   ],
   "servers": [
@@ -1544,6 +1548,15 @@
                             "type": "string",
                             "example": "C-0WEB"
                           },
+                          "Category": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "example": "Web Development"
+                              }
+                            }
+                          },
                           "level": {
                             "type": "string",
                             "example": "Beginner"
@@ -1836,6 +1849,15 @@
                         "categoryId": {
                           "type": "string",
                           "example": "C-0WEB"
+                        },
+                        "Category": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "example": "Web Development"
+                            }
+                          }
                         },
                         "level": {
                           "type": "string",
@@ -4259,6 +4281,15 @@
                             "type": "string",
                             "example": "C-0WEB"
                           },
+                          "Category": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "example": "Web Development"
+                              }
+                            }
+                          },
                           "level": {
                             "type": "string",
                             "example": "Beginner"
@@ -4399,6 +4430,15 @@
                         "categoryId": {
                           "type": "string",
                           "example": "C-0WEB"
+                        },
+                        "Category": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "example": "Web Development"
+                            }
+                          }
                         },
                         "level": {
                           "type": "string",
@@ -4602,6 +4642,466 @@
                     "message": {
                       "type": "string",
                       "example": "id does not exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No token!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/transaction": {
+      "get": {
+        "tags": ["Transaction"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "categoryIds",
+            "in": "query",
+            "description": "Filter transactions by course categoryId, berikut daftar id course = Web Development: C-0WEB, Android Development: C-0AND, Product Management: C-0PM, UI/UX: C-0UIX, Data Science: C-0DS, Business Intelligence: C-0BI, Ios Development: C-0IOS, Digital Marketing: C-0DM, Lainnya: C-0OT. Jika ingin melakukan banyak filter bisa inputkan di sebelah langsung menggunakan koma, seperti contoh melakukan filter banyak category = C-0WEB,C-0AND,C-0PM, maka dengan query tersebut api akan memberikan respone sesuai filter tsb yaitu mendapatkan course dgn category web development, anroid development, product management",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "style": "form",
+            "explode": true
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "description": "Search transactions by course title, melakukan pencarian transaksi berdasarkan title course",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "paymentType",
+            "in": "query",
+            "description": "Search transactions by the type of payment, melakukan pencarian transaksi berdasarkan tipe/metode pembayaran berdasarkan tipe pembayaran yang ada pada midtrans",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Search transactions by the status, melakukan pencarian transaksi berdasarkan status pembayaran yaitu: authorize, capture, settlement, deny, pending, cancel, refund, partial_refund, chargeback, partial_chargeback, expire, failure",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "summary": "Admin mendapatkan semua data transaksi",
+        "description": "Admin mendapat semua data transaksi yang telah dilakukan oleh user",
+        "responses": {
+          "200": {
+            "description": "Success get all transactions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success, fetch"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "1f8c5052-b65e-4872-b9a2-74a3ededb9f3"
+                          },
+                          "courseId": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "userId": {
+                            "type": "integer",
+                            "example": 14
+                          },
+                          "payment_type": {
+                            "type": "string",
+                            "example": "qris"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "settlement"
+                          },
+                          "amount": {
+                            "type": "integer",
+                            "example": 50000
+                          },
+                          "gross_amount": {
+                            "type": "integer",
+                            "example": 50000
+                          },
+                          "date": {
+                            "type": "string",
+                            "example": "2023-12-13T07:36:11.509Z"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "example": "2023-12-13T07:36:11.510Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "example": "2023-12-13T07:37:07.961Z"
+                          },
+                          "Course": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "title": {
+                                "type": "string",
+                                "example": "Html & Css Full Course"
+                              },
+                              "about": {
+                                "type": "string",
+                                "example": "Course html terupdat saat ini"
+                              },
+                              "objective": {
+                                "type": "string",
+                                "example": "Course html sangat cocok untuk orang yang mau menjadi web designer"
+                              },
+                              "onboarding": {
+                                "type": "string",
+                                "example": "iasdiuansdiausndiuansdiausndoiuansd"
+                              },
+                              "categoryId": {
+                                "type": "string",
+                                "example": "C-0WEB"
+                              },
+                              "Category": {
+                                "type": "object",
+                                "properties": {
+                                  "name": {
+                                    "type": "string",
+                                    "example": "Web Development"
+                                  }
+                                }
+                              },
+                              "level": {
+                                "type": "string",
+                                "example": "Beginner"
+                              },
+                              "courseType": {
+                                "type": "string",
+                                "example": "Premium"
+                              },
+                              "imageUrl": {
+                                "type": "string",
+                                "example": "https://ik.imagekit.io/9c49grjkd/IMG-1702262718380_bEhmT13zVs.png"
+                              },
+                              "rating": {
+                                "type": "number",
+                                "example": 4.5
+                              },
+                              "instructor": {
+                                "type": "string",
+                                "example": "Eko Kurniawan"
+                              },
+                              "duration": {
+                                "type": "integer",
+                                "example": 0
+                              },
+                              "telegramLink": {
+                                "type": "string",
+                                "example": "https://ahldaushdl.com"
+                              },
+                              "moduleCount": {
+                                "type": "integer",
+                                "example": 3
+                              },
+                              "price": {
+                                "type": "integer",
+                                "example": 50000
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "example": "2023-12-11T02:45:20.966Z"
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "example": "2023-12-12T16:11:07.137Z"
+                              }
+                            }
+                          },
+                          "transaction_date": {
+                            "type": "null"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No token!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user-transaction": {
+      "get": {
+        "tags": ["Transaction"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "categoryIds",
+            "in": "query",
+            "description": "Filter transactions by course categoryId, berikut daftar id course = Web Development: C-0WEB, Android Development: C-0AND, Product Management: C-0PM, UI/UX: C-0UIX, Data Science: C-0DS, Business Intelligence: C-0BI, Ios Development: C-0IOS, Digital Marketing: C-0DM, Lainnya: C-0OT. Jika ingin melakukan banyak filter bisa inputkan di sebelah langsung menggunakan koma, seperti contoh melakukan filter banyak category = C-0WEB,C-0AND,C-0PM, maka dengan query tersebut api akan memberikan respone sesuai filter tsb yaitu mendapatkan course dgn category web development, anroid development, product management",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "style": "form",
+            "explode": true
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "description": "Search transactions by course title, melakukan pencarian transaksi berdasarkan title course",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "paymentType",
+            "in": "query",
+            "description": "Search transactions by the type of payment, melakukan pencarian transaksi berdasarkan tipe/metode pembayaran berdasarkan tipe pembayaran yang ada pada midtrans",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Search transactions by the status, melakukan pencarian transaksi berdasarkan status pembayaran yaitu: authorize, capture, settlement, deny, pending, cancel, refund, partial_refund, chargeback, partial_chargeback, expire, failure",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "summary": "User mendapatkan semua data transaksi",
+        "description": "User mendapat semua data transaksi yang telah dilakukan oleh user tersebut",
+        "responses": {
+          "200": {
+            "description": "Success get all transactions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success, fetch"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "1f8c5052-b65e-4872-b9a2-74a3ededb9f3"
+                          },
+                          "courseId": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "userId": {
+                            "type": "integer",
+                            "example": 14
+                          },
+                          "payment_type": {
+                            "type": "string",
+                            "example": "qris"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "settlement"
+                          },
+                          "amount": {
+                            "type": "integer",
+                            "example": 50000
+                          },
+                          "gross_amount": {
+                            "type": "integer",
+                            "example": 50000
+                          },
+                          "date": {
+                            "type": "string",
+                            "example": "2023-12-13T07:36:11.509Z"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "example": "2023-12-13T07:36:11.510Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "example": "2023-12-13T07:37:07.961Z"
+                          },
+                          "Course": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "title": {
+                                "type": "string",
+                                "example": "Html & Css Full Course"
+                              },
+                              "about": {
+                                "type": "string",
+                                "example": "Course html terupdat saat ini"
+                              },
+                              "objective": {
+                                "type": "string",
+                                "example": "Course html sangat cocok untuk orang yang mau menjadi web designer"
+                              },
+                              "onboarding": {
+                                "type": "string",
+                                "example": "iasdiuansdiausndiuansdiausndoiuansd"
+                              },
+                              "categoryId": {
+                                "type": "string",
+                                "example": "C-0WEB"
+                              },
+                              "Category": {
+                                "type": "object",
+                                "properties": {
+                                  "name": {
+                                    "type": "string",
+                                    "example": "Web Development"
+                                  }
+                                }
+                              },
+                              "level": {
+                                "type": "string",
+                                "example": "Beginner"
+                              },
+                              "courseType": {
+                                "type": "string",
+                                "example": "Premium"
+                              },
+                              "imageUrl": {
+                                "type": "string",
+                                "example": "https://ik.imagekit.io/9c49grjkd/IMG-1702262718380_bEhmT13zVs.png"
+                              },
+                              "rating": {
+                                "type": "number",
+                                "example": 4.5
+                              },
+                              "instructor": {
+                                "type": "string",
+                                "example": "Eko Kurniawan"
+                              },
+                              "duration": {
+                                "type": "integer",
+                                "example": 0
+                              },
+                              "telegramLink": {
+                                "type": "string",
+                                "example": "https://ahldaushdl.com"
+                              },
+                              "moduleCount": {
+                                "type": "integer",
+                                "example": 3
+                              },
+                              "price": {
+                                "type": "integer",
+                                "example": 50000
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "example": "2023-12-11T02:45:20.966Z"
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "example": "2023-12-12T16:11:07.137Z"
+                              }
+                            }
+                          },
+                          "transaction_date": {
+                            "type": "null"
+                          }
+                        }
+                      }
                     }
                   }
                 }
