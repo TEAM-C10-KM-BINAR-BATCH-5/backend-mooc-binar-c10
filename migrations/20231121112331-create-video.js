@@ -22,6 +22,13 @@ module.exports = {
       },
       moduleId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Modules',
+          key: 'id',
+        },
+        onDelete: 'CASCADE', // if Module deleted, video will deleted also
+        onUpdate: 'CASCADE',
       },
       createdAt: {
         allowNull: false,

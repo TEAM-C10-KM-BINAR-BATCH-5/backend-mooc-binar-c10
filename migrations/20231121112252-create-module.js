@@ -16,6 +16,13 @@ module.exports = {
       },
       courseId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Courses',
+          key: 'id',
+        },
+        onDelete: 'CASCADE', // if course deleted, module will deleted also
+        onUpdate: 'CASCADE',
       },
       createdAt: {
         allowNull: false,
