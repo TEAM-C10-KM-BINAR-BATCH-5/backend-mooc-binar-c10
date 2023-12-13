@@ -47,11 +47,11 @@ const getAllTransactions = async (req, res, next) => {
     })
 
     const data = dataTransaction.map((transaction) => ({
-      ...transaction,
+      ...transaction.toJSON(),
       transaction_date: ['capture', 'settlement'].includes(
-        transaction.transaction_status,
+        transaction.toJSON().transaction_status,
       )
-        ? transaction.updatedAt
+        ? transaction.toJSON().updatedAt
         : null,
     }))
     return res.status(200).json({
@@ -110,11 +110,11 @@ const getUserTransactions = async (req, res, next) => {
     })
 
     const data = dataTransaction.map((transaction) => ({
-      ...transaction,
+      ...transaction.toJSON(),
       transaction_date: ['capture', 'settlement'].includes(
-        transaction.transaction_status,
+        transaction.toJSON().transaction_status,
       )
-        ? transaction.updatedAt
+        ? transaction.toJSON().updatedAt
         : null,
     }))
     return res.status(200).json({
