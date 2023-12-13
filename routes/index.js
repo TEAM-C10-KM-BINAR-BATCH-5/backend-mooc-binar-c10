@@ -30,7 +30,7 @@ router.use('/api/v1/enrollment', userCourseRouter)
 router.use('/api/v1/notification', notificationRouter)
 router.use('/api/v1/progress', progressRouter)
 router.use('/api/v1/transaction', transactionRouter)
-router.use('/api/v1/user/transaction', userTransactionRouter)
+router.use('/api/v1/user-transaction', userTransactionRouter)
 
 router.use('/api-docs', swaggerUI.serve)
 router.use('/api-docs', swaggerUI.setup(swaggerDocument))
