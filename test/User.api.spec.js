@@ -9,6 +9,8 @@ let tokenUser = ''
 let tokenAdmin = ''
 let idUser = ''
 let idUserForDelete = ''
+let tokenMalformed =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpZCI6NywibmFtZSI6ImFkbWluIiwiZW1haWwiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDI0NjA3NzgsImV4cCI6MTcwMjU0NzE3OH0.KCqPMrXmPeB0C7ex_p-tYiP5KtK97mMc4jzq6poxj9c'
 
 beforeAll(async () => {
   const user = {
@@ -42,6 +44,15 @@ describe('API User', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, fetch')
+  })
+
+  it('Failed get all user because jwt malformed', async () => {
+    const response = await request(app)
+      .get('/api/v1/user')
+      .set('Authorization', `Bearer ${tokenMalformed}`)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt malformed')
   })
 
   it('Failed get all user because user role not admin', async () => {
@@ -78,6 +89,15 @@ describe('API User', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, fetch')
+  })
+
+  it('Failed get user by id because jwt malformed', async () => {
+    const response = await request(app)
+      .get(`/api/v1/user/${idUser}`)
+      .set('Authorization', `Bearer ${tokenMalformed}`)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt malformed')
   })
 
   it('Failed get user because id not found', async () => {
@@ -121,6 +141,20 @@ describe('API User', () => {
     expect(response.body.message).toBe('Success, updated')
   })
 
+  it('Failed update user because jwt malformed', async () => {
+    const user = {
+      country: 'Indonesia',
+      city: 'bandung',
+    }
+    const response = await request(app)
+      .patch(`/api/v1/user/${idUser}`)
+      .set('Authorization', `Bearer ${tokenMalformed}`)
+      .send(user)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt malformed')
+  })
+
   it('Failed update user because no token', async () => {
     const user = {
       country: 'Indonesia',
@@ -134,7 +168,7 @@ describe('API User', () => {
     expect(response.body.message).toBe('No token')
   })
 
-  it('Failed update user by id because user role not admin', async () => {
+  it('Failed update user because user role not admin', async () => {
     const response = await request(app)
       .patch(`/api/v1/user/${idUser}`)
       .set('Authorization', `Bearer ${tokenUser}`)
@@ -181,6 +215,15 @@ describe('API User', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
+  })
+
+  it('Failed delete user because jwt malformed', async () => {
+    const response = await request(app)
+      .delete(`/api/v1/user/${idUserForDelete}`)
+      .set('Authorization', `Bearer ${tokenMalformed}`)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt malformed')
   })
 
   it('Success delete user', async () => {

@@ -7,6 +7,7 @@ require('dotenv').config()
 let tokenUser = ''
 let tokenUserForUbahPass = ''
 let tokenAdmin = ''
+// let otpForRegister = ''
 
 beforeAll(async () => {
   const user = {
@@ -37,22 +38,32 @@ beforeAll(async () => {
   tokenAdmin = response.body.token
 })
 
+// describe('OTP endpoint', () => {
+//   it('Should generate OTP and send email', async () => {
+//     const user = {
+//       email: 'simbahmbah77@gmail.com',
+//     }
+
+//     const response = await request(app).post('/api/v1/otp').send(user)
+//     otpForRegister = response.req.session.otp
+//     console.log(response.body)
+//     expect(response.statusCode).toBe(200)
+//     expect(response.body.success).toBe(true)
+//     expect(response.body.message).toBe('Success, sent')
+//   })
+// })
+
 describe('API Register', () => {
   // it('success register', async () => {
-  //   const otp = otpGenerator.generate(6, {
-  //     upperCaseAlphabets: false,
-  //     lowerCaseAlphabets: false,
-  //     specialChars: false,
-  //   })
-  //   req.session.otp = otp
   //   const user = {
+  //     otp: otpForRegister,
   //     email: 'simbahmbah77@gmail.com',
   //     password: '12345678',
   //     name: 'simbah',
   //     phoneNumber: 6288716625536,
-  //     otp: otp,
   //   }
   //   const response = await request(app).post('/api/v1/auth/register').send(user)
+  //   console.log(response.body)
   //   expect(response.statusCode).toBe(201)
   //   expect(response.body.success).toBe(true)
   //   expect(response.body.status).toBe('Success, register user')
@@ -70,7 +81,7 @@ describe('API Register', () => {
     expect(response.body.message).toBe('Otp required!')
   })
 
-  it('Failed register because ', async () => {
+  it('Failed register because invalid otp', async () => {
     const user = {
       email: 'imamtaufiq333@gmail.com',
       password: '12345678',
@@ -330,5 +341,43 @@ describe('API profile', () => {
     expect(response.body.message).toBe(
       'Success, your password successfully changed',
     )
+  })
+
+  it('Post not found route', async () => {
+    const data = {
+      name: 'yuyu',
+    }
+    const response = await request(app).post('/2').send(data)
+    expect(response.statusCode).toBe(404)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('Routes does not exist')
+  })
+  it('Get not found route', async () => {
+    const response = await request(app).get('/')
+    expect(response.statusCode).toBe(404)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('Routes does not exist')
+  })
+
+  it('Get id not found route', async () => {
+    const response = await request(app).get('/9')
+    expect(response.statusCode).toBe(404)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('Routes does not exist')
+  })
+  it('Patch not found route', async () => {
+    const data = {
+      name: 'yuyu',
+    }
+    const response = await request(app).patch('/1').send(data)
+    expect(response.statusCode).toBe(404)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('Routes does not exist')
+  })
+  it('Delete not found route', async () => {
+    const response = await request(app).get('/1')
+    expect(response.statusCode).toBe(404)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('Routes does not exist')
   })
 })

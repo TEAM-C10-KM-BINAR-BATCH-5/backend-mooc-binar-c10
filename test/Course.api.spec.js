@@ -7,6 +7,8 @@ require('dotenv').config()
 let tokenUser = ''
 let tokenAdmin = ''
 let courseId = ''
+let tokenMalformed =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpZCI6NywibmFtZSI6ImFkbWluIiwiZW1haWwiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDI0NjA3NzgsImV4cCI6MTcwMjU0NzE3OH0.KCqPMrXmPeB0C7ex_p-tYiP5KtK97mMc4jzq6poxj9c'
 
 beforeAll(async () => {
   const user = {
@@ -75,6 +77,31 @@ describe('API Course', () => {
     expect(response.statusCode).toBe(201)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, create course')
+  })
+
+  it('Failed create course because jwt malformed', async () => {
+    const course = {
+      title: 'Tutorial Html dan Css',
+      about:
+        'Html dan Css adalah sebuah kerangka dasar dalam membuat suatu web',
+      objective:
+        'Course ini ditujukan untuk orang yang mau berkarier di dunia IT khususnya di bidang pengembangan web',
+      categoryId: 'C-0WEB',
+      onboarding:
+        'Siapkan mental anda untuk menghadapi course ini, karena course ini sangat bagus sehingga membuat mental anda menjadi semangat',
+      level: 'Beginner',
+      rating: 4.5,
+      instructor: 'Sandika Galih',
+      telegramLink: 'http://www.telegramling.com',
+      price: 50000,
+    }
+    const response = await request(app)
+      .post('/api/v1/course')
+      .set('Authorization', `Bearer ${tokenMalformed}`)
+      .send(course)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt malformed')
   })
 
   it('Failed create course because about to much string', async () => {
@@ -267,6 +294,20 @@ describe('API Course', () => {
     expect(response.body.message).toBe('Success, updated')
   })
 
+  it('Failed update course because jwt malformed', async () => {
+    const course = {
+      rating: 4.3,
+      price: 30000,
+    }
+    const response = await request(app)
+      .patch(`/api/v1/course/${courseId}`)
+      .set('Authorization', `Bearer ${tokenMalformed}`)
+      .send(course)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt malformed')
+  })
+
   it('Failed update course because user role not admin', async () => {
     const course = {
       title: 'Tutorial Html dan Css',
@@ -407,6 +448,15 @@ describe('API Course', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
+  })
+
+  it('Failed delete course because jwt malformed', async () => {
+    const response = await request(app)
+      .delete(`/api/v1/course/${courseId}`)
+      .set('Authorization', `Bearer ${tokenMalformed}`)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt malformed')
   })
 
   it('Success delete course', async () => {

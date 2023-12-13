@@ -7,6 +7,8 @@ require('dotenv').config()
 let tokenUser = ''
 let tokenAdmin = ''
 let categoryId = ''
+let tokenMalformed =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpZCI6NywibmFtZSI6ImFkbWluIiwiZW1haWwiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDI0NjA3NzgsImV4cCI6MTcwMjU0NzE3OH0.KCqPMrXmPeB0C7ex_p-tYiP5KtK97mMc4jzq6poxj9c'
 
 beforeAll(async () => {
   const user = {
@@ -42,6 +44,20 @@ describe('API Category', () => {
     expect(response.statusCode).toBe(201)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, create category')
+  })
+
+  it('Failed create category because jwt malformed', async () => {
+    const category = {
+      id: 'C-0DOP',
+      name: 'DevOps',
+    }
+    const response = await request(app)
+      .post('/api/v1/category')
+      .set('Authorization', `Bearer ${tokenMalformed}`)
+      .send(category)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt malformed')
   })
 
   it('Failed create category because about to much string', async () => {
@@ -146,6 +162,19 @@ describe('API Category', () => {
     expect(response.body.message).toBe('Success, updated')
   })
 
+  it('Failed update category because jwt malformed', async () => {
+    const category = {
+      name: 'Cyber Security',
+    }
+    const response = await request(app)
+      .put(`/api/v1/category/${categoryId}`)
+      .set('Authorization', `Bearer ${tokenMalformed}`)
+      .send(category)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt malformed')
+  })
+
   it('Failed update category because id not found', async () => {
     const category = {
       name: 'Cyber Security',
@@ -229,6 +258,15 @@ describe('API Category', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
+  })
+
+  it('Failed delete category because jwt malformed', async () => {
+    const response = await request(app)
+      .delete(`/api/v1/category/${categoryId}`)
+      .set('Authorization', `Bearer ${tokenMalformed}`)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt malformed')
   })
 
   it('Success delete category', async () => {

@@ -11,6 +11,8 @@ let idNotif = ''
 let tokenUser2 = ''
 let idUser2 = ''
 let idNotif2 = ''
+let tokenMalformed =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpZCI6NywibmFtZSI6ImFkbWluIiwiZW1haWwiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDI0NjA3NzgsImV4cCI6MTcwMjU0NzE3OH0.KCqPMrXmPeB0C7ex_p-tYiP5KtK97mMc4jzq6poxj9c'
 
 beforeAll(async () => {
   const user = {
@@ -72,6 +74,20 @@ describe('API Notification', () => {
     expect(response.body.message).toBe(
       'Notification created and sent to all users',
     )
+  })
+
+  it('Failed create notification because jwt malformed', async () => {
+    const notif = {
+      title: 'Promo 12.12',
+      description: 'Ada promo ada uang',
+    }
+    const response = await request(app)
+      .post('/api/v1/notification')
+      .set('Authorization', `Bearer ${tokenMalformed}`)
+      .send(notif)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt malformed')
   })
 
   it('Failed create noitification to all user because no token', async () => {
@@ -143,6 +159,20 @@ describe('API Notification', () => {
     expect(response.body.message).toBe(
       `Notification created and sent to user with id ${idUser}`,
     )
+  })
+
+  it('Failed create notification to user id because jwt malformed', async () => {
+    const notif = {
+      title: 'Promo 12.12',
+      description: 'Ada promo ada uang',
+    }
+    const response = await request(app)
+      .post(`/api/v1/notification/${idUser}`)
+      .set('Authorization', `Bearer ${tokenMalformed}`)
+      .send(notif)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt malformed')
   })
 
   it('Success create notification to user by id', async () => {
@@ -242,6 +272,15 @@ describe('API Notification', () => {
     expect(response.body.message).toBe('Success, fetch notification')
   })
 
+  it('Failed get all notification because jwt malformed', async () => {
+    const response = await request(app)
+      .get('/api/v1/notification')
+      .set('Authorization', `Bearer ${tokenMalformed}`)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt malformed')
+  })
+
   it('Failed get all notification because user role not admin', async () => {
     const response = await request(app)
       .get('/api/v1/notification')
@@ -271,6 +310,15 @@ describe('API Notification', () => {
     expect(response.body.message).toBe('Success, fetch notification')
   })
 
+  it('Failed get my notification because jwt malformed', async () => {
+    const response = await request(app)
+      .get('/api/v1/notification/my')
+      .set('Authorization', `Bearer ${tokenMalformed}`)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt malformed')
+  })
+
   it('Success get my notification', async () => {
     const response = await request(app)
       .get('/api/v1/notification/my')
@@ -296,6 +344,15 @@ describe('API Notification', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, mark notification as read')
+  })
+
+  it('Failed mark notification as read by id because jwt malformed', async () => {
+    const response = await request(app)
+      .patch(`/api/v1/notification/my/markasread/${idNotif}`)
+      .set('Authorization', `Bearer ${tokenMalformed}`)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt malformed')
   })
 
   it('Failed mark notification as read by id because id not found', async () => {
@@ -338,6 +395,15 @@ describe('API Notification', () => {
     )
   })
 
+  it('Failed mark all notification as read because jwt malformed', async () => {
+    const response = await request(app)
+      .patch('/api/v1/notification/my/markallasread')
+      .set('Authorization', `Bearer ${tokenMalformed}`)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt malformed')
+  })
+
   it('Failed mark as read all notification because no token', async () => {
     const response = await request(app).patch(
       '/api/v1/notification/my/markallasread',
@@ -374,6 +440,15 @@ describe('API Notification', () => {
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
+  })
+
+  it('Failed delete notification by id because jwt malformed', async () => {
+    const response = await request(app)
+      .delete(`/api/v1/notification/my/${idNotif2}`)
+      .set('Authorization', `Bearer ${tokenMalformed}`)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt malformed')
   })
 
   it('Success delete notification by id', async () => {

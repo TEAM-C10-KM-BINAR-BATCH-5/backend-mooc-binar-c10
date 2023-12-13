@@ -20,6 +20,10 @@ const createVid = async (req, res, next) => {
       moduleDuration = module.duration
     }
 
+    if (!title || !moduleId) {
+      return next(new ApiError('Title and module id are required!', 400))
+    }
+
     const newVid = await Video.create({
       title,
       no,

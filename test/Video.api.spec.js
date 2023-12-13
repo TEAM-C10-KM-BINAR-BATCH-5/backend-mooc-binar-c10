@@ -7,14 +7,15 @@ require('dotenv').config()
 let tokenUser = ''
 let tokenAdmin = ''
 let courseIdForModule = ''
-let moduleId = ''
+let moduleIdForVideo = ''
+let videoId = ''
 let tokenMalformed =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpZCI6NywibmFtZSI6ImFkbWluIiwiZW1haWwiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDI0NjA3NzgsImV4cCI6MTcwMjU0NzE3OH0.KCqPMrXmPeB0C7ex_p-tYiP5KtK97mMc4jzq6poxj9c'
 
 beforeAll(async () => {
   const user = {
-    email: 'yuzhong@gmail.com',
-    password: 'useryuzhong123',
+    email: 'layla@gmail.com',
+    password: 'userlayla123',
   }
   const response = await request(app).post('/api/v1/auth/login').send(user)
   tokenUser = response.body.token
@@ -53,46 +54,67 @@ beforeAll(async () => {
   courseIdForModule = response.body.data.newCourse.id
 })
 
-describe('API Module', () => {
-  it('Success create module', async () => {
-    const module = {
-      title: 'Tutorial Html dan Css',
-      courseId: courseIdForModule,
+beforeAll(async () => {
+  const module = {
+    title: 'Chapter 1 html css',
+    courseId: courseIdForModule,
+  }
+  const response = await request(app)
+    .post('/api/v1/module')
+    .set('Authorization', `Bearer ${tokenAdmin}`)
+    .send(module)
+  moduleIdForVideo = response.body.data.newModule.id
+})
+
+describe('API Video', () => {
+  it('Success create video', async () => {
+    const video = {
+      title: 'Pendahuluan html',
+      no: 1,
+      videoUrl: 'http://wkwkwk.com',
+      duration: 10,
+      moduleId: moduleIdForVideo,
     }
     const response = await request(app)
-      .post('/api/v1/module')
+      .post('/api/v1/video')
       .set('Authorization', `Bearer ${tokenAdmin}`)
-      .send(module)
-    moduleId = response.body.data.newModule.id
+      .send(video)
+    videoId = response.body.data.newVid.id
     expect(response.statusCode).toBe(201)
     expect(response.body.success).toBe(true)
-    expect(response.body.message).toBe('Success, create module')
+    expect(response.body.message).toBe('Success, create video')
   })
 
-  it('Failed create module because jwt malformed', async () => {
-    const module = {
-      title: 'Tutorial Html dan Css',
-      courseId: courseIdForModule,
+  it('Failed create video because jwt malformed', async () => {
+    const video = {
+      title: 'Pendahuluan html',
+      no: 1,
+      videoUrl: 'http://wkwkwk.com',
+      duration: 10,
+      moduleId: moduleIdForVideo,
     }
     const response = await request(app)
-      .post('/api/v1/module')
+      .post('/api/v1/video')
       .set('Authorization', `Bearer ${tokenMalformed}`)
-      .send(module)
+      .send(video)
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
   })
 
-  it('Failed create module because about to much string', async () => {
-    const course = {
+  it('Failed create video because about to much string', async () => {
+    const video = {
       title:
         'Tutorial Html dan Css. Html dan Css adalah sebuah kerangka dasar dalam membuat suatu web, Html dan Css adalah sebuah kerangka dasar dalam membuat suatu web, dengan html kita bisa membuat pondasinya sedangkan dengan css kita bisa membuatnya menjadi lebih cantik dengan berbagai style yang dimiliki oleh css. Maka dari itu, course ini sangat cocok untuk orang yang benar-benar mau belajar mengenai pengembangan web dasar',
-      courseId: courseIdForModule,
+      no: 1,
+      videoUrl: 'http://wkwkwk.com',
+      duration: 10,
+      moduleId: moduleIdForVideo,
     }
     const response = await request(app)
-      .post('/api/v1/module')
+      .post('/api/v1/video')
       .set('Authorization', `Bearer ${tokenAdmin}`)
-      .send(course)
+      .send(video)
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe(
@@ -100,47 +122,72 @@ describe('API Module', () => {
     )
   })
 
-  it('Failed create module because no token', async () => {
-    const module = {
-      title: 'Tutorial Html dan Css',
-      courseId: courseIdForModule,
+  it('Failed create video because no token', async () => {
+    const video = {
+      title: 'Pendahuluan html',
+      no: 1,
+      videoUrl: 'http://wkwkwk.com',
+      duration: 10,
+      moduleId: moduleIdForVideo,
     }
-    const response = await request(app).post('/api/v1/module').send(module)
+    const response = await request(app).post('/api/v1/video').send(video)
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
   })
 
-  it('Success get all module', async () => {
-    const response = await request(app).get('/api/v1/module')
+  it('Success get all video', async () => {
+    const response = await request(app).get('/api/v1/video')
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, fetch')
   })
 
-  it('Failed create module because courseId not found', async () => {
-    const module = {
-      title: 'Chapter 1 javascript dasar',
-      courseId: 999,
+  it('Failed create video because moduleId not found', async () => {
+    const video = {
+      title: 'Pendahuluan html',
+      no: 1,
+      videoUrl: 'http://wkwkwk.com',
+      duration: 10,
+      moduleId: 999,
     }
     const response = await request(app)
-      .post('/api/v1/module')
-      .send(module)
+      .post('/api/v1/video')
       .set('Authorization', `Bearer ${tokenAdmin}`)
+      .send(video)
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
-    expect(response.body.message).toBe('Cause course with id 999 not found')
+    expect(response.body.message).toBe('Cause module with id 999 not found')
   })
 
-  it('Failed create module because user role not admin', async () => {
-    const module = {
-      title: 'Tutorial Html dan Css',
-      courseId: courseIdForModule,
+  it('Failed create video because not including title or moduleId', async () => {
+    const video = {
+      no: 1,
+      videoUrl: 'http://wkwkwk.com',
+      duration: 10,
     }
     const response = await request(app)
-      .post('/api/v1/module')
+      .post('/api/v1/video')
+      .set('Authorization', `Bearer ${tokenAdmin}`)
+      .send(video)
+    expect(response.statusCode).toBe(400)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('Title and module id are required!')
+  })
+
+  it('Failed create video because user role not admin', async () => {
+    const video = {
+      title:
+        'Tutorial Html dan Css. Html dan Css adalah sebuah kerangka dasar dalam membuat suatu web, Html dan Css adalah sebuah kerangka dasar dalam membuat suatu web, dengan html kita bisa membuat pondasinya sedangkan dengan css kita bisa membuatnya menjadi lebih cantik dengan berbagai style yang dimiliki oleh css. Maka dari itu, course ini sangat cocok untuk orang yang benar-benar mau belajar mengenai pengembangan web dasar',
+      no: 1,
+      videoUrl: 'http://wkwkwk.com',
+      duration: 10,
+      moduleId: moduleIdForVideo,
+    }
+    const response = await request(app)
+      .post('/api/v1/video')
       .set('Authorization', `Bearer ${tokenUser}`)
-      .send(module)
+      .send(video)
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe(
@@ -149,79 +196,87 @@ describe('API Module', () => {
   })
 
   it('Failed route does not exist', async () => {
-    const module = {
-      title: 'Tutorial Html dan Css',
-      courseId: 888,
+    const video = {
+      title:
+        'Tutorial Html dan Css. Html dan Css adalah sebuah kerangka dasar dalam membuat suatu web, Html dan Css adalah sebuah kerangka dasar dalam membuat suatu web, dengan html kita bisa membuat pondasinya sedangkan dengan css kita bisa membuatnya menjadi lebih cantik dengan berbagai style yang dimiliki oleh css. Maka dari itu, course ini sangat cocok untuk orang yang benar-benar mau belajar mengenai pengembangan web dasar',
+      no: 1,
+      videoUrl: 'http://wkwkwk.com',
+      duration: 10,
+      moduleId: moduleIdForVideo,
     }
     const response = await request(app)
-      .post('/api/v1/module/10')
+      .post('/api/v1/video/10')
       .set('Authorization', `Bearer ${tokenAdmin}`)
-      .send(module)
+      .send(video)
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
   })
 
-  it('Success get module by id', async () => {
-    const response = await request(app).get(`/api/v1/module/${moduleId}`)
+  it('Success get video by id', async () => {
+    const response = await request(app).get(`/api/v1/video/${videoId}`)
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, fetch')
   })
 
-  it('Failed get module because id not found', async () => {
-    const response = await request(app).get('/api/v1/module/777')
+  it('Failed get video because id not found', async () => {
+    const response = await request(app).get('/api/v1/video/777')
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('id does not exist')
   })
 
-  it('Success update module', async () => {
-    const module = {
-      title: 'Chapter 1 javascript async',
+  it('Success update video', async () => {
+    const video = {
+      no: 2,
+      videoUrl: 'http://awokawok.com',
     }
     const response = await request(app)
-      .put(`/api/v1/module/${moduleId}`)
+      .put(`/api/v1/video/${videoId}`)
       .set('Authorization', `Bearer ${tokenAdmin}`)
-      .send(module)
+      .send(video)
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, updated')
   })
 
-  it('Failed update module because jwt malformed', async () => {
-    const module = {
-      title: 'Chapter 1 javascript async',
+  it('Failed update video because jwt malformed', async () => {
+    const video = {
+      no: 2,
+      videoUrl: 'http://awokawok.com',
     }
     const response = await request(app)
-      .put(`/api/v1/module/${moduleId}`)
+      .put(`/api/v1/video/${videoId}`)
       .set('Authorization', `Bearer ${tokenMalformed}`)
-      .send(module)
+      .send(video)
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
   })
 
-  it('Failed update module because no token', async () => {
-    const module = {
-      title: 'Chapter 1 javascript async',
+  it('Failed update video because no token', async () => {
+    const video = {
+      no: 2,
+      videoUrl: 'http://awokawok.com',
     }
     const response = await request(app)
-      .put(`/api/v1/module/${moduleId}`)
-      .send(module)
+      .put(`/api/v1/video/${videoId}`)
+      .send(video)
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
   })
 
-  it('Failed update module because user role not admin', async () => {
-    const module = {
-      title: 'Tutorial Html dan Css',
+  it('Failed update video because user role not admin', async () => {
+    const video = {
+      no: 2,
+      videoUrl: 'http://awokawok.com',
     }
     const response = await request(app)
-      .put(`/api/v1/module/${moduleId}`)
+      .put(`/api/v1/video/${videoId}`)
       .set('Authorization', `Bearer ${tokenUser}`)
-      .send(module)
+      .send(video)
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe(
@@ -229,51 +284,61 @@ describe('API Module', () => {
     )
   })
 
-  it('Failed update module because id not found', async () => {
-    const module = {
-      title: 'Tutorial Html dan Css',
+  it('Failed update video because id not found', async () => {
+    const video = {
+      no: 2,
+      videoUrl: 'http://awokawok.com',
     }
     const response = await request(app)
-      .put('/api/v1/module/999')
+      .put('/api/v1/video/888')
       .set('Authorization', `Bearer ${tokenAdmin}`)
-      .send(module)
+      .send(video)
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('id does not exist')
   })
 
-  it('Failed update module because courseId not found', async () => {
-    const module = {
-      title: 'Tutorial Html dan Css',
-      courseId: 888,
+  it('Failed update video because courseId not found', async () => {
+    const video = {
+      no: 2,
+      videoUrl: 'http://awokawok.com',
+      moduleId: 777,
     }
     const response = await request(app)
-      .put(`/api/v1/module/${moduleId}`)
+      .put(`/api/v1/video/${videoId}`)
       .set('Authorization', `Bearer ${tokenAdmin}`)
-      .send(module)
-    expect(response.statusCode).toBe(404)
+      .send(video)
+    expect(response.statusCode).toBe(400)
     expect(response.body.success).toBe(false)
-    expect(response.body.message).toBe('Cause course with id 888 not found')
+    expect(response.body.message).toBe(
+      'Bad request / cause module with id 777 not found',
+    )
   })
 
   it('Failed route does not exist', async () => {
-    const module = {
-      title: 'Tutorial Html dan Css',
-      courseId: 888,
+    const video = {
+      no: 2,
+      videoUrl: 'http://awokawok.com',
+      moduleId: 777,
     }
     const response = await request(app)
-      .put('/api/v1/module')
+      .put('/api/v1/video')
       .set('Authorization', `Bearer ${tokenAdmin}`)
-      .send(module)
+      .send(video)
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
   })
 
-  it('Failed delete module because user role not admin', async () => {
+  it('Failed delete video because user role not admin', async () => {
+    const video = {
+      no: 2,
+      videoUrl: 'http://awokawok.com',
+    }
     const response = await request(app)
-      .delete(`/api/v1/module/${moduleId}`)
+      .put(`/api/v1/video/${videoId}`)
       .set('Authorization', `Bearer ${tokenUser}`)
+      .send(video)
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe(
@@ -281,16 +346,16 @@ describe('API Module', () => {
     )
   })
 
-  it('Failed delete module because no token', async () => {
-    const response = await request(app).delete(`/api/v1/module/${moduleId}`)
+  it('Failed delete video because no token', async () => {
+    const response = await request(app).delete(`/api/v1/video/${videoId}`)
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
   })
 
-  it('Failed delete module because id not found', async () => {
+  it('Failed delete vudeo because id not found', async () => {
     const response = await request(app)
-      .delete('/api/v1/module/999')
+      .delete('/api/v1/video/999')
       .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
@@ -299,25 +364,25 @@ describe('API Module', () => {
 
   it('Failed route does not exist', async () => {
     const response = await request(app)
-      .delete('/api/v1/module')
+      .delete('/api/v1/video')
       .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
   })
 
-  it('Failed update module because jwt malformed', async () => {
+  it('Failed delete video because jwt malformed', async () => {
     const response = await request(app)
-      .delete(`/api/v1/module/${moduleId}`)
+      .delete(`/api/v1/video/${videoId}`)
       .set('Authorization', `Bearer ${tokenMalformed}`)
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
   })
 
-  it('Success delete module', async () => {
+  it('Success delete video', async () => {
     const response = await request(app)
-      .delete(`/api/v1/module/${moduleId}`)
+      .delete(`/api/v1/video/${videoId}`)
       .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
