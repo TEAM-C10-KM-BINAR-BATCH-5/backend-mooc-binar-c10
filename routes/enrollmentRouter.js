@@ -23,7 +23,7 @@ router.post(
   authenticate,
   checkRole('user'),
   checkId(Course),
-  enrollment.buyCourse,
+  enrollment.enrollCourse,
 )
 
 module.exports = router

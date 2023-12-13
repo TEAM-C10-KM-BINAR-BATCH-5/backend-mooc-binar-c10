@@ -4547,6 +4547,17 @@
               }
             }
           },
+          "201": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "message": "Success enroll course"
+                }
+              }
+            }
+          },
           "404": {
             "description": "Error, Not found! id are not exist",
             "content": {

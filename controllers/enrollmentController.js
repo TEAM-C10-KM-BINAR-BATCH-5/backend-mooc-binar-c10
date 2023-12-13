@@ -190,7 +190,7 @@ const getUserCourse = async (req, res, next) => {
   }
 }
 
-const buyCourse = async (req, res, next) => {
+const enrollCourse = async (req, res, next) => {
   const courseId = req.params.id
 
   try {
@@ -207,6 +207,26 @@ const buyCourse = async (req, res, next) => {
 
     if (alreadyEnrolled) {
       return next(new ApiError('Course already enrolled', 400))
+    }
+
+    if (course.courseType === 'Free') {
+      await UserCourse.create({
+        userId: req.user.id,
+        courseId,
+      })
+
+      await Notification.create({
+        title: 'Enrollment Success',
+        description:
+          'Congratulations, your course enroll has been successful. Lets continue to study the course you enrolled',
+        isRead: false,
+        userId: req.user.id,
+      })
+
+      return res.status(201).json({
+        success: true,
+        message: 'Success enroll course',
+      })
     }
 
     const orderId = uuidv4()
@@ -258,7 +278,7 @@ const buyCourse = async (req, res, next) => {
 }
 
 module.exports = {
-  buyCourse,
+  enrollCourse,
   getUserCourses,
   getUserCourse,
 }
