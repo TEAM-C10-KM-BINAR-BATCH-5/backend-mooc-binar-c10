@@ -50,6 +50,7 @@ beforeAll(async () => {
     .post('/api/v1/course')
     .set('Authorization', `Bearer ${tokenAdmin}`)
     .send(course)
+  console.log(response.body)
   courseIdForModule = response.body.data.newCourse.id
 })
 

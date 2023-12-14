@@ -24,6 +24,9 @@ module.exports = {
         onDelete: 'CASCADE', // if course deleted, module will deleted also
         onUpdate: 'CASCADE',
       },
+      isLocked: {
+        type: Sequelize.BOOLEAN,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

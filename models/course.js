@@ -60,6 +60,9 @@ module.exports = (sequelize, DataTypes) => {
       telegramLink: DataTypes.STRING,
       moduleCount: DataTypes.INTEGER,
       price: DataTypes.INTEGER,
+      isLocked: {
+        type: DataTypes.BOOLEAN,
+      },
     },
     {
       sequelize,

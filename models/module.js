@@ -20,6 +20,12 @@ module.exports = (sequelize, DataTypes) => {
           name: 'courseId',
         },
       })
+
+      Module.hasMany(models.UserModule, {
+        foreignKey: {
+          name: 'moduleId',
+        },
+      })
     }
   }
   Module.init(
@@ -27,6 +33,9 @@ module.exports = (sequelize, DataTypes) => {
       title: DataTypes.STRING,
       duration: DataTypes.INTEGER,
       courseId: DataTypes.INTEGER,
+      isLocked: {
+        type: DataTypes.BOOLEAN,
+      },
     },
     {
       sequelize,

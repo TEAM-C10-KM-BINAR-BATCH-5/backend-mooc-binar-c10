@@ -1,68 +1,60 @@
 const { Model } = require('sequelize')
 
 module.exports = (sequelize, DataTypes) => {
-  class UserVideo extends Model {
+  class UserModule extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      UserVideo.belongsTo(models.User, {
-        foreignKey: {
-          name: 'userId',
-          allowNull: false,
-        },
-      })
-      UserVideo.belongsTo(models.Course, {
-        foreignKey: {
-          name: 'courseId',
-          allowNull: false,
-        },
-      })
-      UserVideo.belongsTo(models.Video, {
-        foreignKey: {
-          name: 'videoId',
-          allowNull: false,
-        },
-      })
-      UserVideo.belongsTo(models.UserModule, {
+      // define association here
+      UserModule.hasMany(models.UserVideo, {
         foreignKey: {
           name: 'userModuleId',
           allowNull: false,
         },
       })
+
+      UserModule.belongsTo(models.UserCourse, {
+        foreignKey: {
+          name: 'userCourseId',
+          allowNull: false,
+        },
+      })
+      UserModule.belongsTo(models.User, {
+        foreignKey: {
+          name: 'userId',
+          allowNull: false,
+        },
+      })
+      UserModule.belongsTo(models.Module, {
+        foreignKey: {
+          name: 'moduleId',
+          allowNull: false,
+        },
+      })
     }
   }
-  UserVideo.init(
+  UserModule.init(
     {
       userId: {
+        type: DataTypes.INTEGER,
         allowNull: false,
-        type: DataTypes.INTEGER,
-      },
-      videoId: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
-      },
-      courseId: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
-      },
-      userModuleId: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
-      },
-      no: {
-        type: DataTypes.INTEGER,
       },
       title: {
         type: DataTypes.STRING,
       },
-      videoUrl: {
-        type: DataTypes.STRING,
-      },
       duration: {
         type: DataTypes.INTEGER,
+      },
+      moduleId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      userCourseId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
       },
       isLocked: {
         type: DataTypes.BOOLEAN,
@@ -70,8 +62,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'UserVideo',
+      modelName: 'UserModule',
     },
   )
-  return UserVideo
+  return UserModule
 }

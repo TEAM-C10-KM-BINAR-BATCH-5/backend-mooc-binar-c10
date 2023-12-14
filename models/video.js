@@ -29,6 +29,9 @@ module.exports = (sequelize, DataTypes) => {
       videoUrl: DataTypes.STRING,
       duration: DataTypes.INTEGER,
       moduleId: DataTypes.INTEGER,
+      isLocked: {
+        type: DataTypes.BOOLEAN,
+      },
     },
     {
       sequelize,

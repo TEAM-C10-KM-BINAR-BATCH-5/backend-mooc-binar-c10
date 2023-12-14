@@ -1,11 +1,39 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Videos', {
+    await queryInterface.createTable('UserVideos', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
+        type: Sequelize.INTEGER,
+      },
+      userId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+      },
+      userModuleId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'UserModules',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+      },
+      videoId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      courseId: {
+        allowNull: false,
         type: Sequelize.INTEGER,
       },
       no: {
@@ -19,16 +47,6 @@ module.exports = {
       },
       duration: {
         type: Sequelize.INTEGER,
-      },
-      moduleId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'Modules',
-          key: 'id',
-        },
-        onDelete: 'CASCADE', // if Module deleted, video will deleted also
-        onUpdate: 'CASCADE',
       },
       isLocked: {
         type: Sequelize.BOOLEAN,
@@ -44,6 +62,6 @@ module.exports = {
     })
   },
   async down(queryInterface) {
-    await queryInterface.dropTable('Videos')
+    await queryInterface.dropTable('UserVideos')
   },
 }

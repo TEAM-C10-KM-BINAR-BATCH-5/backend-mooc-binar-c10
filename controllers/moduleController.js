@@ -2,7 +2,7 @@ const { Module, Video, Course } = require('../models')
 const ApiError = require('../utils/apiError')
 
 const createModule = async (req, res, next) => {
-  const { title, courseId } = req.body
+  const { title, courseId, isLocked } = req.body
   try {
     let idCourse
     if (courseId) {
@@ -18,6 +18,7 @@ const createModule = async (req, res, next) => {
       title,
       duration: 0,
       courseId: idCourse,
+      isLocked,
     })
     if (newModule) {
       const course = await Course.findOne({ where: { id: courseId } })

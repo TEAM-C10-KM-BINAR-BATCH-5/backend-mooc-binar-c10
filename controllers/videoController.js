@@ -9,6 +9,7 @@ const createVid = async (req, res, next) => {
   try {
     let idModule
     let moduleDuration
+    let moduleIslocked
     if (moduleId) {
       const module = await Module.findOne({ where: { id: moduleId } })
       if (!module) {
@@ -17,9 +18,9 @@ const createVid = async (req, res, next) => {
         )
       }
       idModule = module.id
+      moduleIslocked = module.isLocked
       moduleDuration = module.duration
     }
-
     if (!title || !moduleId) {
       return next(new ApiError('Title and module id are required!', 400))
     }
@@ -30,6 +31,8 @@ const createVid = async (req, res, next) => {
       videoUrl,
       duration,
       moduleId: idModule,
+      // eslint-disable-next-line comma-dangle, no-unneeded-ternary
+      isLocked: moduleIslocked === false ? false : true,
     })
     if (newVid) {
       const tambahVideoDuration = moduleDuration + duration

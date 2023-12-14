@@ -20,12 +20,57 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false,
         },
       })
+      UserCourse.hasMany(models.UserModule, {
+        foreignKey: {
+          name: 'userCourseId',
+          allowNull: false,
+        },
+      })
     }
   }
   UserCourse.init(
     {
-      userId: DataTypes.INTEGER,
+      userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
       courseId: DataTypes.INTEGER,
+      title: DataTypes.STRING,
+      about: DataTypes.STRING,
+      objective: DataTypes.STRING,
+      onboarding: {
+        type: DataTypes.STRING,
+      },
+      categoryId: {
+        type: DataTypes.STRING,
+      },
+      level: {
+        type: DataTypes.ENUM(['Beginner', 'Intermediate', 'Advance']),
+      },
+      courseType: {
+        type: DataTypes.ENUM(['Free', 'Premium']),
+      },
+      imageUrl: {
+        type: DataTypes.STRING,
+      },
+      rating: {
+        type: DataTypes.FLOAT,
+      },
+      instructor: {
+        type: DataTypes.STRING,
+      },
+      duration: {
+        type: DataTypes.INTEGER,
+      },
+      telegramLink: {
+        type: DataTypes.STRING,
+      },
+      moduleCount: {
+        type: DataTypes.INTEGER,
+      },
+      price: {
+        type: DataTypes.INTEGER,
+      },
     },
     {
       sequelize,

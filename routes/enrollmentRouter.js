@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { Course } = require('../models')
+const { UserCourse, Course } = require('../models')
 const enrollment = require('../controllers/enrollmentController')
 const authenticate = require('../middlewares/authenticate')
 const checkRole = require('../middlewares/checkRole')
@@ -14,7 +14,7 @@ router
   .get(
     authenticate,
     checkRole('user'),
-    checkId(Course),
+    checkId(UserCourse),
     enrollment.getUserCourse,
   )
 

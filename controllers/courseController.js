@@ -55,6 +55,8 @@ const createCourse = async (req, res, next) => {
       telegramLink,
       moduleCount: 0,
       price,
+      // eslint-disable-next-line no-unneeded-ternary
+      isLocked: price > 0 ? true : false,
     })
 
     return res.status(201).json({

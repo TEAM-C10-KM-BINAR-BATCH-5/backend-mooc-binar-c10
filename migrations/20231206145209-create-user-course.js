@@ -19,14 +19,50 @@ module.exports = {
         onUpdate: 'CASCADE',
       },
       courseId: {
-        allowNull: false,
         type: Sequelize.INTEGER,
-        references: {
-          model: 'Courses',
-          key: 'id',
-        },
-        onDelete: 'CASCADE', // if course deleted, module will deleted also
-        onUpdate: 'CASCADE',
+        allowNull: false,
+      },
+      title: {
+        type: Sequelize.STRING,
+      },
+      about: {
+        type: Sequelize.STRING,
+      },
+      objective: {
+        type: Sequelize.STRING,
+      },
+      onboarding: {
+        type: Sequelize.STRING,
+      },
+      categoryId: {
+        type: Sequelize.STRING,
+      },
+      level: {
+        type: Sequelize.ENUM(['Beginner', 'Intermediate', 'Advance']),
+      },
+      courseType: {
+        type: Sequelize.ENUM(['Free', 'Premium']),
+      },
+      imageUrl: {
+        type: Sequelize.STRING,
+      },
+      rating: {
+        type: Sequelize.FLOAT,
+      },
+      instructor: {
+        type: Sequelize.STRING,
+      },
+      duration: {
+        type: Sequelize.INTEGER,
+      },
+      telegramLink: {
+        type: Sequelize.STRING,
+      },
+      moduleCount: {
+        type: Sequelize.INTEGER,
+      },
+      price: {
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
