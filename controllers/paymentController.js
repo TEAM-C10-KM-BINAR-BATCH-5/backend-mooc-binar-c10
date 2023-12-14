@@ -1,10 +1,79 @@
 /* eslint-disable camelcase */
+const uuidv4 = require('uuid').v4
 const crypto = require('crypto')
+const fetch = require('node-fetch')
 // prettier-ignore
 const {
-  Payment, UserCourse, Notification, User,
+  Payment, UserCourse, Notification, User, Course,
 } = require('../models')
 const ApiError = require('../utils/apiError')
+
+const buyCourse = async (req, res, next) => {
+  const courseId = req.params.id
+
+  try {
+    const course = await Course.findOne({
+      where: {
+        id: courseId,
+      },
+    })
+
+    const alreadyEnrolled = await UserCourse.findOne({
+      userId: req.user.id,
+      courseId,
+    })
+
+    if (alreadyEnrolled) {
+      return next(new ApiError('Course already enrolled', 400))
+    }
+
+    const orderId = uuidv4()
+
+    const dataTransaction = {
+      transaction_details: {
+        order_id: orderId,
+        gross_amount: course.price,
+      },
+      customer_details: {
+        first_name: req.user.name,
+        email: req.user.Auth.email,
+      },
+    }
+
+    const transaction = await fetch(process.env.MIDTRANS_SERVER_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: `Basic ${process.env.MIDTRANS_SERVER_KEY_HASHED}`,
+      },
+      body: JSON.stringify(dataTransaction),
+    })
+
+    const transactionResponse = await transaction.json()
+
+    await Payment.create({
+      id: orderId,
+      courseId,
+      userId: req.user.id,
+      payment_type: 'midtrans',
+      status: 'pending',
+      amount: course.price,
+      gross_amount: course.price,
+      date: new Date(),
+    })
+
+    return res.status(200).json({
+      success: true,
+      message: 'Success initiating payment',
+      data: {
+        ...transactionResponse,
+      },
+    })
+  } catch (error) {
+    return next(new ApiError(error.message, 400))
+  }
+}
 
 const paymentHook = async (req, res, next) => {
   const {
@@ -76,5 +145,6 @@ const paymentHook = async (req, res, next) => {
 }
 
 module.exports = {
+  buyCourse,
   paymentHook,
 }

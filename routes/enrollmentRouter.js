@@ -15,7 +15,7 @@ router
     authenticate,
     checkRole('user'),
     checkId(Course),
-    enrollment.getUserCourse,
+    enrollment.getUserCourseById,
   )
 
 router.post(
