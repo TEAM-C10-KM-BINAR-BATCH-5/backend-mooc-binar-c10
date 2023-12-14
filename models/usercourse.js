@@ -71,6 +71,9 @@ module.exports = (sequelize, DataTypes) => {
       price: {
         type: DataTypes.INTEGER,
       },
+      isLocked: {
+        type: DataTypes.BOOLEAN,
+      },
     },
     {
       sequelize,

@@ -64,6 +64,9 @@ module.exports = {
       price: {
         type: Sequelize.INTEGER,
       },
+      isLocked: {
+        type: Sequelize.BOOLEAN,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
