@@ -187,7 +187,7 @@ const getCourse = async (req, res, next) => {
         const filteredVideos = module.Videos.map((video) => {
           const videos = {
             ...video,
-            isLocked: isVideoLocked && moduleIndex === 0,
+            isLocked: isVideoLocked && moduleIndex !== 0,
           }
           return videos
         })

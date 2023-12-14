@@ -184,7 +184,7 @@ const getUserCourseById = async (req, res, next) => {
           const videos = {
             ...video,
             isWatched: watchedVideosId.includes(video.id),
-            isLocked: isVideoLocked && moduleIndex === 0,
+            isLocked: isVideoLocked && moduleIndex !== 0,
           }
           return videos
         })
