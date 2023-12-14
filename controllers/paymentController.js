@@ -1,10 +1,10 @@
 /* eslint-disable camelcase */
 const uuidv4 = require('uuid').v4
-const fetch = require('node-fetch')
 const crypto = require('crypto')
+const fetch = require('node-fetch')
 // prettier-ignore
 const {
-  Course, Payment, UserCourse, Notification, User,
+  Payment, UserCourse, Notification, User, Course,
 } = require('../models')
 const ApiError = require('../utils/apiError')
 

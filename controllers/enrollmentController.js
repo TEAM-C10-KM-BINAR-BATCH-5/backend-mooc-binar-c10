@@ -1,8 +1,7 @@
 const { Op } = require('sequelize')
-
 // prettier-ignore
 const {
-  Course, Module, Video, Category, sequelize, UserCourse, UserVideo,
+  Course, Module, Video, Category, sequelize, UserCourse, UserVideo, Notification, Payment,
 } = require('../models')
 const ApiError = require('../utils/apiError')
 
@@ -109,11 +108,13 @@ const getUserCourses = async (req, res, next) => {
   }
 }
 
-const getUserCourse = async (req, res, next) => {
-  const { id } = req.params
+const getUserCourseById = async (req, res, next) => {
+  const courseId = req.params.id
   try {
-    const data = await Course.findOne({
-      where: { id },
+    const course = await Course.findOne({
+      where: {
+        id: courseId,
+      },
       include: [
         {
           model: Category,
@@ -139,10 +140,20 @@ const getUserCourse = async (req, res, next) => {
       ],
     })
 
-    if (!data) {
+    const isCoursePurchased = await Payment.findOne({
+      where: {
+        userId: req.user.id,
+        courseId,
+        status: {
+          [Op.in]: ['settlement', 'capture'],
+        },
+      },
+    })
+
+    if (!course) {
       return next(
         new ApiError(
-          'You have not purchased this course yet, or course not available',
+          'You have not enroll this course yet, or course not available',
           404,
         ),
       )
@@ -150,37 +161,42 @@ const getUserCourse = async (req, res, next) => {
 
     const totalDuration = await Module.sum('duration', {
       where: {
-        courseId: id,
+        courseId,
       },
     })
 
     const watchedVideos = await UserVideo.findAll({
       where: {
-        courseId: id,
+        courseId,
         userId: req.user.id,
       },
     })
+    // prettier-ignore
+    const isVideoLocked = course.toJSON().courseType === 'Premium' && !isCoursePurchased
 
-    const filteredModules = data.toJSON().Modules.map((module) => {
-      const filteredVideos = module.Videos.map((video) => {
-        const watchedVideosId = watchedVideos.map(
-          (watchedVideo) => watchedVideo.videoId,
-        )
-        const videos = {
-          ...video,
-          isWatched: watchedVideosId.includes(video.id),
-        }
-        return videos
+    const filteredModules = course
+      .toJSON()
+      .Modules.map((module, moduleIndex) => {
+        const filteredVideos = module.Videos.map((video) => {
+          const watchedVideosId = watchedVideos.map(
+            (watchedVideo) => watchedVideo.videoId,
+          )
+          const videos = {
+            ...video,
+            isWatched: watchedVideosId.includes(video.id),
+            isLocked: isVideoLocked && moduleIndex !== 0,
+          }
+          return videos
+        })
+        return { ...module, Videos: filteredVideos }
       })
-      return { ...module, Videos: filteredVideos }
-    })
 
     return res.status(200).json({
       success: true,
       message: 'Success, fetch',
       data: {
-        ...data.toJSON(),
-        totalDuration,
+        ...course.toJSON(),
+        totalDuration: totalDuration === null ? 0 : totalDuration,
         Modules: filteredModules,
       },
     })
@@ -189,7 +205,43 @@ const getUserCourse = async (req, res, next) => {
   }
 }
 
+const enrollCourse = async (req, res, next) => {
+  const courseId = req.params.id
+
+  try {
+    const alreadyEnrolled = await UserCourse.findOne({
+      userId: req.user.id,
+      courseId,
+    })
+
+    if (alreadyEnrolled) {
+      return next(new ApiError('Course already enrolled', 400))
+    }
+
+    await UserCourse.create({
+      userId: req.user.id,
+      courseId,
+    })
+
+    await Notification.create({
+      title: 'Enrollment Success',
+      description:
+        'Congratulations, your course enroll has been successful. Lets continue to study the course you enrolled',
+      isRead: false,
+      userId: req.user.id,
+    })
+
+    return res.status(200).json({
+      success: true,
+      message: 'Success enroll course',
+    })
+  } catch (error) {
+    return next(new ApiError(error.message, 400))
+  }
+}
+
 module.exports = {
+  enrollCourse,
   getUserCourses,
-  getUserCourse,
+  getUserCourseById,
 }

@@ -70,6 +70,27 @@ const getAllTransactions = async (req, res, next) => {
   }
 }
 
+const getUserTransactionStatusById = async (req, res, next) => {
+  const transactionId = req.params.id
+  try {
+    const dataTransaction = await Payment.findOne({
+      attributes: ['status'],
+      where: {
+        id: transactionId,
+        userId: req.user.id,
+      },
+    })
+
+    return res.status(200).json({
+      success: true,
+      message: 'Success, fetch',
+      status: dataTransaction.status,
+    })
+  } catch (error) {
+    return next(new ApiError(error.message, 500))
+  }
+}
+
 const getUserTransactions = async (req, res, next) => {
   const categoryIds = req.query.categoryIds
     ? req.query.categoryIds.split(',')
@@ -142,4 +163,5 @@ const getUserTransactions = async (req, res, next) => {
 module.exports = {
   getAllTransactions,
   getUserTransactions,
+  getUserTransactionStatusById,
 }

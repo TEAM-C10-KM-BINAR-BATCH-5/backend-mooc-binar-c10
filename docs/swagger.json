@@ -47,12 +47,12 @@
       "description": "User API resources"
     },
     {
-      "name": "Payment",
-      "description": "Payment API resources"
-    },
-    {
       "name": "Enrollment",
       "description": "Enrollment API resources"
+    },
+    {
+      "name": "Payment",
+      "description": "Payment API resources"
     },
     {
       "name": "Progress",
@@ -1950,6 +1950,10 @@
                                     "moduleId": {
                                       "type": "integer",
                                       "example": 1
+                                    },
+                                    "isLocked": {
+                                      "type": "boolean",
+                                      "example": true
                                     }
                                   }
                                 }
@@ -4105,105 +4109,6 @@
         }
       }
     },
-    "/api/v1/payment/{id}": {
-      "post": {
-        "tags": ["Payment"],
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
-        "summary": "Buy Course to get payment link",
-        "description": "User membeli course lalu mengirimkan course id sesuai yang dibeli",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "Numeric ID required",
-            "type": "integer",
-            "format": "int64"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success response",
-            "content": {
-              "application/json": {
-                "example": {
-                  "success": true,
-                  "message": "Success initiating payment",
-                  "data": {
-                    "token": "95d76c5d-2735-4e92-a5c3-9fde873f5c6c",
-                    "redirect_url": "https://app.sandbox.midtrans.com/snap/v3/redirection/95d76c5d-2735-4e92-a5c3-9fde873f5c6c"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Error, Not found! id are not exist",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "id does not exist"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Course already enrolled",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Course already enrolled"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "User tidak ada token",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "No token!"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v1/enrollment": {
       "get": {
         "tags": ["Enrollment"],
@@ -4555,6 +4460,10 @@
                                     "isWatched": {
                                       "type": "boolean",
                                       "example": true
+                                    },
+                                    "isLocked": {
+                                      "type": "boolean",
+                                      "example": true
                                     }
                                   }
                                 }
@@ -4607,6 +4516,198 @@
                     "message": {
                       "type": "string",
                       "example": "You have not purchased this course yet, or course not available"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Enrollment"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Enroll course",
+        "description": "User melakukan enroll pada course berdasarkan course id tertentu",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Numeric ID required",
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "message": "Success enroll course"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error, Not found! id are not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "id does not exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Course already enrolled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Course already enrolled"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No token!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payment/{id}": {
+      "post": {
+        "tags": ["Payment"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Buy Course to get payment link",
+        "description": "User membeli course lalu mengirimkan course id sesuai yang dibeli",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Numeric ID required",
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "message": "Success initiating payment",
+                  "data": {
+                    "token": "95d76c5d-2735-4e92-a5c3-9fde873f5c6c",
+                    "redirect_url": "https://app.sandbox.midtrans.com/snap/v3/redirection/95d76c5d-2735-4e92-a5c3-9fde873f5c6c"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error, Not found! id are not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "id does not exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Course already enrolled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Course already enrolled"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No token!"
                     }
                   }
                 }
@@ -5144,6 +5245,94 @@
                     "message": {
                       "type": "string",
                       "example": "No token!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user-transaction/{id}": {
+      "get": {
+        "tags": ["Transaction"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Numeric ID required",
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "summary": "User mendapatkan data status transaksi dengan id tertentu",
+        "description": "User mendapat data status transaksi dengan id tertentu yang telah dilakukan oleh user tersebut",
+        "responses": {
+          "200": {
+            "description": "Success get all transactions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success, fetch"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "pending"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No token!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error, Not found! id are not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "id does not exist"
                     }
                   }
                 }

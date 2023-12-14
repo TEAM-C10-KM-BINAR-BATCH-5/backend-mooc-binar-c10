@@ -159,7 +159,7 @@ const deleteCourse = async (req, res, next) => {
 const getCourse = async (req, res, next) => {
   const { id } = req.params
   try {
-    const data = await Course.findOne({
+    const course = await Course.findOne({
       where: { id },
       include: [
         {
@@ -178,6 +178,22 @@ const getCourse = async (req, res, next) => {
         },
       ],
     })
+
+    const isVideoLocked = course.toJSON().courseType === 'Premium'
+
+    const filteredModules = course
+      .toJSON()
+      .Modules.map((module, moduleIndex) => {
+        const filteredVideos = module.Videos.map((video) => {
+          const videos = {
+            ...video,
+            isLocked: isVideoLocked && moduleIndex !== 0,
+          }
+          return videos
+        })
+        return { ...module, Videos: filteredVideos }
+      })
+
     const totalDuration = await Module.sum('duration', {
       where: {
         courseId: id,
@@ -187,8 +203,9 @@ const getCourse = async (req, res, next) => {
       success: true,
       message: 'Success, fetch',
       data: {
-        ...data.toJSON(),
+        ...course.toJSON(),
         totalDuration: totalDuration === null ? 0 : totalDuration,
+        Modules: filteredModules,
       },
     })
   } catch (error) {
