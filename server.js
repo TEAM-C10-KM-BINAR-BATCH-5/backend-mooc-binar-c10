@@ -29,7 +29,7 @@ app.use(router)
 
 // Handle 404 errors
 app.all('*', (req, res, next) => {
-  next(new ApiError('Route does not exist', 404))
+  next(new ApiError('Routes does not exist', 404))
 })
 
 // Error handling middleware
