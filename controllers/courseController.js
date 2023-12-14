@@ -253,31 +253,101 @@ const updateCourse = async (req, res, next) => {
       }
       idCategory = category.id
     }
-    const updatedCourse = await Course.update(
+    if (title) {
+      await Course.update(
+        {
+          title,
+        },
+        { where: { id } },
+      )
+    } else if (level) {
+      await Course.update(
+        {
+          level,
+        },
+        { where: { id } },
+      )
+    } else if (courseType) {
+      await Course.update(
+        {
+          courseType,
+        },
+        { where: { id } },
+      )
+    } else if (rating) {
+      await Course.update(
+        {
+          rating,
+        },
+        { where: { id } },
+      )
+    } else if (instructor) {
+      await Course.update(
+        {
+          instructor,
+        },
+        { where: { id } },
+      )
+    } else if (duration) {
+      await Course.update(
+        {
+          duration,
+        },
+        { where: { id } },
+      )
+    } else if (telegramLink) {
+      await Course.update(
+        {
+          telegramLink,
+        },
+        { where: { id } },
+      )
+    } else if (moduleCount) {
+      await Course.update(
+        {
+          moduleCount,
+        },
+        { where: { id } },
+      )
+    } else if (about) {
+      await Course.update(
+        {
+          about,
+        },
+        { where: { id } },
+      )
+    } else if (objective) {
+      await Course.update(
+        {
+          objective,
+        },
+        { where: { id } },
+      )
+    } else if (onboarding) {
+      await Course.update(
+        {
+          onboarding,
+        },
+        { where: { id } },
+      )
+    } else if (price) {
+      await Course.update(
+        {
+          price,
+        },
+        { where: { id } },
+      )
+    }
+    await Course.update(
       {
-        title,
         categoryId: idCategory,
-        level,
-        courseType,
         imageUrl: image,
-        rating,
-        instructor,
-        duration,
-        telegramLink,
-        moduleCount,
-        about,
-        objective,
-        onboarding,
-        price,
       },
-      { where: { id }, returning: true },
+      { where: { id } },
     )
     return res.status(200).json({
       success: true,
       message: 'Success, updated',
-      data: {
-        updatedCourse,
-      },
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))

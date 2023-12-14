@@ -4,67 +4,19 @@ const app = require('../server')
 const { faker } = require('@faker-js/faker')
 require('dotenv').config()
 
-let tokenUser = ''
-let tokenAdmin = ''
-let courseIdForModule = ''
-let moduleIdForVideo = ''
-let videoId = ''
-let tokenMalformed =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpZCI6NywibmFtZSI6ImFkbWluIiwiZW1haWwiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDI0NjA3NzgsImV4cCI6MTcwMjU0NzE3OH0.KCqPMrXmPeB0C7ex_p-tYiP5KtK97mMc4jzq6poxj9c'
+const getToken = async (credentials) => {
+  const check = await request(app).post('/api/v1/auth/login').send(credentials)
+  const res = JSON.parse(check.text)
+  return res.token
+}
 
-beforeAll(async () => {
-  const user = {
-    email: 'layla@gmail.com',
-    password: 'userlayla123',
-  }
-  const response = await request(app).post('/api/v1/auth/login').send(user)
-  tokenUser = response.body.token
-})
-
-beforeAll(async () => {
-  const user = {
-    email: 'binar.team.c10@gmail.com',
-    password: 'admin123',
-  }
-  const response = await request(app)
+const getTokenAdmin = async (credentials) => {
+  const check = await request(app)
     .post('/api/v1/auth/admin/login')
-    .send(user)
-  tokenAdmin = response.body.token
-})
-
-beforeAll(async () => {
-  const course = {
-    title: 'Tutorial Html dan Css',
-    about: 'Html dan Css adalah sebuah kerangka dasar dalam membuat suatu web',
-    objective:
-      'Course ini ditujukan untuk orang yang mau berkarier di dunia IT khususnya di bidang pengembangan web',
-    categoryId: 'C-0WEB',
-    onboarding:
-      'Siapkan mental anda untuk menghadapi course ini, karena course ini sangat bagus sehingga membuat mental anda menjadi semangat',
-    level: 'Beginner',
-    rating: 4.5,
-    instructor: 'Sandika Galih',
-    telegramLink: 'http://www.telegramling.com',
-    price: 50000,
-  }
-  const response = await request(app)
-    .post('/api/v1/course')
-    .set('Authorization', `Bearer ${tokenAdmin}`)
-    .send(course)
-  courseIdForModule = response.body.data.newCourse.id
-})
-
-beforeAll(async () => {
-  const module = {
-    title: 'Chapter 1 html css',
-    courseId: courseIdForModule,
-  }
-  const response = await request(app)
-    .post('/api/v1/module')
-    .set('Authorization', `Bearer ${tokenAdmin}`)
-    .send(module)
-  moduleIdForVideo = response.body.data.newModule.id
-})
+    .send(credentials)
+  const res = JSON.parse(check.text)
+  return res.token
+}
 
 describe('API Video', () => {
   it('Success create video', async () => {
@@ -73,13 +25,16 @@ describe('API Video', () => {
       no: 1,
       videoUrl: 'http://wkwkwk.com',
       duration: 10,
-      moduleId: moduleIdForVideo,
+      moduleId: 1,
     }
+    const tokenAdmin = await getTokenAdmin({
+      email: 'binar.team.c10@gmail.com',
+      password: 'admin123',
+    })
     const response = await request(app)
       .post('/api/v1/video')
       .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(video)
-    videoId = response.body.data.newVid.id
     expect(response.statusCode).toBe(201)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, create video')
@@ -91,8 +46,10 @@ describe('API Video', () => {
       no: 1,
       videoUrl: 'http://wkwkwk.com',
       duration: 10,
-      moduleId: moduleIdForVideo,
+      moduleId: 1,
     }
+    const tokenMalformed =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpZCI6NywibmFtZSI6ImFkbWluIiiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xl3MDI0NjA3NPeB0iP5KtK97mMc4jzq6poxj9c'
     const response = await request(app)
       .post('/api/v1/video')
       .set('Authorization', `Bearer ${tokenMalformed}`)
@@ -102,6 +59,25 @@ describe('API Video', () => {
     expect(response.body.message).toBe('jwt malformed')
   })
 
+  it('Failed create video because jwt expired', async () => {
+    const video = {
+      title: 'Pendahuluan html',
+      no: 1,
+      videoUrl: 'http://wkwkwk.com',
+      duration: 10,
+      moduleId: 1,
+    }
+    const tokenExpired =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywibmFtZSI6ImFkbWluIiwiZW1haWwiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDIzNzc1NzksImV4cCI6MTcwMjQ2Mzk3OX0.4eAhzrpoZ9kUnabNdil8YHxkVNa-EnD5iimahZ8ky2g'
+    const response = await request(app)
+      .post('/api/v1/video')
+      .set('Authorization', `Bearer ${tokenExpired}`)
+      .send(video)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt expired')
+  })
+
   it('Failed create video because about to much string', async () => {
     const video = {
       title:
@@ -109,8 +85,12 @@ describe('API Video', () => {
       no: 1,
       videoUrl: 'http://wkwkwk.com',
       duration: 10,
-      moduleId: moduleIdForVideo,
+      moduleId: 1,
     }
+    const tokenAdmin = await getTokenAdmin({
+      email: 'binar.team.c10@gmail.com',
+      password: 'admin123',
+    })
     const response = await request(app)
       .post('/api/v1/video')
       .set('Authorization', `Bearer ${tokenAdmin}`)
@@ -128,7 +108,7 @@ describe('API Video', () => {
       no: 1,
       videoUrl: 'http://wkwkwk.com',
       duration: 10,
-      moduleId: moduleIdForVideo,
+      moduleId: 1,
     }
     const response = await request(app).post('/api/v1/video').send(video)
     expect(response.statusCode).toBe(401)
@@ -151,6 +131,10 @@ describe('API Video', () => {
       duration: 10,
       moduleId: 999,
     }
+    const tokenAdmin = await getTokenAdmin({
+      email: 'binar.team.c10@gmail.com',
+      password: 'admin123',
+    })
     const response = await request(app)
       .post('/api/v1/video')
       .set('Authorization', `Bearer ${tokenAdmin}`)
@@ -166,6 +150,10 @@ describe('API Video', () => {
       videoUrl: 'http://wkwkwk.com',
       duration: 10,
     }
+    const tokenAdmin = await getTokenAdmin({
+      email: 'binar.team.c10@gmail.com',
+      password: 'admin123',
+    })
     const response = await request(app)
       .post('/api/v1/video')
       .set('Authorization', `Bearer ${tokenAdmin}`)
@@ -182,8 +170,12 @@ describe('API Video', () => {
       no: 1,
       videoUrl: 'http://wkwkwk.com',
       duration: 10,
-      moduleId: moduleIdForVideo,
+      moduleId: 1,
     }
+    const tokenUser = await getToken({
+      email: 'syifa@gmail.com',
+      password: 'usersyifa123',
+    })
     const response = await request(app)
       .post('/api/v1/video')
       .set('Authorization', `Bearer ${tokenUser}`)
@@ -202,8 +194,12 @@ describe('API Video', () => {
       no: 1,
       videoUrl: 'http://wkwkwk.com',
       duration: 10,
-      moduleId: moduleIdForVideo,
+      moduleId: 1,
     }
+    const tokenAdmin = await getTokenAdmin({
+      email: 'binar.team.c10@gmail.com',
+      password: 'admin123',
+    })
     const response = await request(app)
       .post('/api/v1/video/10')
       .set('Authorization', `Bearer ${tokenAdmin}`)
@@ -214,7 +210,7 @@ describe('API Video', () => {
   })
 
   it('Success get video by id', async () => {
-    const response = await request(app).get(`/api/v1/video/${videoId}`)
+    const response = await request(app).get('/api/v1/video/1')
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, fetch')
@@ -232,8 +228,12 @@ describe('API Video', () => {
       no: 2,
       videoUrl: 'http://awokawok.com',
     }
+    const tokenAdmin = await getTokenAdmin({
+      email: 'binar.team.c10@gmail.com',
+      password: 'admin123',
+    })
     const response = await request(app)
-      .put(`/api/v1/video/${videoId}`)
+      .put('/api/v1/video/1')
       .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(video)
     expect(response.statusCode).toBe(200)
@@ -246,8 +246,10 @@ describe('API Video', () => {
       no: 2,
       videoUrl: 'http://awokawok.com',
     }
+    const tokenMalformed =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpZCI6NywibmFtZSI6ImFkbWluIiiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xl3MDI0NjA3NPeB0iP5KtK97mMc4jzq6poxj9c'
     const response = await request(app)
-      .put(`/api/v1/video/${videoId}`)
+      .put('/api/v1/video/1')
       .set('Authorization', `Bearer ${tokenMalformed}`)
       .send(video)
     expect(response.statusCode).toBe(500)
@@ -255,14 +257,28 @@ describe('API Video', () => {
     expect(response.body.message).toBe('jwt malformed')
   })
 
+  it('Failed update video because jwt expired', async () => {
+    const video = {
+      no: 2,
+      videoUrl: 'http://awokawok.com',
+    }
+    const tokenExpired =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywibmFtZSI6ImFkbWluIiwiZW1haWwiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDIzNzc1NzksImV4cCI6MTcwMjQ2Mzk3OX0.4eAhzrpoZ9kUnabNdil8YHxkVNa-EnD5iimahZ8ky2g'
+    const response = await request(app)
+      .put('/api/v1/video/1')
+      .set('Authorization', `Bearer ${tokenExpired}`)
+      .send(video)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt expired')
+  })
+
   it('Failed update video because no token', async () => {
     const video = {
       no: 2,
       videoUrl: 'http://awokawok.com',
     }
-    const response = await request(app)
-      .put(`/api/v1/video/${videoId}`)
-      .send(video)
+    const response = await request(app).put('/api/v1/video/1').send(video)
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
@@ -273,8 +289,12 @@ describe('API Video', () => {
       no: 2,
       videoUrl: 'http://awokawok.com',
     }
+    const tokenUser = await getToken({
+      email: 'syifa@gmail.com',
+      password: 'usersyifa123',
+    })
     const response = await request(app)
-      .put(`/api/v1/video/${videoId}`)
+      .put('/api/v1/video/1')
       .set('Authorization', `Bearer ${tokenUser}`)
       .send(video)
     expect(response.statusCode).toBe(401)
@@ -289,6 +309,10 @@ describe('API Video', () => {
       no: 2,
       videoUrl: 'http://awokawok.com',
     }
+    const tokenAdmin = await getTokenAdmin({
+      email: 'binar.team.c10@gmail.com',
+      password: 'admin123',
+    })
     const response = await request(app)
       .put('/api/v1/video/888')
       .set('Authorization', `Bearer ${tokenAdmin}`)
@@ -304,8 +328,12 @@ describe('API Video', () => {
       videoUrl: 'http://awokawok.com',
       moduleId: 777,
     }
+    const tokenAdmin = await getTokenAdmin({
+      email: 'binar.team.c10@gmail.com',
+      password: 'admin123',
+    })
     const response = await request(app)
-      .put(`/api/v1/video/${videoId}`)
+      .put('/api/v1/video/1')
       .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(video)
     expect(response.statusCode).toBe(400)
@@ -321,6 +349,10 @@ describe('API Video', () => {
       videoUrl: 'http://awokawok.com',
       moduleId: 777,
     }
+    const tokenAdmin = await getTokenAdmin({
+      email: 'binar.team.c10@gmail.com',
+      password: 'admin123',
+    })
     const response = await request(app)
       .put('/api/v1/video')
       .set('Authorization', `Bearer ${tokenAdmin}`)
@@ -335,8 +367,12 @@ describe('API Video', () => {
       no: 2,
       videoUrl: 'http://awokawok.com',
     }
+    const tokenUser = await getToken({
+      email: 'syifa@gmail.com',
+      password: 'usersyifa123',
+    })
     const response = await request(app)
-      .put(`/api/v1/video/${videoId}`)
+      .put('/api/v1/video/3')
       .set('Authorization', `Bearer ${tokenUser}`)
       .send(video)
     expect(response.statusCode).toBe(401)
@@ -347,13 +383,17 @@ describe('API Video', () => {
   })
 
   it('Failed delete video because no token', async () => {
-    const response = await request(app).delete(`/api/v1/video/${videoId}`)
+    const response = await request(app).delete('/api/v1/video/2')
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
   })
 
   it('Failed delete vudeo because id not found', async () => {
+    const tokenAdmin = await getTokenAdmin({
+      email: 'binar.team.c10@gmail.com',
+      password: 'admin123',
+    })
     const response = await request(app)
       .delete('/api/v1/video/999')
       .set('Authorization', `Bearer ${tokenAdmin}`)
@@ -363,6 +403,10 @@ describe('API Video', () => {
   })
 
   it('Failed route does not exist', async () => {
+    const tokenAdmin = await getTokenAdmin({
+      email: 'binar.team.c10@gmail.com',
+      password: 'admin123',
+    })
     const response = await request(app)
       .delete('/api/v1/video')
       .set('Authorization', `Bearer ${tokenAdmin}`)
@@ -372,17 +416,34 @@ describe('API Video', () => {
   })
 
   it('Failed delete video because jwt malformed', async () => {
+    const tokenMalformed =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpZCI6NywibmFtZSI6ImFkbWluIiiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xl3MDI0NjA3NPeB0iP5KtK97mMc4jzq6poxj9c'
     const response = await request(app)
-      .delete(`/api/v1/video/${videoId}`)
+      .delete('/api/v1/video/3')
       .set('Authorization', `Bearer ${tokenMalformed}`)
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
   })
 
-  it('Success delete video', async () => {
+  it('Failed delete video because jwt expired', async () => {
+    const tokenExpired =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywibmFtZSI6ImFkbWluIiwiZW1haWwiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDIzNzc1NzksImV4cCI6MTcwMjQ2Mzk3OX0.4eAhzrpoZ9kUnabNdil8YHxkVNa-EnD5iimahZ8ky2g'
     const response = await request(app)
-      .delete(`/api/v1/video/${videoId}`)
+      .delete('/api/v1/video/3')
+      .set('Authorization', `Bearer ${tokenExpired}`)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt expired')
+  })
+
+  it('Success delete video', async () => {
+    const tokenAdmin = await getTokenAdmin({
+      email: 'binar.team.c10@gmail.com',
+      password: 'admin123',
+    })
+    const response = await request(app)
+      .delete('/api/v1/video/6')
       .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)

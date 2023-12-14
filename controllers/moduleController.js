@@ -127,16 +127,14 @@ const updateModule = async (req, res, next) => {
 const getModule = async (req, res, next) => {
   const { id } = req.params
   try {
-    const module = await Module.findOne({
+    const data = await Module.findOne({
       where: { id },
       include: [{ model: Video }],
     })
     return res.status(200).json({
       success: true,
       message: 'Success, fetch',
-      data: {
-        module,
-      },
+      data,
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))

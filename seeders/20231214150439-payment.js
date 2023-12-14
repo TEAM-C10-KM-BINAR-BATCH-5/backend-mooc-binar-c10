@@ -5,7 +5,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert('Courses', [
       {
-        title: 'Html & Css Full Course',
+        title: 'Html & Css Full Courses',
         about: 'Course html terupdat saat ini',
         objective:
           'Course html sangat cocok untuk orang yang mau menjadi web designer',

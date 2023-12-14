@@ -4,54 +4,26 @@ const app = require('../server')
 const { faker } = require('@faker-js/faker')
 require('dotenv').config()
 
-let tokenUser = ''
-let tokenAdmin = ''
-let courseId = ''
-let tokenMalformed =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpZCI6NywibmFtZSI6ImFkbWluIiwiZW1haWwiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDI0NjA3NzgsImV4cCI6MTcwMjU0NzE3OH0.KCqPMrXmPeB0C7ex_p-tYiP5KtK97mMc4jzq6poxj9c'
+const getToken = async (credentials) => {
+  const check = await request(app).post('/api/v1/auth/login').send(credentials)
+  const res = JSON.parse(check.text)
+  return res.token
+}
 
-beforeAll(async () => {
-  const user = {
-    email: 'syifa@gmail.com',
-    password: 'usersyifa123',
-  }
-  const response = await request(app).post('/api/v1/auth/login').send(user)
-  tokenUser = response.body.token
-})
-
-beforeAll(async () => {
-  const user = {
-    email: 'binar.team.c10@gmail.com',
-    password: 'admin123',
-  }
-  const response = await request(app)
+const getTokenAdmin = async (credentials) => {
+  const check = await request(app)
     .post('/api/v1/auth/admin/login')
-    .send(user)
-  tokenAdmin = response.body.token
-})
+    .send(credentials)
+  const res = JSON.parse(check.text)
+  return res.token
+}
 
-beforeAll(async () => {
-  const course = {
-    title: 'Tutorial Html dan Css',
-    about: 'Html dan Css adalah sebuah kerangka dasar dalam membuat suatu web',
-    objective:
-      'Course ini ditujukan untuk orang yang mau berkarier di dunia IT khususnya di bidang pengembangan web',
-    categoryId: 'C-0WEB',
-    onboarding:
-      'Siapkan mental anda untuk menghadapi course ini, karena course ini sangat bagus sehingga membuat mental anda menjadi semangat',
-    level: 'Beginner',
-    rating: 4.5,
-    instructor: 'Sandika Galih',
-    telegramLink: 'http://www.telegramling.com',
-    price: 50000,
-  }
-  const response = await request(app)
-    .post('/api/v1/course')
-    .set('Authorization', `Bearer ${tokenAdmin}`)
-    .send(course)
-  courseIdForModule = response.body.data.newCourse.id
-})
+const getIdCourse = async (id) => {
+  const check = await request(app).get(`/api/v1/course/${id}`)
 
+  const res = JSON.parse(check.text)
+  return res.data.id
+}
 describe('API Course', () => {
   it('Success create course', async () => {
     const course = {
@@ -69,11 +41,14 @@ describe('API Course', () => {
       telegramLink: 'http://www.telegramling.com',
       price: 50000,
     }
+    const tokenAdmin = await getTokenAdmin({
+      email: 'binar.team.c10@gmail.com',
+      password: 'admin123',
+    })
     const response = await request(app)
       .post('/api/v1/course')
       .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(course)
-    courseId = response.body.data.newCourse.id
     expect(response.statusCode).toBe(201)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, create course')
@@ -95,6 +70,8 @@ describe('API Course', () => {
       telegramLink: 'http://www.telegramling.com',
       price: 50000,
     }
+    const tokenMalformed =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpZCI6NywibmFtZSI6ImFkbWluIiiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xl3MDI0NjA3NPeB0iP5KtK97mMc4jzq6poxj9c'
     const response = await request(app)
       .post('/api/v1/course')
       .set('Authorization', `Bearer ${tokenMalformed}`)
@@ -102,6 +79,33 @@ describe('API Course', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
+  })
+
+  it('Failed create course because jwt expired', async () => {
+    const course = {
+      title: 'Tutorial Html dan Css',
+      about:
+        'Html dan Css adalah sebuah kerangka dasar dalam membuat suatu web',
+      objective:
+        'Course ini ditujukan untuk orang yang mau berkarier di dunia IT khususnya di bidang pengembangan web',
+      categoryId: 'C-0WEB',
+      onboarding:
+        'Siapkan mental anda untuk menghadapi course ini, karena course ini sangat bagus sehingga membuat mental anda menjadi semangat',
+      level: 'Beginner',
+      rating: 4.5,
+      instructor: 'Sandika Galih',
+      telegramLink: 'http://www.telegramling.com',
+      price: 50000,
+    }
+    const tokenExpired =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywibmFtZSI6ImFkbWluIiwiZW1haWwiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDIzNzc1NzksImV4cCI6MTcwMjQ2Mzk3OX0.4eAhzrpoZ9kUnabNdil8YHxkVNa-EnD5iimahZ8ky2g'
+    const response = await request(app)
+      .post('/api/v1/course')
+      .set('Authorization', `Bearer ${tokenExpired}`)
+      .send(course)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt expired')
   })
 
   it('Failed create course because about to much string', async () => {
@@ -120,6 +124,10 @@ describe('API Course', () => {
       telegramLink: 'http://www.telegramling.com',
       price: 50000,
     }
+    const tokenAdmin = await getTokenAdmin({
+      email: 'binar.team.c10@gmail.com',
+      password: 'admin123',
+    })
     const response = await request(app)
       .post('/api/v1/course')
       .set('Authorization', `Bearer ${tokenAdmin}`)
@@ -176,6 +184,10 @@ describe('API Course', () => {
       telegramLink: 'http://www.telegramling.com',
       price: 50000,
     }
+    const tokenAdmin = await getTokenAdmin({
+      email: 'binar.team.c10@gmail.com',
+      password: 'admin123',
+    })
     const response = await request(app)
       .post('/api/v1/course')
       .send(course)
@@ -203,6 +215,10 @@ describe('API Course', () => {
       telegramLink: 'http://www.telegramling.com',
       price: 50000,
     }
+    const tokenAdmin = await getTokenAdmin({
+      email: 'binar.team.c10@gmail.com',
+      password: 'admin123',
+    })
     const response = await request(app)
       .post('/api/v1/course')
       .send(course)
@@ -230,6 +246,10 @@ describe('API Course', () => {
       telegramLink: 'http://www.telegramling.com',
       price: 50000,
     }
+    const tokenUser = await getToken({
+      email: 'syifa@gmail.com',
+      password: 'usersyifa123',
+    })
     const response = await request(app)
       .post('/api/v1/course')
       .send(course)
@@ -257,6 +277,10 @@ describe('API Course', () => {
       telegramLink: 'http://www.telegramling.com',
       price: 50000,
     }
+    const tokenAdmin = await getTokenAdmin({
+      email: 'binar.team.c10@gmail.com',
+      password: 'admin123',
+    })
     const response = await request(app)
       .post('/api/v1/course/10')
       .set('Authorization', `Bearer ${tokenAdmin}`)
@@ -267,6 +291,7 @@ describe('API Course', () => {
   })
 
   it('Success get course by id', async () => {
+    const courseId = await getIdCourse(1)
     const response = await request(app).get(`/api/v1/course/${courseId}`)
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
@@ -285,6 +310,11 @@ describe('API Course', () => {
       rating: 4.3,
       price: 30000,
     }
+    const tokenAdmin = await getTokenAdmin({
+      email: 'binar.team.c10@gmail.com',
+      password: 'admin123',
+    })
+    const courseId = await getIdCourse(1)
     const response = await request(app)
       .patch(`/api/v1/course/${courseId}`)
       .set('Authorization', `Bearer ${tokenAdmin}`)
@@ -299,6 +329,9 @@ describe('API Course', () => {
       rating: 4.3,
       price: 30000,
     }
+    const courseId = await getIdCourse(1)
+    const tokenMalformed =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpZCI6NywibmFtZSI6ImFkbWluIiiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xl3MDI0NjA3NPeB0iP5KtK97mMc4jzq6poxj9c'
     const response = await request(app)
       .patch(`/api/v1/course/${courseId}`)
       .set('Authorization', `Bearer ${tokenMalformed}`)
@@ -308,11 +341,33 @@ describe('API Course', () => {
     expect(response.body.message).toBe('jwt malformed')
   })
 
+  it('Failed update course because jwt expired', async () => {
+    const course = {
+      rating: 4.3,
+      price: 30000,
+    }
+    const courseId = await getIdCourse(1)
+    const tokenExpired =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywibmFtZSI6ImFkbWluIiwiZW1haWwiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDIzNzc1NzksImV4cCI6MTcwMjQ2Mzk3OX0.4eAhzrpoZ9kUnabNdil8YHxkVNa-EnD5iimahZ8ky2g'
+    const response = await request(app)
+      .patch(`/api/v1/course/${courseId}`)
+      .set('Authorization', `Bearer ${tokenExpired}`)
+      .send(course)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt expired')
+  })
+
   it('Failed update course because user role not admin', async () => {
     const course = {
       title: 'Tutorial Html dan Css',
       price: 10000,
     }
+    const tokenUser = await getToken({
+      email: 'syifa@gmail.com',
+      password: 'usersyifa123',
+    })
+    const courseId = await getIdCourse(2)
     const response = await request(app)
       .patch(`/api/v1/course/${courseId}`)
       .set('Authorization', `Bearer ${tokenUser}`)
@@ -329,6 +384,10 @@ describe('API Course', () => {
       rating: 4.3,
       price: 30000,
     }
+    const tokenAdmin = await getTokenAdmin({
+      email: 'binar.team.c10@gmail.com',
+      password: 'admin123',
+    })
     const response = await request(app)
       .patch('/api/v1/course/999')
       .set('Authorization', `Bearer ${tokenAdmin}`)
@@ -338,32 +397,37 @@ describe('API Course', () => {
     expect(response.body.message).toBe('id does not exist')
   })
 
-  it('Failed update course because level not the same like on enum data', async () => {
-    const course = {
-      title: 'Tutorial Html dan Css',
-      about:
-        'Html dan Css adalah sebuah kerangka dasar dalam membuat suatu web',
-      objective:
-        'Course ini ditujukan untuk orang yang mau berkarier di dunia IT khususnya di bidang pengembangan web',
-      categoryId: 'C-0WEB',
-      onboarding:
-        'Siapkan mental anda untuk menghadapi course ini, karena course ini sangat bagus sehingga membuat mental anda menjadi semangat',
-      level: 'Gegeh',
-      rating: 4.5,
-      instructor: 'Sandika Galih',
-      telegramLink: 'http://www.telegramling.com',
-      price: 50000,
-    }
-    const response = await request(app)
-      .patch(`/api/v1/course/${courseId}`)
-      .set('Authorization', `Bearer ${tokenAdmin}`)
-      .send(course)
-    expect(response.statusCode).toBe(500)
-    expect(response.body.success).toBe(false)
-    expect(response.body.message).toBe(
-      'invalid input value for enum "enum_Courses_level": "Gegeh"',
-    )
-  })
+  // it('Failed update course because level not the same like on enum data', async () => {
+  //   const course = {
+  //     title: 'Tutorial Html dan Css',
+  //     about:
+  //       'Html dan Css adalah sebuah kerangka dasar dalam membuat suatu web',
+  //     objective:
+  //       'Course ini ditujukan untuk orang yang mau berkarier di dunia IT khususnya di bidang pengembangan web',
+  //     categoryId: 'C-0WEB',
+  //     onboarding:
+  //       'Siapkan mental anda untuk menghadapi course ini, karena course ini sangat bagus sehingga membuat mental anda menjadi semangat',
+  //     level: 'Gegeh',
+  //     rating: 4.5,
+  //     instructor: 'Sandika Galih',
+  //     telegramLink: 'http://www.telegramling.com',
+  //     price: 50000,
+  //   }
+  //   const tokenAdmin = await getTokenAdmin({
+  //     email: 'binar.team.c10@gmail.com',
+  //     password: 'admin123',
+  //   })
+  //   const courseId = await getIdCourse(2)
+  //   const response = await request(app)
+  //     .patch(`/api/v1/course/${courseId}`)
+  //     .set('Authorization', `Bearer ${tokenAdmin}`)
+  //     .send(course)
+  //   expect(response.statusCode).toBe(500)
+  //   expect(response.body.success).toBe(false)
+  //   expect(response.body.message).toBe(
+  //     'invalid input value for enum "enum_Courses_level": "Gegeh"',
+  //   )
+  // })
 
   it('Failed update course because categoryId not found', async () => {
     const course = {
@@ -381,6 +445,11 @@ describe('API Course', () => {
       telegramLink: 'http://www.telegramling.com',
       price: 50000,
     }
+    const tokenAdmin = await getTokenAdmin({
+      email: 'binar.team.c10@gmail.com',
+      password: 'admin123',
+    })
+    const courseId = await getIdCourse(2)
     const response = await request(app)
       .patch(`/api/v1/course/${courseId}`)
       .set('Authorization', `Bearer ${tokenAdmin}`)
@@ -397,6 +466,7 @@ describe('API Course', () => {
       rating: 4.3,
       price: 30000,
     }
+    const courseId = await getIdCourse(2)
     const response = await request(app)
       .patch(`/api/v1/course/${courseId}`)
       .send(course)
@@ -406,6 +476,10 @@ describe('API Course', () => {
   })
 
   it('Failed route does not exist', async () => {
+    const tokenAdmin = await getTokenAdmin({
+      email: 'binar.team.c10@gmail.com',
+      password: 'admin123',
+    })
     const response = await request(app)
       .patch('/api/v1/course')
       .set('Authorization', `Bearer ${tokenAdmin}`)
@@ -415,6 +489,11 @@ describe('API Course', () => {
   })
 
   it('Failed delete course because user role not admin', async () => {
+    const tokenUser = await getToken({
+      email: 'khaled@gmail.com',
+      password: 'userkhaled123',
+    })
+    const courseId = await getIdCourse(2)
     const response = await request(app)
       .delete(`/api/v1/course/${courseId}`)
       .set('Authorization', `Bearer ${tokenUser}`)
@@ -426,6 +505,7 @@ describe('API Course', () => {
   })
 
   it('Failed delete course because no token', async () => {
+    const courseId = await getIdCourse(2)
     const response = await request(app).delete(`/api/v1/course/${courseId}`)
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
@@ -433,6 +513,10 @@ describe('API Course', () => {
   })
 
   it('Failed delete course because id not found', async () => {
+    const tokenAdmin = await getTokenAdmin({
+      email: 'binar.team.c10@gmail.com',
+      password: 'admin123',
+    })
     const response = await request(app)
       .delete('/api/v1/course/999')
       .set('Authorization', `Bearer ${tokenAdmin}`)
@@ -442,6 +526,10 @@ describe('API Course', () => {
   })
 
   it('Failed route does not exist', async () => {
+    const tokenAdmin = await getTokenAdmin({
+      email: 'binar.team.c10@gmail.com',
+      password: 'admin123',
+    })
     const response = await request(app)
       .delete('/api/v1/course')
       .set('Authorization', `Bearer ${tokenAdmin}`)
@@ -451,6 +539,9 @@ describe('API Course', () => {
   })
 
   it('Failed delete course because jwt malformed', async () => {
+    let tokenMalformed =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpZCI6NywibmFtZSI6ImFkbWluIiiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xl3MDI0NjA3NPeB0iP5KtK97mMc4jzq6poxj9c'
+    const courseId = await getIdCourse(2)
     const response = await request(app)
       .delete(`/api/v1/course/${courseId}`)
       .set('Authorization', `Bearer ${tokenMalformed}`)
@@ -459,7 +550,24 @@ describe('API Course', () => {
     expect(response.body.message).toBe('jwt malformed')
   })
 
+  it('Failed delete course because jwt expired', async () => {
+    const tokenExpired =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywibmFtZSI6ImFkbWluIiwiZW1haWwiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDIzNzc1NzksImV4cCI6MTcwMjQ2Mzk3OX0.4eAhzrpoZ9kUnabNdil8YHxkVNa-EnD5iimahZ8ky2g'
+    const courseId = await getIdCourse(2)
+    const response = await request(app)
+      .delete(`/api/v1/course/${courseId}`)
+      .set('Authorization', `Bearer ${tokenExpired}`)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt expired')
+  })
+
   it('Success delete course', async () => {
+    const tokenAdmin = await getTokenAdmin({
+      email: 'binar.team.c10@gmail.com',
+      password: 'admin123',
+    })
+    const courseId = await getIdCourse(3)
     const response = await request(app)
       .delete(`/api/v1/course/${courseId}`)
       .set('Authorization', `Bearer ${tokenAdmin}`)

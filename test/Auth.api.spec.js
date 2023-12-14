@@ -4,39 +4,11 @@ const app = require('../server')
 const { faker } = require('@faker-js/faker')
 require('dotenv').config()
 
-let tokenUser = ''
-let tokenUserForUbahPass = ''
-let tokenAdmin = ''
-// let otpForRegister = ''
-
-beforeAll(async () => {
-  const user = {
-    email: 'syifa@gmail.com',
-    password: 'usersyifa123',
-  }
-  const response = await request(app).post('/api/v1/auth/login').send(user)
-  tokenUser = response.body.token
-})
-
-beforeAll(async () => {
-  const user = {
-    email: 'gilang@gmail.com',
-    password: 'usergilang123',
-  }
-  const response = await request(app).post('/api/v1/auth/login').send(user)
-  tokenUserForUbahPass = response.body.token
-})
-
-beforeAll(async () => {
-  const user = {
-    email: 'binar.team.c10@gmail.com',
-    password: 'admin123',
-  }
-  const response = await request(app)
-    .post('/api/v1/auth/admin/login')
-    .send(user)
-  tokenAdmin = response.body.token
-})
+const getToken = async (credentials) => {
+  const check = await request(app).post('/api/v1/auth/login').send(credentials)
+  const res = JSON.parse(check.text)
+  return res.token
+}
 
 // describe('OTP endpoint', () => {
 //   it('Should generate OTP and send email', async () => {
@@ -88,8 +60,10 @@ describe('API Register', () => {
       name: 'imam',
       phoneNumber: 6288716625536,
       otp: 876513,
+      hashedOtp: '55d6c68b61cefc6a66d2abaff',
     }
     const response = await request(app).post('/api/v1/auth/register').send(user)
+    console.log(response.body)
     expect(response.statusCode).toBe(400)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('invalid or expired otp')
@@ -222,12 +196,38 @@ describe('API Login', () => {
 
 describe('API profile', () => {
   it('Success get user profile', async () => {
+    const tokenUser = await getToken({
+      email: 'syifa@gmail.com',
+      password: 'usersyifa123',
+    })
     const response = await request(app)
       .get('/api/v1/auth/profile')
       .set('Authorization', `Bearer ${tokenUser}`)
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success')
+  })
+
+  it('Failed get user profile because jwt expired', async () => {
+    const tokenExpired =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywibmFtZSI6ImFkbWluIiwiZW1haWwiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDIzNzc1NzksImV4cCI6MTcwMjQ2Mzk3OX0.4eAhzrpoZ9kUnabNdil8YHxkVNa-EnD5iimahZ8ky2g'
+    const response = await request(app)
+      .get('/api/v1/auth/profile')
+      .set('Authorization', `Bearer ${tokenExpired}`)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt expired')
+  })
+
+  it('Failed get user profile because jwt malformed', async () => {
+    const tokenMalformed =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpZCI6NywibmFtZSI6ImFkbWluIiiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xl3MDI0NjA3NPeB0iP5KtK97mMc4jzq6poxj9c'
+    const response = await request(app)
+      .get('/api/v1/auth/profile')
+      .set('Authorization', `Bearer ${tokenMalformed}`)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt malformed')
   })
 
   it('Failed get user profile because no token', async () => {
@@ -242,6 +242,10 @@ describe('API profile', () => {
       country: 'Indonesia',
       city: 'bandung',
     }
+    const tokenUser = await getToken({
+      email: 'syifa@gmail.com',
+      password: 'usersyifa123',
+    })
     const response = await request(app)
       .patch('/api/v1/auth/profile/edit/data')
       .set('Authorization', `Bearer ${tokenUser}`)
@@ -249,6 +253,38 @@ describe('API profile', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, updated')
+  })
+
+  it('Failed update profile because jwt expired', async () => {
+    const user = {
+      country: 'Indonesia',
+      city: 'bandung',
+    }
+    const tokenExpired =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywibmFtZSI6ImFkbWluIiwiZW1haWwiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDIzNzc1NzksImV4cCI6MTcwMjQ2Mzk3OX0.4eAhzrpoZ9kUnabNdil8YHxkVNa-EnD5iimahZ8ky2g'
+    const response = await request(app)
+      .patch('/api/v1/auth/profile/edit/data')
+      .set('Authorization', `Bearer ${tokenExpired}`)
+      .send(user)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt expired')
+  })
+
+  it('Failed update profile because jwt malformed', async () => {
+    const user = {
+      country: 'Indonesia',
+      city: 'bandung',
+    }
+    const tokenMalformed =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpZCI6NywibmFtZSI6ImFkbWluIiiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xl3MDI0NjA3NPeB0iP5KtK97mMc4jzq6poxj9c'
+    const response = await request(app)
+      .patch('/api/v1/auth/profile/edit/data')
+      .set('Authorization', `Bearer ${tokenMalformed}`)
+      .send(user)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt malformed')
   })
 
   it('Failed update data profile because no token', async () => {
@@ -270,9 +306,13 @@ describe('API profile', () => {
       newPassword: 'usergilang12',
       repeatNewPassword: 'usergilang12',
     }
+    const tokenUser = await getToken({
+      email: 'gilang@gmail.com',
+      password: 'usergilang123',
+    })
     const response = await request(app)
       .patch('/api/v1/auth/profile/edit/ubah-password')
-      .set('Authorization', `Bearer ${tokenUserForUbahPass}`)
+      .set('Authorization', `Bearer ${tokenUser}`)
       .send(user)
     expect(response.statusCode).toBe(400)
     expect(response.body.success).toBe(false)
@@ -287,9 +327,13 @@ describe('API profile', () => {
       newPassword: '123',
       repeatNewPassword: '123',
     }
+    const tokenUser = await getToken({
+      email: 'gilang@gmail.com',
+      password: 'usergilang123',
+    })
     const response = await request(app)
       .patch('/api/v1/auth/profile/edit/ubah-password')
-      .set('Authorization', `Bearer ${tokenUserForUbahPass}`)
+      .set('Authorization', `Bearer ${tokenUser}`)
       .send(user)
     expect(response.statusCode).toBe(400)
     expect(response.body.success).toBe(false)
@@ -302,9 +346,13 @@ describe('API profile', () => {
       newPassword: 'usergilang',
       repeatNewPassword: 'usersyifa',
     }
+    const tokenUser = await getToken({
+      email: 'gilang@gmail.com',
+      password: 'usergilang123',
+    })
     const response = await request(app)
       .patch('/api/v1/auth/profile/edit/ubah-password')
-      .set('Authorization', `Bearer ${tokenUserForUbahPass}`)
+      .set('Authorization', `Bearer ${tokenUser}`)
       .send(user)
     expect(response.statusCode).toBe(400)
     expect(response.body.success).toBe(false)
@@ -326,15 +374,54 @@ describe('API profile', () => {
     expect(response.body.message).toBe('No token')
   })
 
+  it('Failed update profile because jwt expired', async () => {
+    const user = {
+      oldPassword: 'usergilang123',
+      newPassword: 'usergilang1234',
+      repeatNewPassword: 'usergilang1234',
+    }
+    const tokenExpired =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywibmFtZSI6ImFkbWluIiwiZW1haWwiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDIzNzc1NzksImV4cCI6MTcwMjQ2Mzk3OX0.4eAhzrpoZ9kUnabNdil8YHxkVNa-EnD5iimahZ8ky2g'
+
+    const response = await request(app)
+      .patch('/api/v1/auth/profile/edit/ubah-password')
+      .set('Authorization', `Bearer ${tokenExpired}`)
+      .send(user)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt expired')
+  })
+
+  it('Failed update profile because jwt malformed', async () => {
+    const user = {
+      oldPassword: 'usergilang123',
+      newPassword: 'usergilang1234',
+      repeatNewPassword: 'usergilang1234',
+    }
+    const tokenMalformed =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpZCI6NywibmFtZSI6ImFkbWluIiiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xl3MDI0NjA3NPeB0iP5KtK97mMc4jzq6poxj9c'
+    const response = await request(app)
+      .patch('/api/v1/auth/profile/edit/ubah-password')
+      .set('Authorization', `Bearer ${tokenMalformed}`)
+      .send(user)
+    expect(response.statusCode).toBe(500)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('jwt malformed')
+  })
+
   it('Success ubah password', async () => {
     const user = {
       oldPassword: 'usergilang123',
       newPassword: 'usergilang1234',
       repeatNewPassword: 'usergilang1234',
     }
+    const tokenUser = await getToken({
+      email: 'gilang@gmail.com',
+      password: 'usergilang123',
+    })
     const response = await request(app)
       .patch('/api/v1/auth/profile/edit/ubah-password')
-      .set('Authorization', `Bearer ${tokenUserForUbahPass}`)
+      .set('Authorization', `Bearer ${tokenUser}`)
       .send(user)
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
