@@ -1,5 +1,7 @@
 const otpGenerator = require('otp-generator')
 const nodemailer = require('nodemailer')
+// eslint-disable-next-line import/no-extraneous-dependencies
+const otpTool = require('otp-without-db')
 const ApiError = require('../utils/apiError')
 
 const transporter = nodemailer.createTransport({
@@ -14,13 +16,14 @@ const transporter = nodemailer.createTransport({
 })
 
 const createOtp = async (req, res, next) => {
-  // const learnhubLogo = ""
   try {
     const otp = otpGenerator.generate(6, {
       upperCaseAlphabets: false,
       lowerCaseAlphabets: false,
       specialChars: false,
     })
+
+    const key = process.env.OTP_SECRET
 
     await transporter.sendMail({
       from: '"Learn Hub" binar.team.c10@gmail.com',
@@ -38,11 +41,11 @@ const createOtp = async (req, res, next) => {
     </div>`,
     })
 
-    req.session.otp = otp
-
+    const hash = otpTool.createNewOTP(req.body.email, otp, key)
     return res.status(200).json({
       success: true,
       message: 'Success, sent',
+      data: hash,
     })
   } catch (err) {
     return next(new ApiError(err.message, 500))

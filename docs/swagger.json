@@ -110,6 +110,10 @@
                     "message": {
                       "type": "string",
                       "example": "Success, sent"
+                    },
+                    "data": {
+                      "type": "string",
+                      "example": "adadadadadadadadada"
                     }
                   }
                 }
@@ -171,6 +175,10 @@
                   "otp": {
                     "type": "string",
                     "example": "272614"
+                  },
+                  "hashedOtp": {
+                    "type": "string",
+                    "example": "adadadadadadwaddadwaadadwadw"
                   }
                 }
               }
