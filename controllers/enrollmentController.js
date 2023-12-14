@@ -237,6 +237,7 @@ const enrollCourse = async (req, res, next) => {
         telegramLink: course.telegramLink,
         moduleCount: course.moduleCount,
         price: course.price,
+        isLocked: course.isLocked,
       })
 
       const modules = await Module.findAll({ where: { courseId: course.id } })

@@ -79,6 +79,7 @@ const paymentHook = async (req, res, next) => {
         telegramLink: course.telegramLink,
         moduleCount: course.moduleCount,
         price: course.price,
+        isLocked: false,
       })
 
       const modules = await Module.findAll({ where: { courseId: course.id } })
