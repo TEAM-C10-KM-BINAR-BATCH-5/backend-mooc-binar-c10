@@ -43,8 +43,8 @@ describe('API Course', () => {
       price: 50000,
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .post('/api/v1/course')
@@ -126,8 +126,8 @@ describe('API Course', () => {
       price: 50000,
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .post('/api/v1/course')
@@ -186,8 +186,8 @@ describe('API Course', () => {
       price: 50000,
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .post('/api/v1/course')
@@ -217,8 +217,8 @@ describe('API Course', () => {
       price: 50000,
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .post('/api/v1/course')
@@ -279,8 +279,8 @@ describe('API Course', () => {
       price: 50000,
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .post('/api/v1/course/10')
@@ -312,8 +312,8 @@ describe('API Course', () => {
       price: 30000,
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const courseId = await getIdCourse(1)
     const response = await request(app)
@@ -386,8 +386,8 @@ describe('API Course', () => {
       price: 30000,
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .patch('/api/v1/course/999')
@@ -447,8 +447,8 @@ describe('API Course', () => {
       price: 50000,
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const courseId = await getIdCourse(2)
     const response = await request(app)
@@ -478,8 +478,8 @@ describe('API Course', () => {
 
   it('Failed route does not exist', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .patch('/api/v1/course')
@@ -515,8 +515,8 @@ describe('API Course', () => {
 
   it('Failed delete course because id not found', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .delete('/api/v1/course/999')
@@ -528,8 +528,8 @@ describe('API Course', () => {
 
   it('Failed route does not exist', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .delete('/api/v1/course')
@@ -565,8 +565,8 @@ describe('API Course', () => {
 
   it('Success delete course', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const courseId = await getIdCourse(3)
     const response = await request(app)

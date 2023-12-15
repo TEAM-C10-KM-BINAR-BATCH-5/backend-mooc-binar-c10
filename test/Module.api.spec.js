@@ -40,8 +40,8 @@ describe('API Module', () => {
       courseId: courseIdForModule,
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     console.log(tokenAdmin)
     const response = await request(app)
@@ -95,8 +95,8 @@ describe('API Module', () => {
       courseId: courseIdForModule,
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .post('/api/v1/module')
@@ -134,8 +134,8 @@ describe('API Module', () => {
       courseId: 999,
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .post('/api/v1/module')
@@ -173,8 +173,8 @@ describe('API Module', () => {
       courseId: 888,
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .post('/api/v1/module/10')
@@ -206,8 +206,8 @@ describe('API Module', () => {
     }
     const moduleId = await getIdModule(1)
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .put(`/api/v1/module/${moduleId}`)
@@ -288,8 +288,8 @@ describe('API Module', () => {
       title: 'Tutorial Html dan Css',
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .put('/api/v1/module/999')
@@ -306,8 +306,8 @@ describe('API Module', () => {
       courseId: 888,
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const moduleId = await getIdModule(1)
     const response = await request(app)
@@ -325,8 +325,8 @@ describe('API Module', () => {
       courseId: 888,
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .put('/api/v1/module')
@@ -363,8 +363,8 @@ describe('API Module', () => {
 
   it('Failed delete module because id not found', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .delete('/api/v1/module/999')
@@ -376,8 +376,8 @@ describe('API Module', () => {
 
   it('Failed route does not exist', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .delete('/api/v1/module')
@@ -413,8 +413,8 @@ describe('API Module', () => {
 
   it('Success delete module', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const moduleId = await getIdModule(2)
     const response = await request(app)

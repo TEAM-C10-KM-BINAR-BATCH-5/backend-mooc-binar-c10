@@ -41,8 +41,8 @@ describe('API payment & transaction', () => {
 
   it('Failed initialing payment to buy course because user role is admin', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .post('/api/v1/payment/2')
@@ -216,8 +216,8 @@ describe('API payment & transaction', () => {
 
   it('Failed get user courses because user role is admin', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .get('/api/v1/enrollment')
@@ -231,8 +231,8 @@ describe('API payment & transaction', () => {
 
   it('Failed get user courses by id because user role is admin', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .get('/api/v1/enrollment/2')
@@ -246,8 +246,8 @@ describe('API payment & transaction', () => {
 
   it('Success get all transaction', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .get('/api/v1/transaction')
@@ -345,8 +345,8 @@ describe('API payment & transaction', () => {
 
   it('User failed get all transaction because user role not user', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .get('/api/v1/user-transaction')

@@ -32,8 +32,8 @@ describe('API Category', () => {
       name: 'DevOps',
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .post('/api/v1/category')
@@ -82,8 +82,8 @@ describe('API Category', () => {
       id: 'C-0BUB',
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .post('/api/v1/category')
@@ -129,8 +129,8 @@ describe('API Category', () => {
 
   it('Failed route does not exist', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'khaled@gmail.com',
-      password: 'userkhaled123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .post('/api/v1/category/10')
@@ -153,8 +153,8 @@ describe('API Category', () => {
       name: 'Artificial intelligence',
     }
     const tokenUser = await getToken({
-      email: 'alucard@gmail.com',
-      password: 'useralucard123',
+      email: 'syifa@gmail.com',
+      password: 'usersyifa123',
     })
     const response = await request(app)
       .post('/api/v1/category')
@@ -186,8 +186,8 @@ describe('API Category', () => {
       name: 'Cyber Security',
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .put('/api/v1/category/C-0BI')
@@ -233,8 +233,8 @@ describe('API Category', () => {
       name: 'Cyber Security',
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .put('/api/v1/category/C-0ANDDDDDDDD')
@@ -278,8 +278,8 @@ describe('API Category', () => {
 
   it('Failed route does not exist', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .put('/api/v1/category')
@@ -306,8 +306,8 @@ describe('API Category', () => {
 
   it('Failed delete category because id not found', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .delete('/api/v1/category/C-0ANDDDD')
@@ -326,8 +326,8 @@ describe('API Category', () => {
 
   it('Failed route does not exist', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .delete('/api/v1/category')
@@ -361,8 +361,8 @@ describe('API Category', () => {
 
   it('Success delete category', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
     })
     const response = await request(app)
       .delete('/api/v1/category/C-0DS')

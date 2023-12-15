@@ -28,8 +28,8 @@ describe('API Video', () => {
       moduleId: 1,
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .post('/api/v1/video')
@@ -39,7 +39,7 @@ describe('API Video', () => {
     expect(response.statusCode).toBe(201)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, create video')
-  }, 15000)
+  }, 20000)
 
   it('Failed create video because jwt malformed', async () => {
     const video = {
@@ -89,8 +89,8 @@ describe('API Video', () => {
       moduleId: 1,
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .post('/api/v1/video')
@@ -133,8 +133,8 @@ describe('API Video', () => {
       moduleId: 999,
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .post('/api/v1/video')
@@ -152,8 +152,8 @@ describe('API Video', () => {
       duration: 10,
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .post('/api/v1/video')
@@ -198,8 +198,8 @@ describe('API Video', () => {
       moduleId: 1,
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .post('/api/v1/video/10')
@@ -230,11 +230,11 @@ describe('API Video', () => {
       videoUrl: 'http://awokawok.com',
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
-      .put('/api/v1/video/1')
+      .put('/api/v1/video/3')
       .send(video)
       .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(200)
@@ -311,8 +311,8 @@ describe('API Video', () => {
       videoUrl: 'http://awokawok.com',
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .put('/api/v1/video/888')
@@ -330,8 +330,8 @@ describe('API Video', () => {
       moduleId: 777,
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .put('/api/v1/video/1')
@@ -351,8 +351,8 @@ describe('API Video', () => {
       moduleId: 777,
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .put('/api/v1/video')
@@ -392,8 +392,8 @@ describe('API Video', () => {
 
   it('Failed delete vudeo because id not found', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .delete('/api/v1/video/999')
@@ -405,8 +405,8 @@ describe('API Video', () => {
 
   it('Failed route does not exist', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .delete('/api/v1/video')
@@ -440,11 +440,11 @@ describe('API Video', () => {
 
   it('Success delete video', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
-      .delete('/api/v1/video/1')
+      .delete('/api/v1/video/3')
       .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)

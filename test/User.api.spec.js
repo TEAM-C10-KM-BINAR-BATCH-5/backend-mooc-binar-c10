@@ -29,8 +29,8 @@ beforeAll(async () => {
 describe('API User', () => {
   it('Success get all user', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .get('/api/v1/user')
@@ -86,8 +86,8 @@ describe('API User', () => {
 
   it('Failed route does not exist', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .post('/api/v1/user/10')
@@ -99,8 +99,8 @@ describe('API User', () => {
 
   it('Success get user by id', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .get('/api/v1/user/2')
@@ -170,8 +170,8 @@ describe('API User', () => {
 
   it('Success update user', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .patch('/api/v1/user/4')
@@ -263,8 +263,8 @@ describe('API User', () => {
 
   it('Failed delete user because id not found', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .delete('/api/v1/user/999')
@@ -283,8 +283,8 @@ describe('API User', () => {
 
   it('Failed route does not exist', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .delete('/api/v1/user')
@@ -318,8 +318,8 @@ describe('API User', () => {
 
   it('Success delete user', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .delete('/api/v1/user/6')
