@@ -25,6 +25,8 @@ jobs:
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
       JWT_EXPIREDIN: 1d
       ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+      BASE_URL: localhost:3000
+      NODE_ENV: test
     steps:
       - name: Get code
         uses: actions/checkout@v3
@@ -34,6 +36,8 @@ jobs:
         with:
           path: ~/.npm
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Set NODE_ENV to test
+        run: echo "NODE_ENV=test" >> $GITHUB_ENV
       - name: Install dependencies
         run: npm install
       - name: drop existing DB

@@ -39,7 +39,6 @@ describe('API Category', () => {
       .post('/api/v1/category')
       .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(category)
-    console.log(response.body)
     expect(response.statusCode).toBe(201)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, create category')
