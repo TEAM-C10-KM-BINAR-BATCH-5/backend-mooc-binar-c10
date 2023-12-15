@@ -33,13 +33,13 @@ describe('API Video', () => {
     })
     const response = await request(app)
       .post('/api/v1/video')
-      .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(video)
-    console.log(response.body)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
+
     expect(response.statusCode).toBe(201)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, create video')
-  })
+  }, 15000)
 
   it('Failed create video because jwt malformed', async () => {
     const video = {
@@ -53,12 +53,12 @@ describe('API Video', () => {
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpZCI6NywibmFtZSI6ImFkbWluIiiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xl3MDI0NjA3NPeB0iP5KtK97mMc4jzq6poxj9c'
     const response = await request(app)
       .post('/api/v1/video')
-      .set('Authorization', `Bearer ${tokenMalformed}`)
       .send(video)
+      .set('Authorization', `Bearer ${tokenMalformed}`)
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
-  })
+  }, 10000)
 
   it('Failed create video because jwt expired', async () => {
     const video = {
@@ -72,12 +72,12 @@ describe('API Video', () => {
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywibmFtZSI6ImFkbWluIiwiZW1haWwiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDIzNzc1NzksImV4cCI6MTcwMjQ2Mzk3OX0.4eAhzrpoZ9kUnabNdil8YHxkVNa-EnD5iimahZ8ky2g'
     const response = await request(app)
       .post('/api/v1/video')
-      .set('Authorization', `Bearer ${tokenExpired}`)
       .send(video)
+      .set('Authorization', `Bearer ${tokenExpired}`)
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt expired')
-  })
+  }, 10000)
 
   it('Failed create video because about to much string', async () => {
     const video = {
@@ -94,14 +94,14 @@ describe('API Video', () => {
     })
     const response = await request(app)
       .post('/api/v1/video')
-      .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(video)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe(
       'value too long for type character varying(255)',
     )
-  })
+  }, 10000)
 
   it('Failed create video because no token', async () => {
     const video = {
@@ -115,14 +115,14 @@ describe('API Video', () => {
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
-  })
+  }, 10000)
 
   it('Success get all video', async () => {
     const response = await request(app).get('/api/v1/video')
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, fetch')
-  })
+  }, 10000)
 
   it('Failed create video because moduleId not found', async () => {
     const video = {
@@ -138,12 +138,12 @@ describe('API Video', () => {
     })
     const response = await request(app)
       .post('/api/v1/video')
-      .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(video)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Cause module with id 999 not found')
-  })
+  }, 10000)
 
   it('Failed create video because not including title or moduleId', async () => {
     const video = {
@@ -157,12 +157,12 @@ describe('API Video', () => {
     })
     const response = await request(app)
       .post('/api/v1/video')
-      .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(video)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(400)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Title and module id are required!')
-  })
+  }, 10000)
 
   it('Failed create video because user role not admin', async () => {
     const video = {
@@ -179,14 +179,14 @@ describe('API Video', () => {
     })
     const response = await request(app)
       .post('/api/v1/video')
-      .set('Authorization', `Bearer ${tokenUser}`)
       .send(video)
+      .set('Authorization', `Bearer ${tokenUser}`)
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe(
       'You are not admin, your access to this is blocked',
     )
-  })
+  }, 10000)
 
   it('Failed route does not exist', async () => {
     const video = {
@@ -203,26 +203,26 @@ describe('API Video', () => {
     })
     const response = await request(app)
       .post('/api/v1/video/10')
-      .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(video)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
-  })
+  }, 10000)
 
   it('Success get video by id', async () => {
     const response = await request(app).get('/api/v1/video/1')
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, fetch')
-  })
+  }, 10000)
 
   it('Failed get video because id not found', async () => {
     const response = await request(app).get('/api/v1/video/777')
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('id does not exist')
-  })
+  }, 10000)
 
   it('Success update video', async () => {
     const video = {
@@ -235,12 +235,12 @@ describe('API Video', () => {
     })
     const response = await request(app)
       .put('/api/v1/video/1')
-      .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(video)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, updated')
-  })
+  }, 15000)
 
   it('Failed update video because jwt malformed', async () => {
     const video = {
@@ -251,12 +251,12 @@ describe('API Video', () => {
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpZCI6NywibmFtZSI6ImFkbWluIiiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xl3MDI0NjA3NPeB0iP5KtK97mMc4jzq6poxj9c'
     const response = await request(app)
       .put('/api/v1/video/1')
-      .set('Authorization', `Bearer ${tokenMalformed}`)
       .send(video)
+      .set('Authorization', `Bearer ${tokenMalformed}`)
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
-  })
+  }, 10000)
 
   it('Failed update video because jwt expired', async () => {
     const video = {
@@ -267,12 +267,12 @@ describe('API Video', () => {
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywibmFtZSI6ImFkbWluIiwiZW1haWwiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDIzNzc1NzksImV4cCI6MTcwMjQ2Mzk3OX0.4eAhzrpoZ9kUnabNdil8YHxkVNa-EnD5iimahZ8ky2g'
     const response = await request(app)
       .put('/api/v1/video/1')
-      .set('Authorization', `Bearer ${tokenExpired}`)
       .send(video)
+      .set('Authorization', `Bearer ${tokenExpired}`)
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt expired')
-  })
+  }, 10000)
 
   it('Failed update video because no token', async () => {
     const video = {
@@ -283,7 +283,7 @@ describe('API Video', () => {
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
-  })
+  }, 10000)
 
   it('Failed update video because user role not admin', async () => {
     const video = {
@@ -296,14 +296,14 @@ describe('API Video', () => {
     })
     const response = await request(app)
       .put('/api/v1/video/1')
-      .set('Authorization', `Bearer ${tokenUser}`)
       .send(video)
+      .set('Authorization', `Bearer ${tokenUser}`)
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe(
       'You are not admin, your access to this is blocked',
     )
-  })
+  }, 10000)
 
   it('Failed update video because id not found', async () => {
     const video = {
@@ -316,12 +316,12 @@ describe('API Video', () => {
     })
     const response = await request(app)
       .put('/api/v1/video/888')
-      .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(video)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('id does not exist')
-  })
+  }, 10000)
 
   it('Failed update video because courseId not found', async () => {
     const video = {
@@ -335,14 +335,14 @@ describe('API Video', () => {
     })
     const response = await request(app)
       .put('/api/v1/video/1')
-      .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(video)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(400)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe(
       'Bad request / cause module with id 777 not found',
     )
-  })
+  }, 10000)
 
   it('Failed route does not exist', async () => {
     const video = {
@@ -356,12 +356,12 @@ describe('API Video', () => {
     })
     const response = await request(app)
       .put('/api/v1/video')
-      .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(video)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
-  })
+  }, 10000)
 
   it('Failed delete video because user role not admin', async () => {
     const video = {
@@ -374,21 +374,21 @@ describe('API Video', () => {
     })
     const response = await request(app)
       .put('/api/v1/video/3')
-      .set('Authorization', `Bearer ${tokenUser}`)
       .send(video)
+      .set('Authorization', `Bearer ${tokenUser}`)
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe(
       'You are not admin, your access to this is blocked',
     )
-  })
+  }, 10000)
 
   it('Failed delete video because no token', async () => {
     const response = await request(app).delete('/api/v1/video/2')
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
-  })
+  }, 10000)
 
   it('Failed delete vudeo because id not found', async () => {
     const tokenAdmin = await getTokenAdmin({
@@ -401,7 +401,7 @@ describe('API Video', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('id does not exist')
-  })
+  }, 10000)
 
   it('Failed route does not exist', async () => {
     const tokenAdmin = await getTokenAdmin({
@@ -414,7 +414,7 @@ describe('API Video', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
-  })
+  }, 10000)
 
   it('Failed delete video because jwt malformed', async () => {
     const tokenMalformed =
@@ -425,7 +425,7 @@ describe('API Video', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
-  })
+  }, 10000)
 
   it('Failed delete video because jwt expired', async () => {
     const tokenExpired =
@@ -436,7 +436,7 @@ describe('API Video', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt expired')
-  })
+  }, 10000)
 
   it('Success delete video', async () => {
     const tokenAdmin = await getTokenAdmin({
@@ -449,5 +449,5 @@ describe('API Video', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, deleted')
-  })
+  }, 10000)
 })

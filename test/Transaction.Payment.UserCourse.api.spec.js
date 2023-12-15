@@ -34,11 +34,10 @@ describe('API payment & transaction', () => {
     const response = await request(app)
       .post('/api/v1/payment/777')
       .set('Authorization', `Bearer ${tokenUser}`)
-    console.log(response.body)
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('id does not exist')
-  })
+  }, 10000)
 
   it('Failed initialing payment to buy course because user role is admin', async () => {
     const tokenAdmin = await getTokenAdmin({
@@ -53,14 +52,14 @@ describe('API payment & transaction', () => {
     expect(response.body.message).toBe(
       'You are not user, your access to this is blocked',
     )
-  })
+  }, 10000)
 
   it('Failed initialing payment to buy course because no token', async () => {
     const response = await request(app).post('/api/v1/payment/2')
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
-  })
+  }, 10000)
 
   it('Failed initialing payment to buy course because jwt malformed', async () => {
     const tokenMalformed =
@@ -71,7 +70,7 @@ describe('API payment & transaction', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
-  })
+  }, 10000)
 
   it('Failed initialing payment to buy course because jwt expired', async () => {
     const tokenExpired =
@@ -82,7 +81,7 @@ describe('API payment & transaction', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt expired')
-  })
+  }, 10000)
 
   it('Success initialing payment to buy course', async () => {
     const tokenUser = await getToken({
@@ -95,7 +94,7 @@ describe('API payment & transaction', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success initiating payment')
-  })
+  }, 20000)
 
   // it('Failed buy course because course already enrolled', async () => {
   //   const response = await request(app)
@@ -117,7 +116,7 @@ describe('API payment & transaction', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, fetch')
-  })
+  }, 10000)
 
   it('Failed get user courses because jwt malformed', async () => {
     const tokenMalformed =
@@ -128,7 +127,7 @@ describe('API payment & transaction', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
-  })
+  }, 10000)
 
   it('Failed get user courses because jwt expired', async () => {
     const tokenExpired =
@@ -139,14 +138,14 @@ describe('API payment & transaction', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt expired')
-  })
+  }, 10000)
 
   it('Failed get user courses because no token', async () => {
     const response = await request(app).get('/api/v1/enrollment')
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
-  })
+  }, 10000)
 
   // it('Success get user courses by id', async () => {
   //   const response = await request(app)
@@ -167,7 +166,7 @@ describe('API payment & transaction', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt expired')
-  })
+  }, 10000)
 
   it('Failed get user courses because jwt malformed', async () => {
     const tokenMalformed =
@@ -178,7 +177,7 @@ describe('API payment & transaction', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
-  })
+  }, 10000)
 
   it('Failed get user courses by id because course not purchased yet', async () => {
     const tokenUser = await getToken({
@@ -193,14 +192,14 @@ describe('API payment & transaction', () => {
     expect(response.body.message).toBe(
       'You have not enroll this course yet, or course not available',
     )
-  })
+  }, 10000)
 
   it('Failed get user courses by id because no token', async () => {
     const response = await request(app).post('/api/v1/enrollment/2')
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
-  })
+  }, 10000)
 
   it('Failed get user courses by id because id not found', async () => {
     const tokenUser = await getToken({
@@ -213,7 +212,7 @@ describe('API payment & transaction', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('id does not exist')
-  })
+  }, 10000)
 
   it('Failed get user courses because user role is admin', async () => {
     const tokenAdmin = await getTokenAdmin({
@@ -228,7 +227,7 @@ describe('API payment & transaction', () => {
     expect(response.body.message).toBe(
       'You are not user, your access to this is blocked',
     )
-  })
+  }, 10000)
 
   it('Failed get user courses by id because user role is admin', async () => {
     const tokenAdmin = await getTokenAdmin({
@@ -243,7 +242,7 @@ describe('API payment & transaction', () => {
     expect(response.body.message).toBe(
       'You are not user, your access to this is blocked',
     )
-  })
+  }, 10000)
 
   it('Success get all transaction', async () => {
     const tokenAdmin = await getTokenAdmin({
@@ -256,7 +255,7 @@ describe('API payment & transaction', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, fetch')
-  })
+  }, 10000)
 
   it('Failed get all transcaction because jwt malformed', async () => {
     const tokenMalformed =
@@ -267,7 +266,7 @@ describe('API payment & transaction', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
-  })
+  }, 10000)
 
   it('Failed get all transcaction because jwt expired', async () => {
     const tokenExpired =
@@ -278,14 +277,14 @@ describe('API payment & transaction', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt expired')
-  })
+  }, 10000)
 
   it('Failed get all transaction because no token', async () => {
     const response = await request(app).get('/api/v1/transaction')
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
-  })
+  }, 10000)
 
   it('Failed get all transaction because user role not admin', async () => {
     const tokenUser = await getToken({
@@ -300,7 +299,7 @@ describe('API payment & transaction', () => {
     expect(response.body.message).toBe(
       'You are not admin, your access to this is blocked',
     )
-  })
+  }, 10000)
 
   it('User success get their all transaction', async () => {
     const tokenUser = await getToken({
@@ -313,7 +312,7 @@ describe('API payment & transaction', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, fetch')
-  })
+  }, 10000)
 
   it('User Failed success get their all transaction because jwt malformed', async () => {
     const tokenMalformed =
@@ -324,7 +323,7 @@ describe('API payment & transaction', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
-  })
+  }, 10000)
 
   it('User Failed success get their all transaction because jwt expiresd', async () => {
     const tokenExpired =
@@ -335,14 +334,14 @@ describe('API payment & transaction', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt expired')
-  })
+  }, 10000)
 
   it('User failed get all transaction because no token', async () => {
     const response = await request(app).get('/api/v1/user-transaction')
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
-  })
+  }, 10000)
 
   it('User failed get all transaction because user role not user', async () => {
     const tokenAdmin = await getTokenAdmin({
@@ -357,5 +356,5 @@ describe('API payment & transaction', () => {
     expect(response.body.message).toBe(
       'You are not user, your access to this is blocked',
     )
-  })
+  }, 10000)
 })

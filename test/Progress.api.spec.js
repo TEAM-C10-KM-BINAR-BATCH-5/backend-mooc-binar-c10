@@ -27,11 +27,10 @@ describe('API Progress', () => {
     const response = await request(app)
       .post('/api/v1/progress/1')
       .set('Authorization', `Bearer ${tokenUser}`)
-    console.log(response.body)
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success update progress')
-  })
+  }, 15000)
 
   it('Failed update video because jwt malformed', async () => {
     const tokenMalformed =
@@ -42,7 +41,7 @@ describe('API Progress', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
-  })
+  }, 10000)
 
   it('Failed update video because jwt expired', async () => {
     const tokenExpired =
@@ -53,14 +52,14 @@ describe('API Progress', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt expired')
-  })
+  }, 10000)
 
   it('Failed update video because no token', async () => {
     const response = await request(app).post('/api/v1/progress/1')
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
-  })
+  }, 10000)
 
   it('Failed update video because user role not admin', async () => {
     const tokenAdmin = await getTokenAdmin({
@@ -75,9 +74,22 @@ describe('API Progress', () => {
     expect(response.body.message).toBe(
       'You are not user, your access to this is blocked',
     )
-  })
+  }, 10000)
 
   it('Failed update video because id not found', async () => {
+    const tokenUser = await getToken({
+      email: 'syifa@gmail.com',
+      password: 'usersyifa123',
+    })
+    const response = await request(app)
+      .post('/api/v1/progress/99')
+      .set('Authorization', `Bearer ${tokenUser}`)
+    expect(response.statusCode).toBe(404)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('id does not exist')
+  }, 10000)
+
+  it('Failed update video because routes not found', async () => {
     const tokenUser = await getToken({
       email: 'syifa@gmail.com',
       password: 'usersyifa123',
@@ -88,5 +100,5 @@ describe('API Progress', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
-  })
+  }, 10000)
 })

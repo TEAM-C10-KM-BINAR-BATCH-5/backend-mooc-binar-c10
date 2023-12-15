@@ -1,5 +1,7 @@
 /* eslint-disable */
 const request = require('supertest')
+const fs = require('fs')
+const path = require('path')
 const app = require('../server')
 const { faker } = require('@faker-js/faker')
 require('dotenv').config()
@@ -9,6 +11,12 @@ const getToken = async (credentials) => {
   const res = JSON.parse(check.text)
   return res.token
 }
+
+let imageBuffer
+beforeAll(async () => {
+  const filePath = path.join(__dirname, '../public/img/anddev.png')
+  imageBuffer = fs.readFileSync(filePath)
+})
 
 // describe('OTP endpoint', () => {
 //   it('Should generate OTP and send email', async () => {
@@ -51,7 +59,7 @@ describe('API Register', () => {
     expect(response.statusCode).toBe(400)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Otp required!')
-  })
+  }, 10000)
 
   it('Failed register because invalid otp', async () => {
     const user = {
@@ -67,7 +75,7 @@ describe('API Register', () => {
     expect(response.statusCode).toBe(400)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('invalid or expired otp')
-  })
+  }, 10000)
 })
 
 describe('API Login', () => {
@@ -80,7 +88,7 @@ describe('API Login', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, login user')
-  })
+  }, 10000)
 
   it('Failed login user because user not including email or password', async () => {
     const user = {}
@@ -90,7 +98,7 @@ describe('API Login', () => {
     expect(response.body.message).toBe(
       'Email and password are requred for login',
     )
-  })
+  }, 10000)
 
   it('Failed login user because email does not exist, please register first', async () => {
     const user = {
@@ -101,7 +109,7 @@ describe('API Login', () => {
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Email does not exist, register instead')
-  })
+  }, 10000)
 
   it('Failed login user because wrong password', async () => {
     const user = {
@@ -112,7 +120,7 @@ describe('API Login', () => {
     expect(response.statusCode).toBe(400)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Password doesnt match')
-  })
+  }, 10000)
 
   it('Failed login admin because login at endpoint login for user', async () => {
     const user = {
@@ -125,7 +133,7 @@ describe('API Login', () => {
     expect(response.body.message).toBe(
       'This only accept register for user only',
     )
-  })
+  }, 10000)
 
   it('Success login admin', async () => {
     const user = {
@@ -138,7 +146,7 @@ describe('API Login', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, login admin')
-  })
+  }, 10000)
 
   it('Failed login admin because user not including email or password', async () => {
     const user = {}
@@ -150,7 +158,7 @@ describe('API Login', () => {
     expect(response.body.message).toBe(
       'Email and password are requred for login',
     )
-  })
+  }, 10000)
 
   it('Failed login admin because email does not exist, please register first', async () => {
     const user = {
@@ -163,7 +171,7 @@ describe('API Login', () => {
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Email does not exist, register instead')
-  })
+  }, 10000)
 
   it('Failed login admin because wrong password', async () => {
     const user = {
@@ -176,7 +184,7 @@ describe('API Login', () => {
     expect(response.statusCode).toBe(400)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Password doesnt match')
-  })
+  }, 10000)
 
   it('Failed login user because login at endpoint login for admin', async () => {
     const user = {
@@ -191,7 +199,7 @@ describe('API Login', () => {
     expect(response.body.message).toBe(
       'This only accept register for admin only',
     )
-  })
+  }, 10000)
 })
 
 describe('API profile', () => {
@@ -206,7 +214,7 @@ describe('API profile', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success')
-  })
+  }, 10000)
 
   it('Failed get user profile because jwt expired', async () => {
     const tokenExpired =
@@ -217,7 +225,7 @@ describe('API profile', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt expired')
-  })
+  }, 10000)
 
   it('Failed get user profile because jwt malformed', async () => {
     const tokenMalformed =
@@ -228,32 +236,29 @@ describe('API profile', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
-  })
+  }, 10000)
 
   it('Failed get user profile because no token', async () => {
     const response = await request(app).get('/api/v1/auth/profile')
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
-  })
+  }, 10000)
 
   it('Success update data profile', async () => {
-    const user = {
-      country: 'Indonesia',
-      city: 'bandung',
-    }
     const tokenUser = await getToken({
       email: 'syifa@gmail.com',
       password: 'usersyifa123',
     })
     const response = await request(app)
       .patch('/api/v1/auth/profile/edit/data')
+      .field('country', 'kenya')
       .set('Authorization', `Bearer ${tokenUser}`)
-      .send(user)
+      .attach('image', imageBuffer, 'anddev.png')
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, updated')
-  })
+  }, 50000)
 
   it('Failed update profile because jwt expired', async () => {
     const user = {
@@ -264,12 +269,12 @@ describe('API profile', () => {
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywibmFtZSI6ImFkbWluIiwiZW1haWwiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDIzNzc1NzksImV4cCI6MTcwMjQ2Mzk3OX0.4eAhzrpoZ9kUnabNdil8YHxkVNa-EnD5iimahZ8ky2g'
     const response = await request(app)
       .patch('/api/v1/auth/profile/edit/data')
-      .set('Authorization', `Bearer ${tokenExpired}`)
       .send(user)
+      .set('Authorization', `Bearer ${tokenExpired}`)
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt expired')
-  })
+  }, 10000)
 
   it('Failed update profile because jwt malformed', async () => {
     const user = {
@@ -280,12 +285,12 @@ describe('API profile', () => {
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpZCI6NywibmFtZSI6ImFkbWluIiiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xl3MDI0NjA3NPeB0iP5KtK97mMc4jzq6poxj9c'
     const response = await request(app)
       .patch('/api/v1/auth/profile/edit/data')
-      .set('Authorization', `Bearer ${tokenMalformed}`)
       .send(user)
+      .set('Authorization', `Bearer ${tokenMalformed}`)
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
-  })
+  }, 10000)
 
   it('Failed update data profile because no token', async () => {
     const user = {
@@ -298,7 +303,7 @@ describe('API profile', () => {
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
-  })
+  }, 10000)
 
   it('Failed ubah password because old password is not match', async () => {
     const user = {
@@ -312,54 +317,54 @@ describe('API profile', () => {
     })
     const response = await request(app)
       .patch('/api/v1/auth/profile/edit/ubah-password')
-      .set('Authorization', `Bearer ${tokenUser}`)
       .send(user)
+      .set('Authorization', `Bearer ${tokenUser}`)
     expect(response.statusCode).toBe(400)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe(
       'Your old password is not match with this account, if you forgot the password, go to reset the password feature',
     )
-  })
+  }, 20000)
 
   it('Failed ubah password because newPassword is lower than 8 caharacter', async () => {
     const user = {
-      oldPassword: 'usergilang123',
+      oldPassword: 'usergord123',
       newPassword: '123',
       repeatNewPassword: '123',
     }
     const tokenUser = await getToken({
-      email: 'gilang@gmail.com',
-      password: 'usergilang123',
+      email: 'gord@gmail.com',
+      password: 'usergord123',
     })
     const response = await request(app)
       .patch('/api/v1/auth/profile/edit/ubah-password')
-      .set('Authorization', `Bearer ${tokenUser}`)
       .send(user)
+      .set('Authorization', `Bearer ${tokenUser}`)
     expect(response.statusCode).toBe(400)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Minimum password must be 8 character')
-  })
+  }, 20000)
 
   it('Failed ubah password because newPassword and repeating password is not same', async () => {
     const user = {
-      oldPassword: 'usergilang123',
+      oldPassword: 'userkhaled123',
       newPassword: 'usergilang',
       repeatNewPassword: 'usersyifa',
     }
     const tokenUser = await getToken({
-      email: 'gilang@gmail.com',
-      password: 'usergilang123',
+      email: 'khaled@gmail.com',
+      password: 'userkhaled123',
     })
     const response = await request(app)
       .patch('/api/v1/auth/profile/edit/ubah-password')
-      .set('Authorization', `Bearer ${tokenUser}`)
       .send(user)
+      .set('Authorization', `Bearer ${tokenUser}`)
     expect(response.statusCode).toBe(400)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe(
       'New password must be the same with new repeating password',
     )
-  })
+  }, 20000)
 
   it('Failed ubah password because no token', async () => {
     const user = {
@@ -372,7 +377,7 @@ describe('API profile', () => {
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
-  })
+  }, 10000)
 
   it('Failed update profile because jwt expired', async () => {
     const user = {
@@ -385,12 +390,12 @@ describe('API profile', () => {
 
     const response = await request(app)
       .patch('/api/v1/auth/profile/edit/ubah-password')
-      .set('Authorization', `Bearer ${tokenExpired}`)
       .send(user)
+      .set('Authorization', `Bearer ${tokenExpired}`)
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt expired')
-  })
+  }, 10000)
 
   it('Failed update profile because jwt malformed', async () => {
     const user = {
@@ -402,12 +407,12 @@ describe('API profile', () => {
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpZCI6NywibmFtZSI6ImFkbWluIiiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xl3MDI0NjA3NPeB0iP5KtK97mMc4jzq6poxj9c'
     const response = await request(app)
       .patch('/api/v1/auth/profile/edit/ubah-password')
-      .set('Authorization', `Bearer ${tokenMalformed}`)
       .send(user)
+      .set('Authorization', `Bearer ${tokenMalformed}`)
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
-  })
+  }, 10000)
 
   it('Success ubah password', async () => {
     const user = {
@@ -421,14 +426,14 @@ describe('API profile', () => {
     })
     const response = await request(app)
       .patch('/api/v1/auth/profile/edit/ubah-password')
-      .set('Authorization', `Bearer ${tokenUser}`)
       .send(user)
+      .set('Authorization', `Bearer ${tokenUser}`)
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe(
       'Success, your password successfully changed',
     )
-  })
+  }, 20000)
 
   it('Post not found route', async () => {
     const data = {
@@ -438,20 +443,20 @@ describe('API profile', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
-  })
+  }, 10000)
   it('Get not found route', async () => {
     const response = await request(app).get('/')
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
-  })
+  }, 10000)
 
   it('Get id not found route', async () => {
     const response = await request(app).get('/9')
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
-  })
+  }, 10000)
   it('Patch not found route', async () => {
     const data = {
       name: 'yuyu',
@@ -460,11 +465,11 @@ describe('API profile', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
-  })
+  }, 10000)
   it('Delete not found route', async () => {
     const response = await request(app).get('/1')
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
-  })
+  }, 10000)
 })

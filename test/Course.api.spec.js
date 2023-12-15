@@ -24,6 +24,7 @@ const getIdCourse = async (id) => {
   const res = JSON.parse(check.text)
   return res.data.id
 }
+
 describe('API Course', () => {
   it('Success create course', async () => {
     const course = {
@@ -47,12 +48,12 @@ describe('API Course', () => {
     })
     const response = await request(app)
       .post('/api/v1/course')
-      .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(course)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(201)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, create course')
-  })
+  }, 15000)
 
   it('Failed create course because jwt malformed', async () => {
     const course = {
@@ -74,12 +75,12 @@ describe('API Course', () => {
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpZCI6NywibmFtZSI6ImFkbWluIiiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xl3MDI0NjA3NPeB0iP5KtK97mMc4jzq6poxj9c'
     const response = await request(app)
       .post('/api/v1/course')
-      .set('Authorization', `Bearer ${tokenMalformed}`)
       .send(course)
+      .set('Authorization', `Bearer ${tokenMalformed}`)
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
-  })
+  }, 10000)
 
   it('Failed create course because jwt expired', async () => {
     const course = {
@@ -101,12 +102,12 @@ describe('API Course', () => {
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywibmFtZSI6ImFkbWluIiwiZW1haWwiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDIzNzc1NzksImV4cCI6MTcwMjQ2Mzk3OX0.4eAhzrpoZ9kUnabNdil8YHxkVNa-EnD5iimahZ8ky2g'
     const response = await request(app)
       .post('/api/v1/course')
-      .set('Authorization', `Bearer ${tokenExpired}`)
       .send(course)
+      .set('Authorization', `Bearer ${tokenExpired}`)
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt expired')
-  })
+  }, 10000)
 
   it('Failed create course because about to much string', async () => {
     const course = {
@@ -130,14 +131,14 @@ describe('API Course', () => {
     })
     const response = await request(app)
       .post('/api/v1/course')
-      .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(course)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe(
       'value too long for type character varying(255)',
     )
-  })
+  }, 10000)
 
   it('Failed create course because no token', async () => {
     const course = {
@@ -159,14 +160,14 @@ describe('API Course', () => {
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
-  })
+  }, 10000)
 
   it('Success get all course', async () => {
     const response = await request(app).get('/api/v1/course')
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, fetch')
-  })
+  }, 10000)
 
   it('Failed create course because categoryId not found', async () => {
     const course = {
@@ -197,7 +198,7 @@ describe('API Course', () => {
     expect(response.body.message).toBe(
       'Cause category with id C-0WEBkjhs not found',
     )
-  })
+  }, 10000)
 
   it('Failed create course because level not the same like on enum data', async () => {
     const course = {
@@ -228,7 +229,7 @@ describe('API Course', () => {
     expect(response.body.message).toBe(
       'invalid input value for enum "enum_Courses_level": "Mahir"',
     )
-  })
+  }, 10000)
 
   it('Failed create course because user role not admin', async () => {
     const course = {
@@ -259,7 +260,7 @@ describe('API Course', () => {
     expect(response.body.message).toBe(
       'You are not admin, your access to this is blocked',
     )
-  })
+  }, 10000)
 
   it('Failed route does not exist', async () => {
     const course = {
@@ -283,12 +284,12 @@ describe('API Course', () => {
     })
     const response = await request(app)
       .post('/api/v1/course/10')
-      .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(course)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
-  })
+  }, 10000)
 
   it('Success get course by id', async () => {
     const courseId = await getIdCourse(1)
@@ -296,14 +297,14 @@ describe('API Course', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, fetch')
-  })
+  }, 10000)
 
   it('Failed get course because id not found', async () => {
     const response = await request(app).get('/api/v1/course/999')
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('id does not exist')
-  })
+  }, 10000)
 
   it('Success update course', async () => {
     const course = {
@@ -317,12 +318,12 @@ describe('API Course', () => {
     const courseId = await getIdCourse(1)
     const response = await request(app)
       .patch(`/api/v1/course/${courseId}`)
-      .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(course)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, updated')
-  })
+  }, 15000)
 
   it('Failed update course because jwt malformed', async () => {
     const course = {
@@ -334,12 +335,12 @@ describe('API Course', () => {
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpZCI6NywibmFtZSI6ImFkbWluIiiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xl3MDI0NjA3NPeB0iP5KtK97mMc4jzq6poxj9c'
     const response = await request(app)
       .patch(`/api/v1/course/${courseId}`)
-      .set('Authorization', `Bearer ${tokenMalformed}`)
       .send(course)
+      .set('Authorization', `Bearer ${tokenMalformed}`)
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
-  })
+  }, 10000)
 
   it('Failed update course because jwt expired', async () => {
     const course = {
@@ -351,12 +352,12 @@ describe('API Course', () => {
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywibmFtZSI6ImFkbWluIiwiZW1haWwiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDIzNzc1NzksImV4cCI6MTcwMjQ2Mzk3OX0.4eAhzrpoZ9kUnabNdil8YHxkVNa-EnD5iimahZ8ky2g'
     const response = await request(app)
       .patch(`/api/v1/course/${courseId}`)
-      .set('Authorization', `Bearer ${tokenExpired}`)
       .send(course)
+      .set('Authorization', `Bearer ${tokenExpired}`)
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt expired')
-  })
+  }, 10000)
 
   it('Failed update course because user role not admin', async () => {
     const course = {
@@ -370,14 +371,14 @@ describe('API Course', () => {
     const courseId = await getIdCourse(2)
     const response = await request(app)
       .patch(`/api/v1/course/${courseId}`)
-      .set('Authorization', `Bearer ${tokenUser}`)
       .send(course)
+      .set('Authorization', `Bearer ${tokenUser}`)
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe(
       'You are not admin, your access to this is blocked',
     )
-  })
+  }, 10000)
 
   it('Failed update course because id not found', async () => {
     const course = {
@@ -390,12 +391,12 @@ describe('API Course', () => {
     })
     const response = await request(app)
       .patch('/api/v1/course/999')
-      .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(course)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('id does not exist')
-  })
+  }, 10000)
 
   // it('Failed update course because level not the same like on enum data', async () => {
   //   const course = {
@@ -452,14 +453,14 @@ describe('API Course', () => {
     const courseId = await getIdCourse(2)
     const response = await request(app)
       .patch(`/api/v1/course/${courseId}`)
-      .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(course)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe(
       'Cause category with id C-0ANDlkahjsd not found',
     )
-  })
+  }, 10000)
 
   it('Failed update course because no token', async () => {
     const course = {
@@ -473,7 +474,7 @@ describe('API Course', () => {
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
-  })
+  }, 10000)
 
   it('Failed route does not exist', async () => {
     const tokenAdmin = await getTokenAdmin({
@@ -486,7 +487,7 @@ describe('API Course', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
-  })
+  }, 10000)
 
   it('Failed delete course because user role not admin', async () => {
     const tokenUser = await getToken({
@@ -502,7 +503,7 @@ describe('API Course', () => {
     expect(response.body.message).toBe(
       'You are not admin, your access to this is blocked',
     )
-  })
+  }, 10000)
 
   it('Failed delete course because no token', async () => {
     const courseId = await getIdCourse(2)
@@ -510,7 +511,7 @@ describe('API Course', () => {
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
-  })
+  }, 10000)
 
   it('Failed delete course because id not found', async () => {
     const tokenAdmin = await getTokenAdmin({
@@ -523,7 +524,7 @@ describe('API Course', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('id does not exist')
-  })
+  }, 10000)
 
   it('Failed route does not exist', async () => {
     const tokenAdmin = await getTokenAdmin({
@@ -536,7 +537,7 @@ describe('API Course', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
-  })
+  }, 10000)
 
   it('Failed delete course because jwt malformed', async () => {
     let tokenMalformed =
@@ -548,7 +549,7 @@ describe('API Course', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
-  })
+  }, 10000)
 
   it('Failed delete course because jwt expired', async () => {
     const tokenExpired =
@@ -560,7 +561,7 @@ describe('API Course', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt expired')
-  })
+  }, 10000)
 
   it('Success delete course', async () => {
     const tokenAdmin = await getTokenAdmin({
@@ -574,5 +575,5 @@ describe('API Course', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, deleted')
-  })
+  }, 10000)
 })

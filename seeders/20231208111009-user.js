@@ -53,6 +53,18 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        name: 'admin2',
+        role: 'admin',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: 'admin3',
+        role: 'admin',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ])
 
     const idSyifa = await queryInterface.rawSelect(
@@ -107,6 +119,20 @@ module.exports = {
       'Users',
       {
         where: { name: 'layla' },
+      },
+      ['id'],
+    )
+    const idaAdmin2 = await queryInterface.rawSelect(
+      'Users',
+      {
+        where: { name: 'admin2' },
+      },
+      ['id'],
+    )
+    const idAdmin3 = await queryInterface.rawSelect(
+      'Users',
+      {
+        where: { name: 'admin3' },
       },
       ['id'],
     )
@@ -172,6 +198,24 @@ module.exports = {
           '$2a$12$sOzHt5uBFRVUmmPh2NqXquqVmOzP3ocAyoGp29WA3xIkl..43PQGe',
         phoneNumber: 6288716534418,
         userId: idLayla,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        email: 'admin2@gmail.com',
+        password:
+          '$2a$12$m7lWe9sota9LWhn2qtMPBOyXIPG6ym5eQZ22upyV7LKj5mpXqm1rC',
+        phoneNumber: 6288716534418,
+        userId: idaAdmin2,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        email: 'admin3@gmail.com',
+        password:
+          '$2a$12$FkNAW5MPionH7Bk/xY8x0eyb9DGA9eVTw3dLrcbi38khOtbdaEvLm',
+        phoneNumber: 6288716534418,
+        userId: idAdmin3,
         createdAt: new Date(),
         updatedAt: new Date(),
       },

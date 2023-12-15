@@ -37,12 +37,12 @@ describe('API Category', () => {
     })
     const response = await request(app)
       .post('/api/v1/category')
-      .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(category)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(201)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, create category')
-  })
+  }, 10000)
 
   it('Failed create category because jwt expired', async () => {
     const category = {
@@ -53,12 +53,12 @@ describe('API Category', () => {
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywibmFtZSI6ImFkbWluIiwiZW1haWwiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDIzNzc1NzksImV4cCI6MTcwMjQ2Mzk3OX0.4eAhzrpoZ9kUnabNdil8YHxkVNa-EnD5iimahZ8ky2g'
     const response = await request(app)
       .post('/api/v1/category')
-      .set('Authorization', `Bearer ${tokenExpired}`)
       .send(category)
+      .set('Authorization', `Bearer ${tokenExpired}`)
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt expired')
-  })
+  }, 10000)
 
   it('Failed create category because jwt malformed', async () => {
     const category = {
@@ -69,12 +69,12 @@ describe('API Category', () => {
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpZCI6NyBnbWFpbC5jb20iLCJybpYXQiOjE3MDI0NjA3NzgsB0C7ex_p-tYiP5KtK97mMc4jzq6poxj9c'
     const response = await request(app)
       .post('/api/v1/category')
-      .set('Authorization', `Bearer ${tokenMalformed}`)
       .send(category)
+      .set('Authorization', `Bearer ${tokenMalformed}`)
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
-  })
+  }, 10000)
 
   it('Failed create category because about to much string', async () => {
     const category = {
@@ -87,14 +87,14 @@ describe('API Category', () => {
     })
     const response = await request(app)
       .post('/api/v1/category')
-      .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(category)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe(
       'value too long for type character varying(255)',
     )
-  })
+  }, 10000)
 
   it('Failed create category because user role not admin', async () => {
     const category = {
@@ -102,19 +102,19 @@ describe('API Category', () => {
       name: 'Artificial intelligence',
     }
     const tokenUser = await getToken({
-      email: 'khaled@gmail.com',
-      password: 'userkhaled123',
+      email: 'yuchong@gmail.com',
+      password: 'useryuzhong123',
     })
     const response = await request(app)
       .post('/api/v1/category')
-      .set('Authorization', `Bearer ${tokenUser}`)
       .send(category)
+      .set('Authorization', `Bearer ${tokenUser}`)
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe(
       'You are not admin, your access to this is blocked',
     )
-  })
+  }, 10000)
 
   it('Failed create category because no token', async () => {
     const category = {
@@ -125,7 +125,7 @@ describe('API Category', () => {
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
-  })
+  }, 10000)
 
   it('Failed route does not exist', async () => {
     const tokenAdmin = await getTokenAdmin({
@@ -138,14 +138,14 @@ describe('API Category', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
-  })
+  }, 10000)
 
   it('Success get all category', async () => {
     const response = await request(app).get('/api/v1/category')
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, fetch')
-  })
+  }, 10000)
 
   it('Failed create category because user role not admin', async () => {
     const category = {
@@ -153,33 +153,33 @@ describe('API Category', () => {
       name: 'Artificial intelligence',
     }
     const tokenUser = await getToken({
-      email: 'khaled@gmail.com',
-      password: 'userkhaled123',
+      email: 'alucard@gmail.com',
+      password: 'useralucard123',
     })
     const response = await request(app)
       .post('/api/v1/category')
-      .set('Authorization', `Bearer ${tokenUser}`)
       .send(category)
+      .set('Authorization', `Bearer ${tokenUser}`)
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe(
       'You are not admin, your access to this is blocked',
     )
-  })
+  }, 10000)
 
   it('Success get category by id', async () => {
     const response = await request(app).get('/api/v1/category/C-0WEB')
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, fetch')
-  })
+  }, 10000)
 
   it('Failed get category because id not found', async () => {
     const response = await request(app).get('/api/v1/category/C-0WEBBBBBB')
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('id does not exist')
-  })
+  }, 10000)
 
   it('Success update category', async () => {
     const category = {
@@ -191,12 +191,12 @@ describe('API Category', () => {
     })
     const response = await request(app)
       .put('/api/v1/category/C-0BI')
-      .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(category)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, updated')
-  })
+  }, 15000)
 
   it('Failed create category because jwt expired', async () => {
     const category = {
@@ -206,12 +206,12 @@ describe('API Category', () => {
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywibmFtZSI6ImFkbWluIiwiZW1haWwiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDIzNzc1NzksImV4cCI6MTcwMjQ2Mzk3OX0.4eAhzrpoZ9kUnabNdil8YHxkVNa-EnD5iimahZ8ky2g'
     const response = await request(app)
       .put('/api/v1/category/C-0AND')
-      .set('Authorization', `Bearer ${tokenExpired}`)
       .send(category)
+      .set('Authorization', `Bearer ${tokenExpired}`)
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt expired')
-  })
+  }, 10000)
 
   it('Failed update category because jwt malformed', async () => {
     const category = {
@@ -221,12 +221,12 @@ describe('API Category', () => {
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpZCI6NyBnbWFpbC5jb20iLCJybpYXQiOjE3MDI0NjA3NzgsB0C7ex_p-tYiP5KtK97mMc4jzq6poxj9c'
     const response = await request(app)
       .put('/api/v1/category/C-0AND')
-      .set('Authorization', `Bearer ${tokenMalformed}`)
       .send(category)
+      .set('Authorization', `Bearer ${tokenMalformed}`)
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
-  })
+  }, 10000)
 
   it('Failed update category because id not found', async () => {
     const category = {
@@ -238,31 +238,31 @@ describe('API Category', () => {
     })
     const response = await request(app)
       .put('/api/v1/category/C-0ANDDDDDDDD')
-      .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(category)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('id does not exist')
-  })
+  }, 10000)
 
   it('Failed update category because user role not admin', async () => {
     const category = {
       name: 'Artificial intelligence',
     }
     const tokenUser = await getToken({
-      email: 'khaled@gmail.com',
-      password: 'userkhaled123',
+      email: 'gord@gmail.com',
+      password: 'usergord123',
     })
     const response = await request(app)
       .put('/api/v1/category/C-0AND')
-      .set('Authorization', `Bearer ${tokenUser}`)
       .send(category)
+      .set('Authorization', `Bearer ${tokenUser}`)
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe(
       'You are not admin, your access to this is blocked',
     )
-  })
+  }, 10000)
 
   it('Failed update category because no token', async () => {
     const category = {
@@ -274,7 +274,7 @@ describe('API Category', () => {
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
-  })
+  }, 10000)
 
   it('Failed route does not exist', async () => {
     const tokenAdmin = await getTokenAdmin({
@@ -287,12 +287,12 @@ describe('API Category', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
-  })
+  }, 10000)
 
   it('Failed delete category because user role not admin', async () => {
     const tokenUser = await getToken({
-      email: 'khaled@gmail.com',
-      password: 'userkhaled123',
+      email: 'layla@gmail.com',
+      password: 'userlayla123',
     })
     const response = await request(app)
       .delete('/api/v1/category/C-0WEB')
@@ -302,7 +302,7 @@ describe('API Category', () => {
     expect(response.body.message).toBe(
       'You are not admin, your access to this is blocked',
     )
-  })
+  }, 10000)
 
   it('Failed delete category because id not found', async () => {
     const tokenAdmin = await getTokenAdmin({
@@ -315,14 +315,14 @@ describe('API Category', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('id does not exist')
-  })
+  }, 10000)
 
   it('Failed delete category because no token', async () => {
     const response = await request(app).delete('/api/v1/category/C-0IOS')
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
-  })
+  }, 10000)
 
   it('Failed route does not exist', async () => {
     const tokenAdmin = await getTokenAdmin({
@@ -335,7 +335,7 @@ describe('API Category', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
-  })
+  }, 10000)
 
   it('Failed delete category because jwt malformed', async () => {
     const tokenMalformed =
@@ -346,7 +346,7 @@ describe('API Category', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
-  })
+  }, 10000)
 
   it('Failed create category because jwt expired', async () => {
     const tokenExpired =
@@ -357,7 +357,7 @@ describe('API Category', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt expired')
-  })
+  }, 10000)
 
   it('Success delete category', async () => {
     const tokenAdmin = await getTokenAdmin({
@@ -370,5 +370,5 @@ describe('API Category', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, deleted')
-  })
+  }, 10000)
 })

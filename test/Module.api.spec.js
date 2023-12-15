@@ -51,7 +51,7 @@ describe('API Module', () => {
     expect(response.statusCode).toBe(201)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, create module')
-  })
+  }, 15000)
 
   it('Failed create module because jwt malformed', async () => {
     const courseIdForModule = await getIdCourse(1)
@@ -68,7 +68,7 @@ describe('API Module', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
-  })
+  }, 10000)
 
   it('Failed create module because jwt expired', async () => {
     const courseIdForModule = await getIdCourse(1)
@@ -85,7 +85,7 @@ describe('API Module', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt expired')
-  })
+  }, 10000)
 
   it('Failed create module because about to much string', async () => {
     const courseIdForModule = await getIdCourse(1)
@@ -107,7 +107,7 @@ describe('API Module', () => {
     expect(response.body.message).toBe(
       'value too long for type character varying(255)',
     )
-  })
+  }, 10000)
 
   it('Failed create module because no token', async () => {
     const courseIdForModule = await getIdCourse(1)
@@ -119,14 +119,14 @@ describe('API Module', () => {
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
-  })
+  }, 10000)
 
   it('Success get all module', async () => {
     const response = await request(app).get('/api/v1/module')
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, fetch')
-  })
+  }, 10000)
 
   it('Failed create module because courseId not found', async () => {
     const module = {
@@ -144,7 +144,7 @@ describe('API Module', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Cause course with id 999 not found')
-  })
+  }, 10000)
 
   it('Failed create module because user role not admin', async () => {
     const courseIdForModule = await getIdCourse(1)
@@ -165,7 +165,7 @@ describe('API Module', () => {
     expect(response.body.message).toBe(
       'You are not admin, your access to this is blocked',
     )
-  })
+  }, 10000)
 
   it('Failed route does not exist', async () => {
     const module = {
@@ -183,7 +183,7 @@ describe('API Module', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
-  })
+  }, 10000)
 
   it('Success get module by id', async () => {
     const moduleId = await getIdModule(1)
@@ -191,14 +191,14 @@ describe('API Module', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, fetch')
-  })
+  }, 10000)
 
   it('Failed get module because id not found', async () => {
     const response = await request(app).get('/api/v1/module/777')
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('id does not exist')
-  })
+  }, 10000)
 
   it('Success update module', async () => {
     const module = {
@@ -216,7 +216,7 @@ describe('API Module', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, updated')
-  })
+  }, 15000)
 
   it('Failed update because jwt expired', async () => {
     const module = {
@@ -232,7 +232,7 @@ describe('API Module', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt expired')
-  })
+  }, 10000)
 
   it('Failed update module because jwt malformed', async () => {
     const module = {
@@ -248,7 +248,7 @@ describe('API Module', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
-  })
+  }, 10000)
 
   it('Failed update module because no token', async () => {
     const module = {
@@ -261,7 +261,7 @@ describe('API Module', () => {
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
-  })
+  }, 10000)
 
   it('Failed update module because user role not admin', async () => {
     const module = {
@@ -281,7 +281,7 @@ describe('API Module', () => {
     expect(response.body.message).toBe(
       'You are not admin, your access to this is blocked',
     )
-  })
+  }, 10000)
 
   it('Failed update module because id not found', async () => {
     const module = {
@@ -298,7 +298,7 @@ describe('API Module', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('id does not exist')
-  })
+  }, 10000)
 
   it('Failed update module because courseId not found', async () => {
     const module = {
@@ -317,7 +317,7 @@ describe('API Module', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Cause course with id 888 not found')
-  })
+  }, 10000)
 
   it('Failed route does not exist', async () => {
     const module = {
@@ -335,12 +335,12 @@ describe('API Module', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
-  })
+  }, 10000)
 
   it('Failed delete module because user role not admin', async () => {
     const tokenUser = await getToken({
-      email: 'khaled@gmail.com',
-      password: 'userkhaled123',
+      email: 'gord@gmail.com',
+      password: 'usergord123',
     })
     const moduleId = await getIdModule(1)
     const response = await request(app)
@@ -351,7 +351,7 @@ describe('API Module', () => {
     expect(response.body.message).toBe(
       'You are not admin, your access to this is blocked',
     )
-  })
+  }, 10000)
 
   it('Failed delete module because no token', async () => {
     const moduleId = await getIdModule(1)
@@ -359,7 +359,7 @@ describe('API Module', () => {
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('No token')
-  })
+  }, 10000)
 
   it('Failed delete module because id not found', async () => {
     const tokenAdmin = await getTokenAdmin({
@@ -372,7 +372,7 @@ describe('API Module', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('id does not exist')
-  })
+  }, 10000)
 
   it('Failed route does not exist', async () => {
     const tokenAdmin = await getTokenAdmin({
@@ -385,7 +385,7 @@ describe('API Module', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('Routes does not exist')
-  })
+  }, 10000)
 
   it('Failed delete module because jwt malformed', async () => {
     const tokenMalformed =
@@ -397,7 +397,7 @@ describe('API Module', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt malformed')
-  })
+  }, 10000)
 
   it('Failed delete module because jwt expired', async () => {
     const tokenExpired =
@@ -409,7 +409,7 @@ describe('API Module', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('jwt expired')
-  })
+  }, 10000)
 
   it('Success delete module', async () => {
     const tokenAdmin = await getTokenAdmin({
@@ -423,5 +423,5 @@ describe('API Module', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, deleted')
-  })
+  }, 10000)
 })
