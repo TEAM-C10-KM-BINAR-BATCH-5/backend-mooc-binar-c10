@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+const { Op } = require('sequelize')
 const uuidv4 = require('uuid').v4
 const crypto = require('crypto')
 const fetch = require('node-fetch')
@@ -18,13 +19,28 @@ const buyCourse = async (req, res, next) => {
       },
     })
 
+    const alreadyPurchased = await Payment.findOne({
+      userId: req.user.id,
+      courseId,
+      status: {
+        [Op.in]: ['settlement', 'capture'],
+      },
+    })
+
+    if (alreadyPurchased) {
+      return next(new ApiError('Course already purchased', 400))
+    }
+
     const alreadyEnrolled = await UserCourse.findOne({
       userId: req.user.id,
       courseId,
     })
 
-    if (alreadyEnrolled) {
-      return next(new ApiError('Course already enrolled', 400))
+    if (!alreadyEnrolled) {
+      await UserCourse.create({
+        userId: req.user.id,
+        courseId,
+      })
     }
 
     const orderId = uuidv4()

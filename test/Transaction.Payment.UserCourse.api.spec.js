@@ -83,6 +83,19 @@ describe('API payment & transaction', () => {
     expect(response.body.message).toBe('jwt expired')
   }, 10000)
 
+  // it('Success enroll course', async () => {
+  //   const tokenUser = await getToken({
+  //     email: 'syifa@gmail.com',
+  //     password: 'usersyifa123',
+  //   })
+  //   const response = await request(app)
+  //     .post('/api/v1/enrollment/2')
+  //     .set('Authorization', `Bearer ${tokenUser}`)
+  //   expect(response.statusCode).toBe(200)
+  //   expect(response.body.success).toBe(true)
+  //   expect(response.body.message).toBe('Success enroll course')
+  // }, 20000)
+
   it('Success initialing payment to buy course', async () => {
     const tokenUser = await getToken({
       email: 'syifa@gmail.com',
@@ -96,13 +109,13 @@ describe('API payment & transaction', () => {
     expect(response.body.message).toBe('Success initiating payment')
   }, 20000)
 
-  // it('Failed buy course because course already enrolled', async () => {
+  // it('Failed buy course because course already purchased', async () => {
   //   const response = await request(app)
   //     .post(`/api/v1/payment/${courseId}`)
   //     .set('Authorization', `Bearer ${tokenUser}`)
   //   expect(response.statusCode).toBe(400)
   //   expect(response.body.success).toBe(false)
-  //   expect(response.body.message).toBe('Course already enrolled')
+  //   expect(response.body.message).toBe('Course already purchased')
   // })
 
   it('Success get user courses', async () => {

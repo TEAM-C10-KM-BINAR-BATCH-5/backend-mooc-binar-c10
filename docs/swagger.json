@@ -4683,7 +4683,7 @@
             }
           },
           "400": {
-            "description": "Course already enrolled",
+            "description": "Course already purchased",
             "content": {
               "application/json": {
                 "schema": {
@@ -4695,7 +4695,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Course already enrolled"
+                      "example": "Course already purchased"
                     }
                   }
                 }
