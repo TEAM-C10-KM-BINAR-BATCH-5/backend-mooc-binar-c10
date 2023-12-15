@@ -37,13 +37,13 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: drop existing DB
-        run: npm run db:drop
+        run: npm run db:drop --env test
       - name: Create DB
-        run: npm run db:create
+        run: npm run db:create --env test
       - name: Migration database
-        run: npm run db:migrate
+        run: npm run db:migrate --env test
       - name: Seed database
-        run: npm run db:seed
+        run: npm run db:seed --env test
       - name: Test code
         id: run-tests
         run: npm run test
