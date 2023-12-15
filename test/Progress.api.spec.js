@@ -63,8 +63,8 @@ describe('API Progress', () => {
 
   it('Failed update video because user role not admin', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .post('/api/v1/progress/1')

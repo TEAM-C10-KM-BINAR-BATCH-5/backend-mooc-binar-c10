@@ -34,8 +34,8 @@ describe('API Notification', () => {
       description: 'Ada promo ada uang',
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .post('/api/v1/notification')
@@ -98,8 +98,8 @@ describe('API Notification', () => {
       description: 'Promonya besar ini',
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .post('/api/v1/notification')
@@ -118,8 +118,8 @@ describe('API Notification', () => {
       description: 'Ada promo ada uang',
     }
     const tokenUser = await getToken({
-      email: 'layla@gmail.com',
-      password: 'userlayla123',
+      email: 'syifa@gmail.com',
+      password: 'usersyifa123',
     })
     const response = await request(app)
       .post('/api/v1/notification')
@@ -135,8 +135,8 @@ describe('API Notification', () => {
   it('Failed create notification to all user because not including title or desc', async () => {
     const notif = {}
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .post('/api/v1/notification')
@@ -153,8 +153,8 @@ describe('API Notification', () => {
       description: 'Ada promo ada uang',
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .post('/api/v1/notification/2')
@@ -205,8 +205,8 @@ describe('API Notification', () => {
       description: 'Ada promo ada uang',
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .post('/api/v1/notification/2')
@@ -240,8 +240,8 @@ describe('API Notification', () => {
       description: 'Promonya besar ini',
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .post('/api/v1/notification/2')
@@ -277,8 +277,8 @@ describe('API Notification', () => {
   it('Failed create notification by id because not including title or desc', async () => {
     const notif = {}
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .post('/api/v1/notification/2')
@@ -295,8 +295,8 @@ describe('API Notification', () => {
       description: 'Ada promo ada uang',
     }
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .post(`/api/v1/notification/999`)
@@ -310,8 +310,8 @@ describe('API Notification', () => {
   // ntar
   it('Success get all notification', async () => {
     const tokenAdmin = await getTokenAdmin({
-      email: 'binar.team.c10@gmail.com',
-      password: 'admin123',
+      email: 'admin3@gmail.com',
+      password: 'admin3123',
     })
     const response = await request(app)
       .get('/api/v1/notification')
