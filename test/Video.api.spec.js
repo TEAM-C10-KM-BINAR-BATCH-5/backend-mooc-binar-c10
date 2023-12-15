@@ -35,6 +35,7 @@ describe('API Video', () => {
       .post('/api/v1/video')
       .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(video)
+    console.log(response.body)
     expect(response.statusCode).toBe(201)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, create video')
@@ -443,7 +444,7 @@ describe('API Video', () => {
       password: 'admin123',
     })
     const response = await request(app)
-      .delete('/api/v1/video/6')
+      .delete('/api/v1/video/1')
       .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)

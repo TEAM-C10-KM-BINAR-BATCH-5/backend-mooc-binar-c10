@@ -27,6 +27,7 @@ describe('API Progress', () => {
     const response = await request(app)
       .post('/api/v1/progress/1')
       .set('Authorization', `Bearer ${tokenUser}`)
+    console.log(response.body)
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success update progress')

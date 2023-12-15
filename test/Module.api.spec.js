@@ -47,6 +47,7 @@ describe('API Module', () => {
       .post('/api/v1/module')
       .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(module)
+    console.log(response.body)
     expect(response.statusCode).toBe(201)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, create module')

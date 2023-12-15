@@ -27,6 +27,7 @@ describe('API User', () => {
     const response = await request(app)
       .get('/api/v1/user')
       .set('Authorization', `Bearer ${tokenAdmin}`)
+    console.log(response.body)
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, fetch')

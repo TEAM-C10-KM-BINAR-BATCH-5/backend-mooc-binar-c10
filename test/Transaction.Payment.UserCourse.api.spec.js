@@ -34,6 +34,7 @@ describe('API payment & transaction', () => {
     const response = await request(app)
       .post('/api/v1/payment/777')
       .set('Authorization', `Bearer ${tokenUser}`)
+    console.log(response.body)
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('id does not exist')

@@ -37,6 +37,7 @@ describe('API Notification', () => {
       email: 'binar.team.c10@gmail.com',
       password: 'admin123',
     })
+    console.log(response.body)
     const response = await request(app)
       .post('/api/v1/notification')
       .set('Authorization', `Bearer ${tokenAdmin}`)
