@@ -2386,6 +2386,10 @@
                   "courseId": {
                     "type": "integer",
                     "example": 1
+                  },
+                  "isLocked": {
+                    "type": "boolean",
+                    "example": false
                   }
                 }
               }
