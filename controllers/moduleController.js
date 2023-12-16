@@ -20,7 +20,7 @@ const createModule = async (req, res, next) => {
       title,
       duration: 0,
       courseId: idCourse,
-      isLocked: courseType === 'Free' ? false : isLocked,
+      isLocked: courseType === 'Free' ? false : isLocked || false,
     })
     if (newModule) {
       const course = await Course.findOne({ where: { id: courseId } })
@@ -114,12 +114,13 @@ const updateModule = async (req, res, next) => {
       idCourse = course.id
       courseType = course.courseType
     }
+
     const updatedModule = await Module.update(
       {
         title,
         duration,
         courseId: idCourse,
-        isLocked: courseType === 'Free' ? false : isLocked,
+        isLocked: courseType === 'Free' ? false : isLocked || false,
       },
       { where: { id }, returning: true },
     )
