@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       title: DataTypes.STRING,
       duration: DataTypes.INTEGER,
       courseId: DataTypes.INTEGER,
+      // isLocked: DataTypes.BOOLEAN,
     },
     {
       sequelize,

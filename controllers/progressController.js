@@ -12,12 +12,15 @@ const updateProgress = async (req, res, next) => {
         {
           model: Module,
           attributes: ['courseId'], // need isLocked attribute
+          // include: [
+          //   {
+          //     model: Course,
+          //     attributes: ['courseType']
+          //   },
+          // ],
         },
       ],
     })
-    if (!video) {
-      return next(new ApiError('id does not exist', 404))
-    }
     const isCourseEnrolled = await UserCourse.findOne({
       where: {
         userId: req.user.id,
@@ -29,13 +32,16 @@ const updateProgress = async (req, res, next) => {
       return next(new ApiError('You have not enroll this course yet', 400))
     }
 
-    // if (video.Module.courseType === 'Premium' && video.Module.isLocked) {
-    //   const isPuchased = await UserCourse.findOne({
+    // if (video.Module.Course.courseType === 'Premium' && video.Module.isLocked) {
+    //   const isPurchased = await UserCourse.findOne({
     //     where: {
     //       userId: req.user.id,
     //       courseId: video.Module.courseId,
     //     },
     //   })
+    //   if (!isPurchased) {
+    //     return next(new ApiError('You have not purchase this course yet', 400))
+    //   }
     // }
 
     const checkUserVideo = await UserVideo.findOne({
