@@ -1,6 +1,6 @@
 // prettier-ignore
 const {
-  Video, UserVideo, Module, UserCourse, Course,
+  Video, UserVideo, Module, UserCourse,
 } = require('../models')
 const ApiError = require('../utils/apiError')
 
