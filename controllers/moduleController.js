@@ -92,7 +92,13 @@ const deleteModule = async (req, res, next) => {
 
 const updateModule = async (req, res, next) => {
   const { id } = req.params
-  const { title, duration, courseId } = req.body
+  // prettier-ignore
+  const {
+    title,
+    duration,
+    courseId,
+    isLocked,
+  } = req.body
   try {
     let idCourse
     if (courseId) {
@@ -109,6 +115,7 @@ const updateModule = async (req, res, next) => {
         title,
         duration,
         courseId: idCourse,
+        isLocked,
       },
       { where: { id }, returning: true },
     )
