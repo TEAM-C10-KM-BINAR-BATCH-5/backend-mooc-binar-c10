@@ -1,6 +1,6 @@
 // prettier-ignore
 const {
-  Video, UserVideo, Module,
+  Video, UserVideo, Module, UserCourse,
 } = require('../models')
 const ApiError = require('../utils/apiError')
 
@@ -11,13 +11,33 @@ const updateProgress = async (req, res, next) => {
       include: [
         {
           model: Module,
-          attributes: ['courseId'],
+          attributes: ['courseId', 'courseType'],
         },
       ],
     })
     if (!video) {
       return next(new ApiError('id does not exist', 404))
     }
+    const isCourseEnrolled = await UserCourse.findOne({
+      where: {
+        userId: req.user.id,
+        courseId: video.Module.courseId,
+      },
+    })
+
+    if (!isCourseEnrolled) {
+      return next(new ApiError('You have not enroll this course yet', 400))
+    }
+
+    // if (video.Module.courseType === 'Premium') {
+    //   const isPuchased = await UserCourse.findOne({
+    //     where: {
+    //       userId: req.user.id,
+    //       courseId: video.Module.courseId,
+    //     },
+    //   })
+    // }
+
     const checkUserVideo = await UserVideo.findOne({
       where: {
         userId: req.user.id,

@@ -4777,6 +4777,26 @@
               }
             }
           },
+          "400": {
+            "description": "Error, Not found! User have not purchased this course yet",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You have not purchased this course yet"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "401": {
             "description": "User tidak ada token",
             "content": {
