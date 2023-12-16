@@ -11,7 +11,7 @@ const updateProgress = async (req, res, next) => {
       include: [
         {
           model: Module,
-          attributes: ['courseId'], // need isLocked attribute
+          attributes: ['courseId', 'isLocked'], // need isLocked attribute
           include: [
             {
               model: Course,

@@ -4,6 +4,7 @@ const ApiError = require('../utils/apiError')
 const createModule = async (req, res, next) => {
   const { title, courseId, isLocked } = req.body
   try {
+    let courseType
     let idCourse
     if (courseId) {
       const course = await Course.findOne({ where: { id: courseId } })
@@ -13,12 +14,13 @@ const createModule = async (req, res, next) => {
         )
       }
       idCourse = course.id
+      courseType = course.courseType
     }
     const newModule = await Module.create({
       title,
       duration: 0,
       courseId: idCourse,
-      isLocked,
+      isLocked: courseType === 'Free' ? false : isLocked,
     })
     if (newModule) {
       const course = await Course.findOne({ where: { id: courseId } })
@@ -100,6 +102,7 @@ const updateModule = async (req, res, next) => {
     isLocked,
   } = req.body
   try {
+    let courseType
     let idCourse
     if (courseId) {
       const course = await Course.findOne({ where: { id: courseId } })
@@ -109,13 +112,14 @@ const updateModule = async (req, res, next) => {
         )
       }
       idCourse = course.id
+      courseType = course.courseType
     }
     const updatedModule = await Module.update(
       {
         title,
         duration,
         courseId: idCourse,
-        isLocked,
+        isLocked: courseType === 'Free' ? false : isLocked,
       },
       { where: { id }, returning: true },
     )

@@ -171,25 +171,21 @@ const getUserCourseById = async (req, res, next) => {
         userId: req.user.id,
       },
     })
-    // prettier-ignore
-    const isVideoLocked = course.toJSON().courseType === 'Premium' && !isCoursePurchased
 
-    const filteredModules = course
-      .toJSON()
-      .Modules.map((module, moduleIndex) => {
-        const filteredVideos = module.Videos.map((video) => {
-          const watchedVideosId = watchedVideos.map(
-            (watchedVideo) => watchedVideo.videoId,
-          )
-          const videos = {
-            ...video,
-            isWatched: watchedVideosId.includes(video.id),
-            isLocked: isVideoLocked && moduleIndex !== 0,
-          }
-          return videos
-        })
-        return { ...module, Videos: filteredVideos }
+    const filteredModules = course.toJSON().Modules.map((module) => {
+      const filteredVideos = module.Videos.map((video) => {
+        const watchedVideosId = watchedVideos.map(
+          (watchedVideo) => watchedVideo.videoId,
+        )
+        const videos = {
+          ...video,
+          isWatched: watchedVideosId.includes(video.id),
+          isLocked: module.isLocked && !isCoursePurchased,
+        }
+        return videos
       })
+      return { ...module, Videos: filteredVideos }
+    })
 
     return res.status(200).json({
       success: true,

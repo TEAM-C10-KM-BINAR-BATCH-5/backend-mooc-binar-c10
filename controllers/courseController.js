@@ -179,15 +179,13 @@ const getCourse = async (req, res, next) => {
       ],
     })
 
-    const isVideoLocked = course.toJSON().courseType === 'Premium'
-
     const filteredModules = course
       .toJSON()
-      .Modules.map((module, moduleIndex) => {
+      .Modules.map((module) => {
         const filteredVideos = module.Videos.map((video) => {
           const videos = {
             ...video,
-            isLocked: isVideoLocked && moduleIndex !== 0,
+            isLocked: module.isLocked,
           }
           return videos
         })
