@@ -11,13 +11,7 @@ const updateProgress = async (req, res, next) => {
       include: [
         {
           model: Module,
-          attributes: ['courseId', 'isLocked'], // need isLocked attribute
-          include: [
-            {
-              model: Course,
-              attributes: ['courseType'],
-            },
-          ],
+          attributes: ['courseId', 'isLocked'],
         },
       ],
     })
@@ -32,7 +26,7 @@ const updateProgress = async (req, res, next) => {
       return next(new ApiError('You have not enroll this course yet', 400))
     }
 
-    if (video.Module.Course.courseType === 'Premium' && video.Module.isLocked) {
+    if (video.Module.isLocked) {
       const isPurchased = await UserCourse.findOne({
         where: {
           userId: req.user.id,
