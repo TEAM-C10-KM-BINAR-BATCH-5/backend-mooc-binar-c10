@@ -102,7 +102,7 @@ describe('API Category', () => {
       name: 'Artificial intelligence',
     }
     const tokenUser = await getToken({
-      email: 'yuchong@gmail.com',
+      email: 'yuzhong@gmail.com',
       password: 'useryuzhong123',
     })
     const response = await request(app)

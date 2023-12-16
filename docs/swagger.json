@@ -2429,6 +2429,10 @@
                               "type": "integer",
                               "example": 1
                             },
+                            "isLocked": {
+                              "type": "boolean",
+                              "example": false
+                            },
                             "updatedAt": {
                               "type": "string",
                               "example": "2023-10-20T19:01:02.829Z"

@@ -1,6 +1,6 @@
 // prettier-ignore
 const {
-  Video, UserVideo, Module, UserCourse,
+  Video, UserVideo, Module, UserCourse, Course,
 } = require('../models')
 const ApiError = require('../utils/apiError')
 
@@ -12,12 +12,12 @@ const updateProgress = async (req, res, next) => {
         {
           model: Module,
           attributes: ['courseId'], // need isLocked attribute
-          // include: [
-          //   {
-          //     model: Course,
-          //     attributes: ['courseType']
-          //   },
-          // ],
+          include: [
+            {
+              model: Course,
+              attributes: ['courseType'],
+            },
+          ],
         },
       ],
     })
@@ -32,17 +32,17 @@ const updateProgress = async (req, res, next) => {
       return next(new ApiError('You have not enroll this course yet', 400))
     }
 
-    // if (video.Module.Course.courseType === 'Premium' && video.Module.isLocked) {
-    //   const isPurchased = await UserCourse.findOne({
-    //     where: {
-    //       userId: req.user.id,
-    //       courseId: video.Module.courseId,
-    //     },
-    //   })
-    //   if (!isPurchased) {
-    //     return next(new ApiError('You have not purchase this course yet', 400))
-    //   }
-    // }
+    if (video.Module.Course.courseType === 'Premium' && video.Module.isLocked) {
+      const isPurchased = await UserCourse.findOne({
+        where: {
+          userId: req.user.id,
+          courseId: video.Module.courseId,
+        },
+      })
+      if (!isPurchased) {
+        return next(new ApiError('You have not purchase this course yet', 400))
+      }
+    }
 
     const checkUserVideo = await UserVideo.findOne({
       where: {

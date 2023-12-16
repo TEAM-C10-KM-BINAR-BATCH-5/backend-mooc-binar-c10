@@ -11,9 +11,9 @@ module.exports = {
       title: {
         type: Sequelize.STRING,
       },
-      // isLocked: {
-      //   type: Sequelize.BOOLEAN,
-      // },
+      isLocked: {
+        type: Sequelize.BOOLEAN,
+      },
       duration: {
         type: Sequelize.INTEGER,
       },
