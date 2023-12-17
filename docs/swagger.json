@@ -3075,6 +3075,10 @@
                             "type": "string",
                             "example": "Product Management"
                           },
+                          "imageUrl": {
+                            "type": "string",
+                            "example": "https://ik.imagekit.io/yxctvbjvh/IMG-1701109924009_sfjlLIV9w.png"
+                          },
                           "updatedAt": {
                             "type": "string",
                             "example": "2023-10-20T19:01:02.829Z"
@@ -3204,7 +3208,6 @@
                     },
                     "data": {
                       "type": "object",
-
                       "properties": {
                         "id": {
                           "type": "string",
@@ -3213,6 +3216,10 @@
                         "name": {
                           "type": "string",
                           "example": "Dev Ops"
+                        },
+                        "imageUrl": {
+                          "type": "string",
+                          "example": "https://ik.imagekit.io/yxctvbjvh/IMG-1701109924009_sfjlLIV9w.png"
                         },
                         "updatedAt": {
                           "type": "string",
