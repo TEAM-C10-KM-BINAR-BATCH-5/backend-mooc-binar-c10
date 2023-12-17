@@ -1621,73 +1621,69 @@
                     "data": {
                       "type": "object",
                       "properties": {
-                        "newCourse": {
-                          "properties": {
-                            "id": {
-                              "type": "integer",
-                              "example": 2
-                            },
-                            "title": {
-                              "type": "string",
-                              "example": "HTML & CSS Tutorial"
-                            },
-                            "about": {
-                              "type": "string",
-                              "example": "Html dan Css adalah pondasi dasar dalam web"
-                            },
-                            "objective": {
-                              "type": "string",
-                              "example": "Course ini ditujuakn untuk orang yang bertekad untuk menjadi web developer"
-                            },
-                            "onboaring": {
-                              "type": "string",
-                              "example": "alskhdalksdhaksdjhaksdjhaskdjhaskd"
-                            },
-                            "categoryId": {
-                              "type": "string",
-                              "example": "C-0WEB"
-                            },
-                            "level": {
-                              "type": "string",
-                              "example": "Beginner"
-                            },
-                            "courseType": {
-                              "type": "string",
-                              "example": "Premium"
-                            },
-                            "imageUrl": {
-                              "type": "string",
-                              "example": "https://ik.imagekit.io/yxctvbjvh/IMG-1701109924009_sfjlLIV9w.png"
-                            },
-                            "rating": {
-                              "type": "float",
-                              "example": 4.5
-                            },
-                            "instructor": {
-                              "type": "string",
-                              "example": "Sandika Galih"
-                            },
-                            "telegramLink": {
-                              "type": "string",
-                              "example": "https://jahdkjhaslkdja.com"
-                            },
-                            "moduleCount": {
-                              "type": "integer",
-                              "example": 2
-                            },
-                            "price": {
-                              "type": "integer",
-                              "example": 90000
-                            },
-                            "updatedAt": {
-                              "type": "string",
-                              "example": "2023-10-20T19:01:02.829Z"
-                            },
-                            "createdAt": {
-                              "type": "string",
-                              "example": "2023-10-20T19:01:02.829Z"
-                            }
-                          }
+                        "id": {
+                          "type": "integer",
+                          "example": 2
+                        },
+                        "title": {
+                          "type": "string",
+                          "example": "HTML & CSS Tutorial"
+                        },
+                        "about": {
+                          "type": "string",
+                          "example": "Html dan Css adalah pondasi dasar dalam web"
+                        },
+                        "objective": {
+                          "type": "string",
+                          "example": "Course ini ditujuakn untuk orang yang bertekad untuk menjadi web developer"
+                        },
+                        "onboaring": {
+                          "type": "string",
+                          "example": "alskhdalksdhaksdjhaksdjhaskdjhaskd"
+                        },
+                        "categoryId": {
+                          "type": "string",
+                          "example": "C-0WEB"
+                        },
+                        "level": {
+                          "type": "string",
+                          "example": "Beginner"
+                        },
+                        "courseType": {
+                          "type": "string",
+                          "example": "Premium"
+                        },
+                        "imageUrl": {
+                          "type": "string",
+                          "example": "https://ik.imagekit.io/yxctvbjvh/IMG-1701109924009_sfjlLIV9w.png"
+                        },
+                        "rating": {
+                          "type": "float",
+                          "example": 4.5
+                        },
+                        "instructor": {
+                          "type": "string",
+                          "example": "Sandika Galih"
+                        },
+                        "telegramLink": {
+                          "type": "string",
+                          "example": "https://jahdkjhaslkdja.com"
+                        },
+                        "moduleCount": {
+                          "type": "integer",
+                          "example": 2
+                        },
+                        "price": {
+                          "type": "integer",
+                          "example": 90000
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-10-20T19:01:02.829Z"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-10-20T19:01:02.829Z"
                         }
                       }
                     }
@@ -1768,7 +1764,7 @@
                           "type": "string",
                           "example": "Course ini ditujuakn untuk orang yang bertekad untuk menjadi web developer"
                         },
-                        "onboaring": {
+                        "onboarding": {
                           "type": "string",
                           "example": "alskhdalksdhaksdjhaksdjhaskdjhaskd"
                         },
@@ -2022,75 +2018,6 @@
                     "message": {
                       "type": "string",
                       "example": "Success, updated"
-                    },
-
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "updatedCourse": {
-                          "type": "array",
-                          "items": {
-                            "properties": {
-                              "title": {
-                                "type": "string",
-                                "example": "Html & Css Full Course"
-                              },
-                              "level": {
-                                "type": "string",
-                                "example": "Beginner"
-                              },
-                              "rating": {
-                                "type": "float",
-                                "example": 4.5
-                              },
-                              "instructor": {
-                                "type": "string",
-                                "example": "Eko Kurniawan"
-                              },
-                              "telegramLink": {
-                                "type": "string",
-                                "example": "https://ahldaushdl.com"
-                              },
-                              "courseType": {
-                                "type": "string",
-                                "example": "Free"
-                              },
-                              "moduleCount": {
-                                "type": "integer",
-                                "example": 4
-                              },
-                              "about": {
-                                "type": "string",
-                                "example": "Course html terupdat saat ini"
-                              },
-                              "objective": {
-                                "type": "string",
-                                "example": "Course html sangat cocok untuk orang yang mau menjadi web designer"
-                              },
-                              "price": {
-                                "type": "integer",
-                                "example": 50000
-                              },
-                              "imageUrl": {
-                                "type": "string",
-                                "example": "https://ik.imagekit.io/yxctvbjvh/IMG-1701109924009_sfjlLIV9w.png"
-                              },
-                              "onboarding": {
-                                "type": "string",
-                                "example": "iasdiuansdiausndiuansdiausndoiuansd"
-                              },
-                              "categoryId": {
-                                "type": "string",
-                                "example": "C-0WEB"
-                              },
-                              "duration": {
-                                "type": "integer",
-                                "example": 80
-                              }
-                            }
-                          }
-                        }
-                      }
                     }
                   }
                 }
@@ -2333,37 +2260,33 @@
                     "data": {
                       "type": "object",
                       "properties": {
-                        "newModule": {
-                          "properties": {
-                            "id": {
-                              "type": "integer",
-                              "example": 2
-                            },
-                            "title": {
-                              "type": "string",
-                              "example": "Chapter 2 Css Dasar"
-                            },
-                            "duration": {
-                              "type": "integer",
-                              "example": 0
-                            },
-                            "courseId": {
-                              "type": "integer",
-                              "example": 1
-                            },
-                            "isLocked": {
-                              "type": "boolean",
-                              "example": false
-                            },
-                            "updatedAt": {
-                              "type": "string",
-                              "example": "2023-10-20T19:01:02.829Z"
-                            },
-                            "createdAt": {
-                              "type": "string",
-                              "example": "2023-10-20T19:01:02.829Z"
-                            }
-                          }
+                        "id": {
+                          "type": "integer",
+                          "example": 2
+                        },
+                        "title": {
+                          "type": "string",
+                          "example": "Chapter 2 Css Dasar"
+                        },
+                        "duration": {
+                          "type": "integer",
+                          "example": 0
+                        },
+                        "courseId": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "isLocked": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-10-20T19:01:02.829Z"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-10-20T19:01:02.829Z"
                         }
                       }
                     }
@@ -2579,31 +2502,6 @@
                     "message": {
                       "type": "string",
                       "example": "Success, updated"
-                    },
-
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "updatedModule": {
-                          "type": "array",
-                          "items": {
-                            "properties": {
-                              "title": {
-                                "type": "string",
-                                "example": "Chapter 1 Dasar Dasar Html"
-                              },
-                              "duration": {
-                                "type": "integer",
-                                "example": 40
-                              },
-                              "courseId": {
-                                "type": "integer",
-                                "example": 2
-                              }
-                            }
-                          }
-                        }
-                      }
                     }
                   }
                 }
@@ -2831,41 +2729,37 @@
                     "data": {
                       "type": "object",
                       "properties": {
-                        "newModule": {
-                          "properties": {
-                            "id": {
-                              "type": "integer",
-                              "example": 1
-                            },
-                            "title": {
-                              "type": "string",
-                              "example": "Html tag dasar"
-                            },
-                            "no": {
-                              "type": "integer",
-                              "example": 1
-                            },
-                            "videoUrl": {
-                              "type": "string",
-                              "example": "https://ahldaushdl.com"
-                            },
-                            "duration": {
-                              "type": "integer",
-                              "example": 3
-                            },
-                            "moduleId": {
-                              "type": "integer",
-                              "example": 1
-                            },
-                            "updatedAt": {
-                              "type": "string",
-                              "example": "2023-10-20T19:01:02.829Z"
-                            },
-                            "createdAt": {
-                              "type": "string",
-                              "example": "2023-10-20T19:01:02.829Z"
-                            }
-                          }
+                        "id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "title": {
+                          "type": "string",
+                          "example": "Html tag dasar"
+                        },
+                        "no": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "videoUrl": {
+                          "type": "string",
+                          "example": "https://ahldaushdl.com"
+                        },
+                        "duration": {
+                          "type": "integer",
+                          "example": 3
+                        },
+                        "moduleId": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-10-20T19:01:02.829Z"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-10-20T19:01:02.829Z"
                         }
                       }
                     }
@@ -2931,43 +2825,37 @@
                     "data": {
                       "type": "object",
                       "properties": {
-                        "video": {
-                          "properties": {
-                            "properties": {
-                              "id": {
-                                "type": "integer",
-                                "example": 1
-                              },
-                              "title": {
-                                "type": "string",
-                                "example": "Form di Html"
-                              },
-                              "no": {
-                                "type": "integer",
-                                "example": 1
-                              },
-                              "videoUrl": {
-                                "type": "string",
-                                "example": "https://ahldaushdl.com"
-                              },
-                              "duration": {
-                                "type": "integer",
-                                "example": 40
-                              },
-                              "moduleId": {
-                                "type": "integer",
-                                "example": 1
-                              },
-                              "updatedAt": {
-                                "type": "string",
-                                "example": "2023-10-20T19:01:02.829Z"
-                              },
-                              "createdAt": {
-                                "type": "string",
-                                "example": "2023-10-20T19:01:02.829Z"
-                              }
-                            }
-                          }
+                        "id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "title": {
+                          "type": "string",
+                          "example": "Form di Html"
+                        },
+                        "no": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "videoUrl": {
+                          "type": "string",
+                          "example": "https://ahldaushdl.com"
+                        },
+                        "duration": {
+                          "type": "integer",
+                          "example": 40
+                        },
+                        "moduleId": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-10-20T19:01:02.829Z"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-10-20T19:01:02.829Z"
                         }
                       }
                     }
@@ -3064,39 +2952,6 @@
                     "message": {
                       "type": "string",
                       "example": "Success, updated"
-                    },
-
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "updatedVideo": {
-                          "type": "array",
-                          "items": {
-                            "properties": {
-                              "title": {
-                                "type": "string",
-                                "example": "Html tag dasar"
-                              },
-                              "no": {
-                                "type": "integer",
-                                "example": 1
-                              },
-                              "videoUrl": {
-                                "type": "string",
-                                "example": "https://ahldaushdl.com"
-                              },
-                              "duration": {
-                                "type": "integer",
-                                "example": 3
-                              },
-                              "moduleId": {
-                                "type": "integer",
-                                "example": 1
-                              }
-                            }
-                          }
-                        }
-                      }
                     }
                   }
                 }
@@ -3542,27 +3397,6 @@
                     "message": {
                       "type": "string",
                       "example": "Success, updated"
-                    },
-
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "updatedVideo": {
-                          "type": "array",
-                          "items": {
-                            "properties": {
-                              "id": {
-                                "type": "string",
-                                "example": "C-0OPS"
-                              },
-                              "name": {
-                                "type": "string",
-                                "example": "Dev Ops"
-                              }
-                            }
-                          }
-                        }
-                      }
                     }
                   }
                 }
