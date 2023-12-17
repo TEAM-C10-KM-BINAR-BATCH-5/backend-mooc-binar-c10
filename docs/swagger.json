@@ -2619,45 +2619,40 @@
                       "example": "Success, fetch"
                     },
                     "data": {
-                      "type": "object",
-                      "properties": {
-                        "videos": {
-                          "type": "array",
-                          "items": {
-                            "properties": {
-                              "id": {
-                                "type": "integer",
-                                "example": 1
-                              },
-                              "title": {
-                                "type": "string",
-                                "example": "Form di Html"
-                              },
-                              "no": {
-                                "type": "integer",
-                                "example": 1
-                              },
-                              "videoUrl": {
-                                "type": "string",
-                                "example": "https://ahldaushdl.com"
-                              },
-                              "duration": {
-                                "type": "integer",
-                                "example": 40
-                              },
-                              "moduleId": {
-                                "type": "integer",
-                                "example": 1
-                              },
-                              "updatedAt": {
-                                "type": "string",
-                                "example": "2023-10-20T19:01:02.829Z"
-                              },
-                              "createdAt": {
-                                "type": "string",
-                                "example": "2023-10-20T19:01:02.829Z"
-                              }
-                            }
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "title": {
+                            "type": "string",
+                            "example": "Form di Html"
+                          },
+                          "no": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "videoUrl": {
+                            "type": "string",
+                            "example": "https://ahldaushdl.com"
+                          },
+                          "duration": {
+                            "type": "integer",
+                            "example": 40
+                          },
+                          "moduleId": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "example": "2023-10-20T19:01:02.829Z"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "example": "2023-10-20T19:01:02.829Z"
                           }
                         }
                       }
@@ -3069,29 +3064,24 @@
                       "example": "Success, fetch"
                     },
                     "data": {
-                      "type": "object",
-                      "properties": {
-                        "categories": {
-                          "type": "array",
-                          "items": {
-                            "properties": {
-                              "id": {
-                                "type": "string",
-                                "example": "C-0PM"
-                              },
-                              "name": {
-                                "type": "string",
-                                "example": "Product Management"
-                              },
-                              "updatedAt": {
-                                "type": "string",
-                                "example": "2023-10-20T19:01:02.829Z"
-                              },
-                              "createdAt": {
-                                "type": "string",
-                                "example": "2023-10-20T19:01:02.829Z"
-                              }
-                            }
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "C-0PM"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Product Management"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "example": "2023-10-20T19:01:02.829Z"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "example": "2023-10-20T19:01:02.829Z"
                           }
                         }
                       }
@@ -3154,26 +3144,23 @@
                     },
                     "data": {
                       "type": "object",
+
                       "properties": {
-                        "newCategory": {
-                          "properties": {
-                            "id": {
-                              "type": "string",
-                              "example": "C-0OPS"
-                            },
-                            "name": {
-                              "type": "string",
-                              "example": "Dev Ops"
-                            },
-                            "updatedAt": {
-                              "type": "string",
-                              "example": "2023-10-20T19:01:02.829Z"
-                            },
-                            "createdAt": {
-                              "type": "string",
-                              "example": "2023-10-20T19:01:02.829Z"
-                            }
-                          }
+                        "id": {
+                          "type": "string",
+                          "example": "C-0OPS"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Dev Ops"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-10-20T19:01:02.829Z"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-10-20T19:01:02.829Z"
                         }
                       }
                     }
@@ -3217,17 +3204,87 @@
                     },
                     "data": {
                       "type": "object",
+
                       "properties": {
-                        "category": {
-                          "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "C-0OPS"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Dev Ops"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-10-20T19:01:02.829Z"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-10-20T19:01:02.829Z"
+                        },
+                        "Courses": {
+                          "type": "array",
+                          "items": {
                             "properties": {
                               "id": {
-                                "type": "string",
-                                "example": "C-0OPS"
+                                "type": "integer",
+                                "example": 2
                               },
-                              "name": {
+                              "title": {
                                 "type": "string",
-                                "example": "Dev Ops"
+                                "example": "HTML & CSS Tutorial"
+                              },
+                              "about": {
+                                "type": "string",
+                                "example": "Html dan Css adalah pondasi dasar dalam web"
+                              },
+                              "objective": {
+                                "type": "string",
+                                "example": "Course ini ditujuakn untuk orang yang bertekad untuk menjadi web developer"
+                              },
+                              "onboaring": {
+                                "type": "string",
+                                "example": "alskhdalksdhaksdjhaksdjhaskdjhaskd"
+                              },
+                              "categoryId": {
+                                "type": "string",
+                                "example": "C-0WEB"
+                              },
+                              "level": {
+                                "type": "string",
+                                "example": "Beginner"
+                              },
+                              "courseType": {
+                                "type": "string",
+                                "example": "Premium"
+                              },
+                              "imageUrl": {
+                                "type": "string",
+                                "example": "https://ik.imagekit.io/yxctvbjvh/IMG-1701109924009_sfjlLIV9w.png"
+                              },
+                              "rating": {
+                                "type": "float",
+                                "example": 4.5
+                              },
+                              "instructor": {
+                                "type": "string",
+                                "example": "Sandika Galih"
+                              },
+                              "telegramLink": {
+                                "type": "string",
+                                "example": "https://jahdkjhaslkdja.com"
+                              },
+                              "moduleCount": {
+                                "type": "integer",
+                                "example": 2
+                              },
+                              "price": {
+                                "type": "integer",
+                                "example": 90000
+                              },
+                              "totalDuration": {
+                                "type": "string",
+                                "example": 50
                               },
                               "updatedAt": {
                                 "type": "string",
@@ -3236,81 +3293,6 @@
                               "createdAt": {
                                 "type": "string",
                                 "example": "2023-10-20T19:01:02.829Z"
-                              },
-                              "Courses": {
-                                "type": "array",
-                                "items": {
-                                  "properties": {
-                                    "id": {
-                                      "type": "integer",
-                                      "example": 2
-                                    },
-                                    "title": {
-                                      "type": "string",
-                                      "example": "HTML & CSS Tutorial"
-                                    },
-                                    "about": {
-                                      "type": "string",
-                                      "example": "Html dan Css adalah pondasi dasar dalam web"
-                                    },
-                                    "objective": {
-                                      "type": "string",
-                                      "example": "Course ini ditujuakn untuk orang yang bertekad untuk menjadi web developer"
-                                    },
-                                    "onboaring": {
-                                      "type": "string",
-                                      "example": "alskhdalksdhaksdjhaksdjhaskdjhaskd"
-                                    },
-                                    "categoryId": {
-                                      "type": "string",
-                                      "example": "C-0WEB"
-                                    },
-                                    "level": {
-                                      "type": "string",
-                                      "example": "Beginner"
-                                    },
-                                    "courseType": {
-                                      "type": "string",
-                                      "example": "Premium"
-                                    },
-                                    "imageUrl": {
-                                      "type": "string",
-                                      "example": "https://ik.imagekit.io/yxctvbjvh/IMG-1701109924009_sfjlLIV9w.png"
-                                    },
-                                    "rating": {
-                                      "type": "float",
-                                      "example": 4.5
-                                    },
-                                    "instructor": {
-                                      "type": "string",
-                                      "example": "Sandika Galih"
-                                    },
-                                    "telegramLink": {
-                                      "type": "string",
-                                      "example": "https://jahdkjhaslkdja.com"
-                                    },
-                                    "moduleCount": {
-                                      "type": "integer",
-                                      "example": 2
-                                    },
-                                    "price": {
-                                      "type": "integer",
-                                      "example": 90000
-                                    },
-                                    "totalDuration": {
-                                      "type": "string",
-                                      "example": 50
-                                    },
-                                    "updatedAt": {
-                                      "type": "string",
-                                      "example": "2023-10-20T19:01:02.829Z"
-                                    },
-                                    "createdAt": {
-                                      "type": "string",
-                                      "example": "2023-10-20T19:01:02.829Z"
-                                    }
-                                  }
-                                }
                               }
                             }
                           }
@@ -3639,35 +3621,63 @@
                     "data": {
                       "type": "object",
                       "properties": {
-                        "user": {
+                        "id": {
+                          "type": "integer",
+                          "example": 3
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "gilang"
+                        },
+                        "role": {
+                          "type": "string",
+                          "example": "user"
+                        },
+                        "country": {
+                          "type": "string",
+                          "example": "jepang"
+                        },
+                        "city": {
+                          "type": "string",
+                          "example": "osaka"
+                        },
+                        "membership": {
+                          "type": "string",
+                          "example": "free"
+                        },
+                        "profileUrl": {
+                          "type": "string",
+                          "example": "https://ahldaushdl.com"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-10-20T19:01:02.829Z"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-10-20T19:01:02.829Z"
+                        },
+                        "Auth": {
                           "properties": {
                             "id": {
                               "type": "integer",
                               "example": 3
                             },
-                            "name": {
-                              "type": "string",
-                              "example": "gilang"
+                            "phoneNumber": {
+                              "type": "integer",
+                              "example": 6289696078486
                             },
-                            "role": {
+                            "email": {
                               "type": "string",
-                              "example": "user"
+                              "example": "example2@gmail.com"
                             },
-                            "country": {
+                            "password": {
                               "type": "string",
-                              "example": "jepang"
+                              "example": "$2b$10$F6tzBfXuKypqGPMxVaW4.u.JiyoEpihnrohmc7vjb2blIMDYqdmAi"
                             },
-                            "city": {
-                              "type": "string",
-                              "example": "osaka"
-                            },
-                            "membership": {
-                              "type": "string",
-                              "example": "free"
-                            },
-                            "profileUrl": {
-                              "type": "string",
-                              "example": "https://ahldaushdl.com"
+                            "userId": {
+                              "type": "integer",
+                              "example": 3
                             },
                             "updatedAt": {
                               "type": "string",
@@ -3676,38 +3686,6 @@
                             "createdAt": {
                               "type": "string",
                               "example": "2023-10-20T19:01:02.829Z"
-                            },
-                            "Auth": {
-                              "properties": {
-                                "id": {
-                                  "type": "integer",
-                                  "example": 3
-                                },
-                                "phoneNumber": {
-                                  "type": "integer",
-                                  "example": 6289696078486
-                                },
-                                "email": {
-                                  "type": "string",
-                                  "example": "example2@gmail.com"
-                                },
-                                "password": {
-                                  "type": "string",
-                                  "example": "$2b$10$F6tzBfXuKypqGPMxVaW4.u.JiyoEpihnrohmc7vjb2blIMDYqdmAi"
-                                },
-                                "userId": {
-                                  "type": "integer",
-                                  "example": 3
-                                },
-                                "updatedAt": {
-                                  "type": "string",
-                                  "example": "2023-10-20T19:01:02.829Z"
-                                },
-                                "createdAt": {
-                                  "type": "string",
-                                  "example": "2023-10-20T19:01:02.829Z"
-                                }
-                              }
                             }
                           }
                         }
