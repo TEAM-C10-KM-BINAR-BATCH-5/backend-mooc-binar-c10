@@ -111,20 +111,19 @@ const updateModule = async (req, res, next) => {
       courseType = course.courseType
     }
 
-    const data = await Module.update(
+    await Module.update(
       {
         title,
         duration,
         courseId: idCourse,
         isLocked: courseType === 'Free' ? false : isLocked || false,
       },
-      { where: { id }, returning: true },
+      { where: { id } },
     )
 
     return res.status(200).json({
       success: true,
       message: 'Success, updated',
-      data,
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))

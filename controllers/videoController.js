@@ -115,7 +115,7 @@ const updateVideo = async (req, res, next) => {
       idModule = module.id
     }
 
-    const data = await Video.update(
+    await Video.update(
       {
         title,
         no,
@@ -123,12 +123,11 @@ const updateVideo = async (req, res, next) => {
         videoUrl,
         moduleId: idModule,
       },
-      { where: { id }, returning: true },
+      { where: { id } },
     )
     return res.status(200).json({
       success: true,
       message: 'Success, updated',
-      data,
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
