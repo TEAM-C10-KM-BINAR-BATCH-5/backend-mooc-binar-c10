@@ -201,63 +201,9 @@
                       "type": "string",
                       "example": "Success, register user"
                     },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "dataValues": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "type": "integer",
-                              "example": 4
-                            },
-                            "name": {
-                              "type": "string",
-                              "example": "Arfiano Jordhy"
-                            },
-                            "role": {
-                              "type": "string",
-                              "example": "user"
-                            },
-                            "membership": {
-                              "type": "string",
-                              "example": "free"
-                            },
-                            "profileUrl": {
-                              "type": "null",
-                              "example": null
-                            },
-                            "updatedAt": {
-                              "type": "string",
-                              "example": "2023-10-20T19:01:02.829Z"
-                            },
-                            "createdAt": {
-                              "type": "string",
-                              "example": "2023-10-20T19:01:02.829Z"
-                            },
-                            "country": {
-                              "type": "null",
-                              "example": null
-                            },
-                            "city": {
-                              "type": "null",
-                              "example": null
-                            }
-                          }
-                        },
-                        "phoneNumber": {
-                          "type": "integer",
-                          "example": 6289696078486
-                        },
-                        "email": {
-                          "type": "string",
-                          "example": "syifa@gmail.com"
-                        },
-                        "password": {
-                          "type": "string",
-                          "example": "$2b$10$g6UCXJ81WaqHD5bwFL5WcevfRuW6yUuV53Mua5sdA2ihxUwTXQeUi"
-                        }
-                      }
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6InN5aWZhIiwiZW1haWwiOiJzeWlmYUBnbWFpbC5jb20iLCJyb2xlIjoic3VwZXJhZG1pbiIsImlhdCI6MTY5Nzc4OTQxOSwiZXhwIjoxNjk3ODc1ODE5fQ.NNsHI5PxuT0hJiUHsygYiG1nqYniUfF1KfktmF1E0FM"
                     }
                   }
                 }
@@ -436,45 +382,13 @@
                           "type": "string",
                           "example": "https://ik.imagekit.io/yxctvbjvh/IMG-1701291979406_3fuqlvEKb.png"
                         },
-                        "updatedAt": {
+                        "phoneNumber": {
                           "type": "string",
-                          "example": "2023-10-20T19:01:02.829Z"
+                          "example": "081326717171"
                         },
-                        "createdAt": {
+                        "email": {
                           "type": "string",
-                          "example": "2023-10-20T19:01:02.829Z"
-                        },
-                        "Auth": {
-                          "properties": {
-                            "id": {
-                              "type": "integer",
-                              "example": 3
-                            },
-                            "phoneNumber": {
-                              "type": "integer",
-                              "example": 6289696078486
-                            },
-                            "email": {
-                              "type": "string",
-                              "example": "example2@gmail.com"
-                            },
-                            "password": {
-                              "type": "string",
-                              "example": "$2b$10$F6tzBfXuKypqGPMxVaW4.u.JiyoEpihnrohmc7vjb2blIMDYqdmAi"
-                            },
-                            "userId": {
-                              "type": "integer",
-                              "example": 3
-                            },
-                            "updatedAt": {
-                              "type": "string",
-                              "example": "2023-10-20T19:01:02.829Z"
-                            },
-                            "createdAt": {
-                              "type": "string",
-                              "example": "2023-10-20T19:01:02.829Z"
-                            }
-                          }
+                          "example": "example@gmail.com"
                         }
                       }
                     }

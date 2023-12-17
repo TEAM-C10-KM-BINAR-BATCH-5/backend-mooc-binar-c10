@@ -55,22 +55,28 @@ const register = async (req, res, next) => {
       membership: 'free',
     })
 
-    await Auth.create({
+    const auth = await Auth.create({
       email,
       password: hashedPassword,
       phoneNumber,
       userId: newUser.id,
     })
 
+    const token = jwt.sign(
+      {
+        id: newUser.id,
+        name: newUser.name,
+        email: auth.email,
+        role: newUser.role,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIREDIN },
+    )
+
     return res.status(201).json({
       success: true,
       message: 'Success, register user',
-      data: {
-        ...newUser,
-        phoneNumber,
-        email,
-        password: hashedPassword,
-      },
+      token,
     })
   } catch (err) {
     return next(new ApiError(err.message, 500))
