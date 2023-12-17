@@ -1215,6 +1215,10 @@
                   "password": {
                     "type": "string",
                     "example": "sayaganteng123"
+                  },
+                  "hashedOtp": {
+                    "type": "string",
+                    "example": "adadadadadadadadada"
                   }
                 }
               }
@@ -3256,7 +3260,7 @@
         "requestBody": {
           "description": "Request body success create category",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -3267,6 +3271,10 @@
                   "name": {
                     "type": "string",
                     "example": "Dev Ops"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
                   }
                 }
               }
@@ -3481,7 +3489,7 @@
           }
         }
       },
-      "put": {
+      "patch": {
         "tags": ["Category"],
         "security": [
           {
@@ -3502,17 +3510,17 @@
         "requestBody": {
           "description": "Request body success update",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "id": {
-                    "type": "string",
-                    "example": "C-0OPS"
-                  },
                   "name": {
                     "type": "string",
                     "example": "Dev Ops"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
                   }
                 }
               }

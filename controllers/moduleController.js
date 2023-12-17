@@ -16,13 +16,13 @@ const createModule = async (req, res, next) => {
       idCourse = course.id
       courseType = course.courseType
     }
-    const newModule = await Module.create({
+    const data = await Module.create({
       title,
       duration: 0,
       courseId: idCourse,
       isLocked: courseType === 'Free' ? false : isLocked || false,
     })
-    if (newModule) {
+    if (data) {
       const course = await Course.findOne({ where: { id: courseId } })
       // let totalModule = course.moduleCount
       await Course.update(
@@ -36,9 +36,7 @@ const createModule = async (req, res, next) => {
     return res.status(201).json({
       success: true,
       message: 'Success, create module',
-      data: {
-        newModule,
-      },
+      data,
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
@@ -47,7 +45,7 @@ const createModule = async (req, res, next) => {
 
 const getModules = async (req, res, next) => {
   try {
-    const modules = await Module.findAll({
+    const data = await Module.findAll({
       include: [
         { model: Video, attributes: { exclude: ['createdAt', 'updatedAt'] } },
       ],
@@ -55,9 +53,7 @@ const getModules = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       message: 'Success, fetch',
-      data: {
-        modules,
-      },
+      data,
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
@@ -115,7 +111,7 @@ const updateModule = async (req, res, next) => {
       courseType = course.courseType
     }
 
-    const updatedModule = await Module.update(
+    const data = await Module.update(
       {
         title,
         duration,
@@ -128,9 +124,7 @@ const updateModule = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       message: 'Success, updated',
-      data: {
-        updatedModule,
-      },
+      data,
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))

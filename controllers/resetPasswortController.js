@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt')
 const otpGenerator = require('otp-generator')
 const nodemailer = require('nodemailer')
+const otpTool = require('otp-without-db')
 const { Auth, Notification, User } = require('../models')
 const ApiError = require('../utils/apiError')
 
@@ -33,6 +34,9 @@ const sendOtpForgotPassword = async (req, res, next) => {
       lowerCaseAlphabets: false,
       specialChars: false,
     })
+
+    const key = process.env.OTP_SECRET
+
     await transporter.sendMail({
       from: '"Learn Hub" <binar.team.c10@gmail.com>', // sender address
       to: email, // list of receivers
@@ -49,11 +53,11 @@ const sendOtpForgotPassword = async (req, res, next) => {
     </div>`,
     })
 
-    req.session.otp = otp
-
+    const hash = otpTool.createNewOTP(req.body.email, otp, key)
     return res.status(200).json({
       success: true,
       message: 'Success, sent',
+      data: hash,
     })
   } catch (err) {
     return next(new ApiError(err.message, 500))

@@ -4,16 +4,14 @@ const imagekit = require('../lib/imageKit')
 
 const findUsers = async (req, res, next) => {
   try {
-    const users = await User.findAll({
+    const data = await User.findAll({
       include: ['Auth'],
     })
 
     res.status(200).json({
       success: true,
       message: 'Success, fetch',
-      data: {
-        users,
-      },
+      data,
     })
   } catch (err) {
     next(new ApiError(err.message, 400))
@@ -22,7 +20,7 @@ const findUsers = async (req, res, next) => {
 
 const findUserById = async (req, res, next) => {
   try {
-    const user = await User.findOne({
+    const data = await User.findOne({
       where: {
         id: req.params.id,
       },
@@ -32,9 +30,7 @@ const findUserById = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: 'Success, fetch',
-      data: {
-        user,
-      },
+      data,
     })
   } catch (err) {
     next(new ApiError(err.message, 400))

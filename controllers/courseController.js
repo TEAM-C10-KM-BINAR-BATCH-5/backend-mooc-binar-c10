@@ -40,7 +40,7 @@ const createCourse = async (req, res, next) => {
       )
     }
     const idCategory = category.id
-    const newCourse = await Course.create({
+    const data = await Course.create({
       title,
       about,
       objective,
@@ -60,9 +60,7 @@ const createCourse = async (req, res, next) => {
     return res.status(201).json({
       success: true,
       message: 'Success, create course',
-      data: {
-        newCourse,
-      },
+      data,
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
@@ -179,18 +177,16 @@ const getCourse = async (req, res, next) => {
       ],
     })
 
-    const filteredModules = course
-      .toJSON()
-      .Modules.map((module) => {
-        const filteredVideos = module.Videos.map((video) => {
-          const videos = {
-            ...video,
-            isLocked: module.isLocked,
-          }
-          return videos
-        })
-        return { ...module, Videos: filteredVideos }
+    const filteredModules = course.toJSON().Modules.map((module) => {
+      const filteredVideos = module.Videos.map((video) => {
+        const videos = {
+          ...video,
+          isLocked: module.isLocked,
+        }
+        return videos
       })
+      return { ...module, Videos: filteredVideos }
+    })
 
     const totalDuration = await Module.sum('duration', {
       where: {
@@ -335,10 +331,16 @@ const updateCourse = async (req, res, next) => {
         },
         { where: { id } },
       )
+    } else if (categoryId) {
+      await Course.update(
+        {
+          categoryId: idCategory,
+        },
+        { where: { id } },
+      )
     }
     await Course.update(
       {
-        categoryId: idCategory,
         imageUrl: image,
       },
       { where: { id } },

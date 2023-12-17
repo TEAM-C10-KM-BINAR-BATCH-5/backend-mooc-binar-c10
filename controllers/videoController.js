@@ -24,14 +24,14 @@ const createVid = async (req, res, next) => {
       return next(new ApiError('Title and module id are required!', 400))
     }
 
-    const newVid = await Video.create({
+    const data = await Video.create({
       title,
       no,
       videoUrl,
       duration,
       moduleId: idModule,
     })
-    if (newVid) {
+    if (data) {
       const tambahVideoDuration = moduleDuration + duration
       await Module.update(
         {
@@ -43,9 +43,7 @@ const createVid = async (req, res, next) => {
     return res.status(201).json({
       success: true,
       message: 'Success, create video',
-      data: {
-        newVid,
-      },
+      data,
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
@@ -54,13 +52,11 @@ const createVid = async (req, res, next) => {
 
 const getVideos = async (req, res, next) => {
   try {
-    const videos = await Video.findAll()
+    const data = await Video.findAll()
     return res.status(200).json({
       success: true,
       message: 'Success, fetch',
-      data: {
-        videos,
-      },
+      data,
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
@@ -119,7 +115,7 @@ const updateVideo = async (req, res, next) => {
       idModule = module.id
     }
 
-    const updatedVideo = await Video.update(
+    const data = await Video.update(
       {
         title,
         no,
@@ -132,9 +128,7 @@ const updateVideo = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       message: 'Success, updated',
-      data: {
-        updatedVideo,
-      },
+      data,
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
@@ -144,13 +138,11 @@ const updateVideo = async (req, res, next) => {
 const getVideo = async (req, res, next) => {
   const { id } = req.params
   try {
-    const video = await Video.findOne({ where: { id } })
+    const data = await Video.findOne({ where: { id } })
     return res.status(200).json({
       success: true,
       message: 'Success, fetch',
-      data: {
-        video,
-      },
+      data,
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
