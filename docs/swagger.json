@@ -2135,65 +2135,60 @@
                       "example": "Success, fetch"
                     },
                     "data": {
-                      "type": "object",
-                      "properties": {
-                        "modules": {
-                          "type": "array",
-                          "items": {
-                            "properties": {
-                              "id": {
-                                "type": "integer",
-                                "example": 1
-                              },
-                              "title": {
-                                "type": "string",
-                                "example": "Chapter 1 Html Dasar"
-                              },
-                              "duration": {
-                                "type": "integer",
-                                "example": 30
-                              },
-                              "courseId": {
-                                "type": "integer",
-                                "example": 1
-                              },
-                              "updatedAt": {
-                                "type": "string",
-                                "example": "2023-10-20T19:01:02.829Z"
-                              },
-                              "createdAt": {
-                                "type": "string",
-                                "example": "2023-10-20T19:01:02.829Z"
-                              },
-                              "Videos": {
-                                "type": "array",
-                                "items": {
-                                  "properties": {
-                                    "id": {
-                                      "type": "integer",
-                                      "example": 1
-                                    },
-                                    "title": {
-                                      "type": "string",
-                                      "example": "Tag tag dasar html"
-                                    },
-                                    "no": {
-                                      "type": "integer",
-                                      "example": 1
-                                    },
-                                    "videoUrl": {
-                                      "type": "string",
-                                      "example": "https://ahldaushdl.com"
-                                    },
-                                    "duration": {
-                                      "type": "integer",
-                                      "example": 50
-                                    },
-                                    "moduleId": {
-                                      "type": "integer",
-                                      "example": 1
-                                    }
-                                  }
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "title": {
+                            "type": "string",
+                            "example": "Chapter 1 Html Dasar"
+                          },
+                          "duration": {
+                            "type": "integer",
+                            "example": 30
+                          },
+                          "courseId": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "example": "2023-10-20T19:01:02.829Z"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "example": "2023-10-20T19:01:02.829Z"
+                          },
+                          "Videos": {
+                            "type": "array",
+                            "items": {
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 1
+                                },
+                                "title": {
+                                  "type": "string",
+                                  "example": "Tag tag dasar html"
+                                },
+                                "no": {
+                                  "type": "integer",
+                                  "example": 1
+                                },
+                                "videoUrl": {
+                                  "type": "string",
+                                  "example": "https://ahldaushdl.com"
+                                },
+                                "duration": {
+                                  "type": "integer",
+                                  "example": 50
+                                },
+                                "moduleId": {
+                                  "type": "integer",
+                                  "example": 1
                                 }
                               }
                             }
@@ -2352,61 +2347,57 @@
                     "data": {
                       "type": "object",
                       "properties": {
-                        "module": {
-                          "properties": {
-                            "id": {
-                              "type": "integer",
-                              "example": 1
-                            },
-                            "title": {
-                              "type": "string",
-                              "example": "Chapter 1 Html Dasar"
-                            },
-                            "duration": {
-                              "type": "integer",
-                              "example": 30
-                            },
-                            "courseId": {
-                              "type": "integer",
-                              "example": 1
-                            },
-                            "updatedAt": {
-                              "type": "string",
-                              "example": "2023-10-20T19:01:02.829Z"
-                            },
-                            "createdAt": {
-                              "type": "string",
-                              "example": "2023-10-20T19:01:02.829Z"
-                            },
-                            "Videos": {
-                              "type": "array",
-                              "items": {
-                                "properties": {
-                                  "id": {
-                                    "type": "integer",
-                                    "example": 1
-                                  },
-                                  "title": {
-                                    "type": "string",
-                                    "example": "Tag tag dasar html"
-                                  },
-                                  "no": {
-                                    "type": "integer",
-                                    "example": 1
-                                  },
-                                  "videoUrl": {
-                                    "type": "string",
-                                    "example": "https://ahldaushdl.com"
-                                  },
-                                  "duration": {
-                                    "type": "integer",
-                                    "example": 50
-                                  },
-                                  "moduleId": {
-                                    "type": "integer",
-                                    "example": 1
-                                  }
-                                }
+                        "id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "title": {
+                          "type": "string",
+                          "example": "Chapter 1 Html Dasar"
+                        },
+                        "duration": {
+                          "type": "integer",
+                          "example": 30
+                        },
+                        "courseId": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-10-20T19:01:02.829Z"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-10-20T19:01:02.829Z"
+                        },
+                        "Videos": {
+                          "type": "array",
+                          "items": {
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "title": {
+                                "type": "string",
+                                "example": "Tag tag dasar html"
+                              },
+                              "no": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "videoUrl": {
+                                "type": "string",
+                                "example": "https://ahldaushdl.com"
+                              },
+                              "duration": {
+                                "type": "integer",
+                                "example": 50
+                              },
+                              "moduleId": {
+                                "type": "integer",
+                                "example": 1
                               }
                             }
                           }
