@@ -147,10 +147,32 @@ const getModule = async (req, res, next) => {
   }
 }
 
+const getModulesByCourseId = async (req, res, next) => {
+  const courseId = req.params.id
+  try {
+    const data = await Module.findAll({
+      where: {
+        courseId,
+      },
+      include: [
+        { model: Video, attributes: { exclude: ['createdAt', 'updatedAt'] } },
+      ],
+    })
+    return res.status(200).json({
+      success: true,
+      message: 'Success, fetch',
+      data,
+    })
+  } catch (error) {
+    return next(new ApiError(error.message, 500))
+  }
+}
+
 module.exports = {
   createModule,
   getModules,
   deleteModule,
   updateModule,
   getModule,
+  getModulesByCourseId,
 }

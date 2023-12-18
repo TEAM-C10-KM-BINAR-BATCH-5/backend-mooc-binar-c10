@@ -2588,6 +2588,127 @@
         }
       }
     },
+    "/api/v1/module/course/{id}": {
+      "get": {
+        "tags": ["Module"],
+        "summary": "Admin mendapatkan module by course Id",
+        "description": "Admin mendapatkan data module by course id yang dipilih",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Numeric ID required",
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get module by course id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success, fetch"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "title": {
+                            "type": "string",
+                            "example": "Chapter 1 Html Dasar"
+                          },
+                          "duration": {
+                            "type": "integer",
+                            "example": 30
+                          },
+                          "courseId": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "example": "2023-10-20T19:01:02.829Z"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "example": "2023-10-20T19:01:02.829Z"
+                          },
+                          "Videos": {
+                            "type": "array",
+                            "items": {
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 1
+                                },
+                                "title": {
+                                  "type": "string",
+                                  "example": "Tag tag dasar html"
+                                },
+                                "no": {
+                                  "type": "integer",
+                                  "example": 1
+                                },
+                                "videoUrl": {
+                                  "type": "string",
+                                  "example": "https://ahldaushdl.com"
+                                },
+                                "duration": {
+                                  "type": "integer",
+                                  "example": 50
+                                },
+                                "moduleId": {
+                                  "type": "integer",
+                                  "example": 1
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error, Not found! id are not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "id does not exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/video": {
       "get": {
         "tags": ["Video"],
