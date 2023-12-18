@@ -232,7 +232,7 @@ const enrollCourse = async (req, res, next) => {
       message: 'Success enroll course',
     })
   } catch (error) {
-    return next(new ApiError(error.message, 400))
+    return next(new ApiError(error.message, 500))
   }
 }
 

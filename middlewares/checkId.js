@@ -7,8 +7,8 @@ const checkId = (db) => async (req, res, next) => {
       return next(new ApiError('id does not exist', 404))
     }
     return next()
-  } catch (err) {
-    return next(new ApiError(err.message, 500))
+  } catch (error) {
+    return next(new ApiError(error.message, 500))
   }
 }
 

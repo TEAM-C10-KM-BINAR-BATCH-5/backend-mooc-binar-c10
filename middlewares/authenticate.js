@@ -23,7 +23,7 @@ module.exports = async (req, res, next) => {
 
     req.user = user
     return next()
-  } catch (err) {
-    return next(new ApiError(err.message, 500))
+  } catch (error) {
+    return next(new ApiError(error.message, 500))
   }
 }

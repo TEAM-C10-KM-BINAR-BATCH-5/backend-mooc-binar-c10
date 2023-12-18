@@ -61,6 +61,10 @@
     {
       "name": "Transaction",
       "description": "Transaction API resources"
+    },
+    {
+      "name": "Dashboard",
+      "description": "Dashboard API resources"
     }
   ],
   "servers": [
@@ -5226,6 +5230,77 @@
                     "message": {
                       "type": "string",
                       "example": "id does not exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/dashboard": {
+      "get": {
+        "tags": ["Dashboard"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Admin mendapatkan data untuk jumlah courses dan users",
+        "description": "Admin mendapatkan data untuk jumlah courses dan users yang digunakan untuk tampilan dashboard",
+        "responses": {
+          "200": {
+            "description": "Success get all dashboard data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success, fetch"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "activeUsers": {
+                          "type": "number",
+                          "example": 9
+                        },
+                        "activeClasses": {
+                          "type": "number",
+                          "example": 9
+                        },
+                        "premiumClasses": {
+                          "type": "number",
+                          "example": 9
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No token!"
                     }
                   }
                 }

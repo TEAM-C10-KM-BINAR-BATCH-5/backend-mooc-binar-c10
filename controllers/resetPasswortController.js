@@ -59,8 +59,8 @@ const sendOtpForgotPassword = async (req, res, next) => {
       message: 'Success, sent',
       data: hash,
     })
-  } catch (err) {
-    return next(new ApiError(err.message, 500))
+  } catch (error) {
+    return next(new ApiError(error.message, 500))
   }
 }
 
@@ -116,8 +116,8 @@ const resetPassword = async (req, res, next) => {
       success: true,
       message: 'Reseting your password successfully',
     })
-  } catch (err) {
-    return next(new ApiError(err.message, 500))
+  } catch (error) {
+    return next(new ApiError(error.message, 500))
   }
 }
 

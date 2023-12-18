@@ -241,12 +241,12 @@ const updateAccount = async (req, res, next) => {
       )
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: 'Success, updated',
     })
-  } catch (err) {
-    next(new ApiError(err.message, 500))
+  } catch (error) {
+    return next(new ApiError(error.message, 500))
   }
 }
 
@@ -300,8 +300,8 @@ const ubahPassword = async (req, res, next) => {
       success: true,
       message: 'Success, your password successfully changed',
     })
-  } catch (err) {
-    return next(new ApiError(err.message, 500))
+  } catch (error) {
+    return next(new ApiError(error.message, 500))
   }
 }
 

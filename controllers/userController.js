@@ -8,13 +8,13 @@ const findUsers = async (req, res, next) => {
       include: ['Auth'],
     })
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: 'Success, fetch',
       data,
     })
-  } catch (err) {
-    next(new ApiError(err.message, 400))
+  } catch (error) {
+    return next(new ApiError(error.message, 500))
   }
 }
 
@@ -27,13 +27,13 @@ const findUserById = async (req, res, next) => {
       include: ['Auth'],
     })
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: 'Success, fetch',
       data,
     })
-  } catch (err) {
-    next(new ApiError(err.message, 400))
+  } catch (error) {
+    return next(new ApiError(error.message, 500))
   }
 }
 
@@ -128,8 +128,8 @@ const updateUser = async (req, res, next) => {
       success: true,
       message: 'Success, updated',
     })
-  } catch (err) {
-    return next(new ApiError(err.message, 500))
+  } catch (error) {
+    return next(new ApiError(error.message, 500))
   }
 }
 
@@ -146,12 +146,12 @@ const deleteUser = async (req, res, next) => {
       },
     })
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: 'Success, deleted',
     })
-  } catch (err) {
-    next(new ApiError(err.message, 500))
+  } catch (error) {
+    return next(new ApiError(error.message, 500))
   }
 }
 

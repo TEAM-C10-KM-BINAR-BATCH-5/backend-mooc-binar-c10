@@ -18,8 +18,8 @@ const checkOtp = () => async (req, res, next) => {
       return next(new ApiError('invalid or expired otp', 400))
     }
     return next()
-  } catch (err) {
-    return next(new ApiError(err.message, 500))
+  } catch (error) {
+    return next(new ApiError(error.message, 500))
   }
 }
 

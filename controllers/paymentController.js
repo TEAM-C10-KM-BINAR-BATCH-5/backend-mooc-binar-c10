@@ -87,7 +87,7 @@ const buyCourse = async (req, res, next) => {
       },
     })
   } catch (error) {
-    return next(new ApiError(error.message, 400))
+    return next(new ApiError(error.message, 500))
   }
 }
 
@@ -156,7 +156,7 @@ const paymentHook = async (req, res, next) => {
       message: 'Success completing payment',
     })
   } catch (error) {
-    return next(new ApiError(error.message, 400))
+    return next(new ApiError(error.message, 500))
   }
 }
 
