@@ -4885,6 +4885,14 @@
                               }
                             }
                           },
+                          "User": {
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "example": "Gilang"
+                              }
+                            }
+                          },
                           "transaction_date": {
                             "type": "string",
                             "example": "2023-12-12T16:11:07.137Z"

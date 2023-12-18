@@ -1,6 +1,8 @@
 const { Op } = require('sequelize')
-
-const { Payment, Course, Category } = require('../models')
+// prettier-ignore
+const {
+  Payment, Course, Category, User,
+} = require('../models')
 const ApiError = require('../utils/apiError')
 
 const getAllTransactions = async (req, res, next) => {
@@ -47,6 +49,10 @@ const getAllTransactions = async (req, res, next) => {
               attributes: ['name'],
             },
           ],
+        },
+        {
+          model: User,
+          attributes: ['name'],
         },
       ],
       where: whereClausePayment,
