@@ -3,18 +3,18 @@ const ApiError = require('../utils/apiError')
 
 const getDataDashboard = async (req, res, next) => {
   try {
-    const activeUsers = User.count({
+    const activeUsers = await User.count({
       where: {
         role: 'user',
       },
     })
-    const premiumClasses = Course.count({
+    const premiumClasses = await Course.count({
       where: {
         courseType: 'Premium',
       },
     })
 
-    const activeClasses = Course.count()
+    const activeClasses = await Course.count()
 
     return res.status(200).json({
       success: true,

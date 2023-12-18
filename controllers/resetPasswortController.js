@@ -40,12 +40,12 @@ const sendOtpForgotPassword = async (req, res, next) => {
     await transporter.sendMail({
       from: '"Learn Hub" <binar.team.c10@gmail.com>', // sender address
       to: email, // list of receivers
-      subject: 'Email Verification OTP', // Subject line
+      subject: 'OTP Verifikasi Reset Password', // Subject line
       html: `<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
       <div style="margin:50px auto;width:70%;padding:20px 0">
       <hr style="border:none;border-top:1px solid #eee" />
         <p style="font-size:1.1em">Hi,</p>
-        <p>Thank you for using Learn Hub. Use the following OTP to complete your reset password. OTP is valid for 60 seconds</p>
+        <p>Terima kasih telah menggunakan Learn Hub. Gunakan OTP berikut untuk menyelesaikan proses reset password anda. OTP berlaku selama 5 menit</p>
         <h2 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 8px;">${otp}</h2>
         <p style="font-size:0.9em;">Learn Hub</p>
         <hr style="border:none;border-top:1px solid #eee" />
