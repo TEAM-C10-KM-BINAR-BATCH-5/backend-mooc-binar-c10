@@ -20,10 +20,12 @@ const buyCourse = async (req, res, next) => {
     })
 
     const alreadyPurchased = await Payment.findOne({
-      userId: req.user.id,
-      courseId,
-      status: {
-        [Op.in]: ['settlement', 'capture'],
+      where: {
+        userId: req.user.id,
+        courseId,
+        status: {
+          [Op.in]: ['settlement', 'capture'],
+        },
       },
     })
 
@@ -32,8 +34,10 @@ const buyCourse = async (req, res, next) => {
     }
 
     const alreadyEnrolled = await UserCourse.findOne({
-      userId: req.user.id,
-      courseId,
+      where: {
+        userId: req.user.id,
+        courseId,
+      },
     })
 
     if (!alreadyEnrolled) {
