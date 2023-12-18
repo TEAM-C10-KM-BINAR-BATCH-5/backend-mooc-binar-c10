@@ -206,8 +206,10 @@ const enrollCourse = async (req, res, next) => {
 
   try {
     const alreadyEnrolled = await UserCourse.findOne({
-      userId: req.user.id,
-      courseId,
+      where: {
+        userId: req.user.id,
+        courseId,
+      },
     })
 
     if (alreadyEnrolled) {
