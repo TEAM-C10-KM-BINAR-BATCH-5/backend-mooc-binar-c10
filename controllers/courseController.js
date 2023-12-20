@@ -260,6 +260,7 @@ const updateCourse = async (req, res, next) => {
         onboarding,
         price,
         categoryId: idCategory,
+        imageUrl: image,
       },
       { where: { id } },
     )
@@ -355,12 +356,6 @@ const updateCourse = async (req, res, next) => {
     //     { where: { id } },
     //   )
     // }
-    await Course.update(
-      {
-        imageUrl: image,
-      },
-      { where: { id } },
-    )
     return res.status(200).json({
       success: true,
       message: 'Success, updated',
