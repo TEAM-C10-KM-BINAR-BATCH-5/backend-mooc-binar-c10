@@ -218,7 +218,6 @@ const updateCourse = async (req, res, next) => {
     instructor,
     duration,
     telegramLink,
-    moduleCount,
     about,
     objective,
     onboarding,
@@ -247,98 +246,115 @@ const updateCourse = async (req, res, next) => {
       }
       idCategory = category.id
     }
-    if (title) {
-      await Course.update(
-        {
-          title,
-        },
-        { where: { id } },
-      )
-    } else if (level) {
-      await Course.update(
-        {
-          level,
-        },
-        { where: { id } },
-      )
-    } else if (courseType) {
-      await Course.update(
-        {
-          courseType,
-        },
-        { where: { id } },
-      )
-    } else if (rating) {
-      await Course.update(
-        {
-          rating,
-        },
-        { where: { id } },
-      )
-    } else if (instructor) {
-      await Course.update(
-        {
-          instructor,
-        },
-        { where: { id } },
-      )
-    } else if (duration) {
-      await Course.update(
-        {
-          duration,
-        },
-        { where: { id } },
-      )
-    } else if (telegramLink) {
-      await Course.update(
-        {
-          telegramLink,
-        },
-        { where: { id } },
-      )
-    } else if (moduleCount) {
-      await Course.update(
-        {
-          moduleCount,
-        },
-        { where: { id } },
-      )
-    } else if (about) {
-      await Course.update(
-        {
-          about,
-        },
-        { where: { id } },
-      )
-    } else if (objective) {
-      await Course.update(
-        {
-          objective,
-        },
-        { where: { id } },
-      )
-    } else if (onboarding) {
-      await Course.update(
-        {
-          onboarding,
-        },
-        { where: { id } },
-      )
-    } else if (price) {
-      await Course.update(
-        {
-          price,
-        },
-        { where: { id } },
-      )
-    } else if (categoryId) {
-      await Course.update(
-        {
-          categoryId: idCategory,
-        },
-        { where: { id } },
-      )
-    }
+    await Course.update(
+      {
+        title,
+        level,
+        rating,
+        courseType,
+        instructor,
+        duration,
+        telegramLink,
+        about,
+        objective,
+        onboarding,
+        price,
+        categoryId: idCategory,
+      },
+      { where: { id } },
+    )
+    // if (title) {
+    //   await Course.update(
+    //     {
+    //       title,
+    //     },
+    //     { where: { id } },
+    //   )
+    // } else if (level) {
+    //   await Course.update(
+    //     {
+    //       level,
+    //     },
+    //     { where: { id } },
+    //   )
+    // } else if (courseType) {
+    //   await Course.update(
+    //     {
+    //       courseType,
+    //     },
+    //     { where: { id } },
+    //   )
+    // } else if (rating) {
+    //   await Course.update(
+    //     {
+    //       rating,
+    //     },
+    //     { where: { id } },
+    //   )
+    // } else if (instructor) {
+    //   await Course.update(
+    //     {
+    //       instructor,
+    //     },
+    //     { where: { id } },
+    //   )
+    // } else if (duration) {
+    //   await Course.update(
+    //     {
+    //       duration,
+    //     },
+    //     { where: { id } },
+    //   )
+    // } else if (telegramLink) {
+    //   await Course.update(
+    //     {
+    //       telegramLink,
+    //     },
+    //     { where: { id } },
+    //   )
+    // } else if (moduleCount) {
+    //   await Course.update(
+    //     {
+    //       moduleCount,
+    //     },
+    //     { where: { id } },
+    //   )
+    // } else if (about) {
+    //   await Course.update(
+    //     {
+    //       about,
+    //     },
+    //     { where: { id } },
+    //   )
+    // } else if (objective) {
+    //   await Course.update(
+    //     {
+    //       objective,
+    //     },
+    //     { where: { id } },
+    //   )
+    // } else if (onboarding) {
+    //   await Course.update(
+    //     {
+    //       onboarding,
+    //     },
+    //     { where: { id } },
+    //   )
+    // } else if (price) {
+    //   await Course.update(
+    //     {
+    //       price,
+    //     },
+    //     { where: { id } },
+    //   )
+    // } else if (categoryId) {
+    //   await Course.update(
+    //     {
+    //       categoryId: idCategory,
+    //     },
+    //     { where: { id } },
+    //   )
+    // }
     await Course.update(
       {
         imageUrl: image,
