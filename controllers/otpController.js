@@ -3,6 +3,7 @@ const nodemailer = require('nodemailer')
 // eslint-disable-next-line import/no-extraneous-dependencies
 const otpTool = require('otp-without-db')
 const ApiError = require('../utils/apiError')
+const { Auth } = require('../models')
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -17,6 +18,14 @@ const transporter = nodemailer.createTransport({
 
 const createOtp = async (req, res, next) => {
   try {
+    const { email } = req.body
+    const user = await Auth.findOne({
+      where: { email },
+    })
+
+    if (user) {
+      return next(new ApiError('Email already registered', 400))
+    }
     const otp = otpGenerator.generate(6, {
       upperCaseAlphabets: false,
       lowerCaseAlphabets: false,
@@ -42,6 +51,7 @@ const createOtp = async (req, res, next) => {
     })
 
     const hash = otpTool.createNewOTP(req.body.email, otp, key)
+
     return res.status(200).json({
       success: true,
       message: 'Success, sent',
