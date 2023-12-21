@@ -52,7 +52,9 @@ const createVid = async (req, res, next) => {
 
 const getVideos = async (req, res, next) => {
   try {
-    const data = await Video.findAll()
+    const data = await Video.findAll({
+      order: [['no', 'ASC']],
+    })
     return res.status(200).json({
       success: true,
       message: 'Success, fetch',
