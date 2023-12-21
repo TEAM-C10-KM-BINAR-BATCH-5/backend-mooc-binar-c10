@@ -155,7 +155,14 @@ const getModulesByCourseId = async (req, res, next) => {
         courseId,
       },
       include: [
-        { model: Video, attributes: { exclude: ['createdAt', 'updatedAt'] } },
+        {
+          model: Video,
+          attributes: { exclude: ['createdAt', 'updatedAt'] },
+        },
+      ],
+      order: [
+        ['id', 'ASC'],
+        [Video, 'no', 'ASC'],
       ],
     })
     return res.status(200).json({
