@@ -184,6 +184,9 @@ const getUserCourseById = async (req, res, next) => {
         }
         return videos
       })
+      if (isCoursePurchased) {
+        return { ...module, isLocked: false, Videos: filteredVideos }
+      }
       return { ...module, Videos: filteredVideos }
     })
 
