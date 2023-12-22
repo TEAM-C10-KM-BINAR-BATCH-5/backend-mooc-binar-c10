@@ -43,6 +43,7 @@ const getAllTransactions = async (req, res, next) => {
         {
           model: Course,
           where: whereClauseCourse,
+          order: [['updatedAt', 'DESC']],
           include: [
             {
               model: Category,
@@ -136,6 +137,7 @@ const getUserTransactions = async (req, res, next) => {
       include: [
         {
           model: Course,
+          order: [['updatedAt', 'DESC']],
           where: whereClauseCourse,
           include: [
             {
