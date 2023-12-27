@@ -74,6 +74,8 @@ const getCourses = async (req, res, next) => {
   const titleSearch = req.query.title || ''
   const courseTypeSearch = req.query.courseType || ''
   const levelSearch = req.query.level || ''
+  const createdAtSort = req.query.createdAt
+  const popularitySort = req.query.popularity
   const whereClause = {}
 
   if (categoryIds.length > 0) {
@@ -96,6 +98,25 @@ const getCourses = async (req, res, next) => {
     whereClause.level = levelSearch
   }
   try {
+    const orderOptions = []
+
+    if (createdAtSort) {
+      orderOptions.push([
+        'createdAt',
+        createdAtSort === 'desc' ? 'DESC' : 'ASC',
+      ])
+    }
+
+    if (popularitySort) {
+      orderOptions.push([
+        sequelize.literal('"popularity"'),
+        popularitySort === 'desc' ? 'DESC' : 'ASC',
+      ])
+    }
+
+    // prettier-ignore
+    const subquery = '(SELECT COUNT(DISTINCT "userId") FROM "UserCourses" WHERE "UserCourses"."courseId" = "Course"."id")'
+
     const dataCourse = await Course.findAll({
       include: [
         {
@@ -116,7 +137,9 @@ const getCourses = async (req, res, next) => {
           sequelize.fn('SUM', sequelize.col('Modules.duration')),
           'totalDuration',
         ],
+        [sequelize.literal(subquery), 'popularity'],
       ],
+      order: orderOptions,
     })
 
     const data = dataCourse.map((course) => {

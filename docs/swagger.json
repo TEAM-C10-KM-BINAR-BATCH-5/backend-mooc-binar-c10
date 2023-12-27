@@ -1432,6 +1432,24 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "createdAt",
+            "in": "query",
+            "description": "Search courses yang terbaru/newest, untuk melakukan pencarian data course terbaru bisa menginputkan: desc pada querynya",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "popularity",
+            "in": "query",
+            "description": "Search courses yang terpopuler atau yang paling banyak dibeli, untuk melakukan pencarian data course terpopuler bisa menginputkan desc pada querynya",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
