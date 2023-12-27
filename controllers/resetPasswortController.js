@@ -58,7 +58,6 @@ const sendOtpForgotPassword = async (req, res, next) => {
       success: true,
       message: 'Success, sent',
       data: hash,
-      otp,
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
