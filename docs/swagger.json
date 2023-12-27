@@ -1436,7 +1436,7 @@
           {
             "name": "createdAt",
             "in": "query",
-            "description": "Search courses yang terbaru/newest, untuk melakukan pencarian data course terbaru bisa menginputkan: desc pada querynya",
+            "description": "Search courses yang terbaru/newest, untuk melakukan pencarian data course terbaru bisa menginputkan desc pada querynya",
             "required": false,
             "schema": {
               "type": "string"
