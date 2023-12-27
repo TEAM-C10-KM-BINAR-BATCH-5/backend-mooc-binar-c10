@@ -158,28 +158,28 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      // {
-      //   title: 'Node.js & Express.js: Kursus Pengembangan Backend',
-      //   about:
-      //     'Temukan kekuatan pengembangan backend dengan Node.js dan Express.js, membimbing Anda melalui pembuatan server, manajemen rute, integrasi database, dan pengembangan API yang efisien.',
-      //   objective:
-      //     'Tujuan dari kursus Node.js & Express.js ini adalah memberikan pemahaman mendalam tentang pengembangan backend dengan Node.js dan Express.js. Terlibat dalam proyek-proyek praktis untuk meningkatkan keterampilan pengembangan server dan API RESTful.',
-      //   onboarding:
-      //     'Mulai dari pendaftaran hingga pemahaman mendalam tentang struktur kursus, materi pembelajaran, dan sumber daya tambahan. Kami berkomitmen untuk memberikan dukungan penuh selama perjalanan pembelajaran Anda dalam menguasai pengembangan backend dengan Node.js dan Express.js.',
-      //   categoryId: 'C-0WEB',
-      //   level: 'Advance',
-      //   courseType: 'Premium',
-      //   imageUrl:
-      //     'https://ik.imagekit.io/yxctvbjvh/webdev.png?updatedAt=1702571003474',
-      //   rating: 4.8,
-      //   instructor: 'Nina Node',
-      //   duration: 0,
-      //   telegramLink: 'https://t.me/+hJi8g3yP7cw5MzE1',
-      //   moduleCount: 6,
-      //   price: 95000,
-      //   createdAt: new Date(),
-      //   updatedAt: new Date(),
-      // },
+      {
+        title: 'Node.js & Express.js: Kursus Pengembangan Backend',
+        about:
+          'Temukan kekuatan pengembangan backend dengan Node.js dan Express.js, membimbing Anda melalui pembuatan server, manajemen rute, integrasi database, dan pengembangan API yang efisien.',
+        objective:
+          'Tujuan dari kursus Node.js & Express.js ini adalah memberikan pemahaman mendalam tentang pengembangan backend dengan Node.js dan Express.js. Terlibat dalam proyek-proyek praktis untuk meningkatkan keterampilan pengembangan server dan API RESTful.',
+        onboarding:
+          'Mulai dari pendaftaran hingga pemahaman mendalam tentang struktur kursus, materi pembelajaran, dan sumber daya tambahan. Kami berkomitmen untuk memberikan dukungan penuh selama perjalanan pembelajaran Anda',
+        categoryId: 'C-0WEB',
+        level: 'Advance',
+        courseType: 'Premium',
+        imageUrl:
+          'https://ik.imagekit.io/yxctvbjvh/expressjspic.png?updatedAt=1703695154959',
+        rating: 4.8,
+        instructor: 'Nina Node',
+        duration: 768,
+        telegramLink: 'https://t.me/+hJi8g3yP7cw5MzE1',
+        moduleCount: 6,
+        price: 200000,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
       // {
       //   title: 'Kotlin for Android Development: Kursus Lengkap',
       //   about:
@@ -202,28 +202,28 @@ module.exports = {
       //   createdAt: new Date(),
       //   updatedAt: new Date(),
       // },
-      // {
-      //   title: 'UI/UX Design with Figma: Kursus Lengkap',
-      //   about:
-      //     'Pelajari seni desain antarmuka pengguna (UI) dan pengalaman pengguna (UX) dengan Figma dalam kursus ini. Membimbing Anda melalui konsep desain, kolaborasi tim, dan pembuatan prototipe interaktif untuk proyek desain yang menarik.',
-      //   objective:
-      //     'Tujuan dari kursus UI/UX Design with Figma ini adalah memberikan pemahaman mendalam tentang Figma, termasuk desain antarmuka dan pengalaman pengguna. Terlibat dalam proyek-proyek praktis untuk mengasah keterampilan desain Anda dan mempersiapkan diri untuk menciptakan pengalaman pengguna yang luar biasa.',
-      //   onboarding:
-      //     'Mulai dari pendaftaran hingga pemahaman mendalam tentang struktur kursus, materi pembelajaran, dan sumber daya tambahan. Kami berkomitmen untuk memberikan dukungan penuh selama perjalanan pembelajaran Anda dalam menguasai UI/UX Design dengan Figma.',
-      //   categoryId: 'C-0UIX',
-      //   level: 'Advance',
-      //   courseType: 'Premium',
-      //   imageUrl:
-      //     'https://ik.imagekit.io/yxctvbjvh/uiux.png?updatedAt=1702571031952',
-      //   rating: 4.7,
-      //   instructor: 'Fiona Figma',
-      //   duration: 0,
-      //   telegramLink: 'https://t.me/+5NjvdSfY4PlkYzRl',
-      //   moduleCount: 4,
-      //   price: 80000,
-      //   createdAt: new Date(),
-      //   updatedAt: new Date(),
-      // },
+      {
+        title: 'UI/UX Design with Figma: Kursus Lengkap',
+        about:
+          'Pelajari seni desain antarmuka pengguna (UI) dan pengalaman pengguna (UX) dengan Figma dalam kursus ini. Membimbing Anda melalui konsep desain, kolaborasi tim, dan pembuatan prototipe interaktif untuk proyek desain yang menarik.',
+        objective:
+          'Tujuan dari kursus UI/UX Design with Figma ini adalah memberikan pemahaman mendalam tentang Figma, termasuk desain antarmuka dan pengalaman pengguna. Terlibat dalam proyek-proyek praktis untuk mengasah keterampilan desain Anda',
+        onboarding:
+          'Mulai dari pendaftaran hingga pemahaman mendalam tentang struktur kursus, materi pembelajaran, dan sumber daya tambahan. Kami berkomitmen untuk memberikan dukungan penuh pembelajaran Anda dalam menguasai UI/UX Design dengan Figma.',
+        categoryId: 'C-0UIX',
+        level: 'Advance',
+        courseType: 'Free',
+        imageUrl:
+          'https://ik.imagekit.io/yxctvbjvh/uiuxcourse.jpg?updatedAt=1703695343967',
+        rating: 4.7,
+        instructor: 'Fiona Figma',
+        duration: 464,
+        telegramLink: 'https://t.me/+5NjvdSfY4PlkYzRl',
+        moduleCount: 4,
+        price: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
       // {
       //   title: 'Adobe UI/UX Design Mastery: Kursus Lengkap',
       //   about:
@@ -349,15 +349,15 @@ module.exports = {
       },
       ['id'],
     )
-    // const idNODE = await queryInterface.rawSelect(
-    //   'Courses',
-    //   {
-    //     where: {
-    //       title: 'Node.js & Express.js: Kursus Pengembangan Backend',
-    //     },
-    //   },
-    //   ['id'],
-    // )
+    const idNODE = await queryInterface.rawSelect(
+      'Courses',
+      {
+        where: {
+          title: 'Node.js & Express.js: Kursus Pengembangan Backend',
+        },
+      },
+      ['id'],
+    )
     // const idKOTLIN = await queryInterface.rawSelect(
     //   'Courses',
     //   {
@@ -367,15 +367,15 @@ module.exports = {
     //   },
     //   ['id'],
     // )
-    // const idFIGMA = await queryInterface.rawSelect(
-    //   'Courses',
-    //   {
-    //     where: {
-    //       title: 'UI/UX Design with Figma: Kursus Lengkap',
-    //     },
-    //   },
-    //   ['id'],
-    // )
+    const idFIGMA = await queryInterface.rawSelect(
+      'Courses',
+      {
+        where: {
+          title: 'UI/UX Design with Figma: Kursus Lengkap',
+        },
+      },
+      ['id'],
+    )
     // const idADOBE = await queryInterface.rawSelect(
     //   'Courses',
     //   {
@@ -609,6 +609,93 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+
+      //------------//
+      // create module Node.js & Express.js: Kursus Pengembangan Backend
+      {
+        title: 'Chapter 1: Dasar-dasar Node.js',
+        duration: 225,
+        courseId: idNODE,
+        isLocked: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Chapter 2: Memahami Express.js',
+        duration: 152,
+        courseId: idNODE,
+        isLocked: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Chapter 3: Routing dan Middleware',
+        duration: 125,
+        courseId: idNODE,
+        isLocked: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Chapter 4: Membangun RESTful API dengan Express',
+        duration: 125,
+        courseId: idNODE,
+        isLocked: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Chapter 5: Koneksi ke Database',
+        duration: 73,
+        courseId: idNODE,
+        isLocked: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Chapter 6: Keamanan pada Aplikasi Node.js',
+        duration: 67,
+        courseId: idNODE,
+        isLocked: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+
+      //------------//
+      // create module UI/UX with Figma
+
+      {
+        title: 'Chapter 1: Pengenalan UI/UX Design',
+        duration: 81,
+        courseId: idFIGMA,
+        isLocked: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Chapter 2: Menyusun Ide Desain dengan Figma',
+        duration: 107,
+        courseId: idFIGMA,
+        isLocked: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Chapter 3: Mendesain Antarmuka Pengguna (UI)',
+        duration: 133,
+        courseId: idFIGMA,
+        isLocked: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Chapter 4: Mengoptimalkan Pengalaman Pengguna (UX)',
+        duration: 143,
+        courseId: idFIGMA,
+        isLocked: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ])
 
     //------------//
@@ -804,6 +891,96 @@ module.exports = {
       {
         where: {
           title: 'Chapter 4: Routing dan Navigasi di React',
+        },
+      },
+      ['id'],
+    )
+
+    //------------//
+    // id module Node.js & Express.js: Kursus Pengembangan Backend
+    const idModuleNODE1 = await queryInterface.rawSelect(
+      'Modules',
+      {
+        where: { title: 'Chapter 1: Dasar-dasar Node.js' },
+      },
+      ['id'],
+    )
+    const idModuleNODE2 = await queryInterface.rawSelect(
+      'Modules',
+      {
+        where: { title: 'Chapter 2: Memahami Express.js' },
+      },
+      ['id'],
+    )
+    const idModuleNODE3 = await queryInterface.rawSelect(
+      'Modules',
+      {
+        where: {
+          title: 'Chapter 3: Routing dan Middleware',
+        },
+      },
+      ['id'],
+    )
+
+    const idModuleNODE4 = await queryInterface.rawSelect(
+      'Modules',
+      {
+        where: {
+          title: 'Chapter 4: Membangun RESTful API dengan Express',
+        },
+      },
+      ['id'],
+    )
+    const idModuleNODE5 = await queryInterface.rawSelect(
+      'Modules',
+      {
+        where: {
+          title: 'Chapter 5: Koneksi ke Database',
+        },
+      },
+      ['id'],
+    )
+    const idModuleNODE6 = await queryInterface.rawSelect(
+      'Modules',
+      {
+        where: {
+          title: 'Chapter 6: Keamanan pada Aplikasi Node.js',
+        },
+      },
+      ['id'],
+    )
+
+    //------------//
+    // id module UI/UX with Figma
+    const idModuleFIGMA1 = await queryInterface.rawSelect(
+      'Modules',
+      {
+        where: { title: 'Chapter 1: Pengenalan UI/UX Design' },
+      },
+      ['id'],
+    )
+    const idModuleFIGMA2 = await queryInterface.rawSelect(
+      'Modules',
+      {
+        where: { title: 'Chapter 2: Menyusun Ide Desain dengan Figma' },
+      },
+      ['id'],
+    )
+    const idModuleFIGMA3 = await queryInterface.rawSelect(
+      'Modules',
+      {
+        where: {
+          title: 'Chapter 3: Mendesain Antarmuka Pengguna (UI)',
+        },
+      },
+      ['id'],
+    )
+
+    const idModuleFIGMA4 = await queryInterface.rawSelect(
+      'Modules',
+      {
+        where: {
+          title: 'Chapter 4: Mengoptimalkan Pengalaman Pengguna (UX)',
         },
       },
       ['id'],
@@ -1249,6 +1426,290 @@ module.exports = {
         videoUrl: 'zf9kXjW5DqQ',
         duration: 60,
         moduleId: idModuleREACTJS4,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+
+      //------------//
+      // create video Node.js & Express.js: Kursus Pengembangan Backend
+      {
+        title: 'Pengenalan Node.js',
+        no: 1,
+        videoUrl: 'SKoGGSF4fDc',
+        duration: 60,
+        moduleId: idModuleNODE1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Memahami Konsep Node.js',
+        no: 2,
+        videoUrl: 't2s863UWF2I',
+        duration: 75,
+        moduleId: idModuleNODE2,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'HTTP Server Node.js',
+        no: 3,
+        videoUrl: 'g0vyvImYaWE',
+        duration: 90,
+        moduleId: idModuleNODE3,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+
+      {
+        title: 'Memahami Express.js: Dasar-dasar Routing',
+        no: 1,
+        videoUrl: 'JVJc4k6xjTM',
+        duration: 50,
+        moduleId: idModuleNODE2,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Memahami Express.js: Penggunaan Middleware',
+        no: 2,
+        videoUrl: 'BruzjxVsneM',
+        duration: 37,
+        moduleId: idModuleNODE2,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Memahami Express.js: Membangun Endpoint API',
+        no: 3,
+        videoUrl: 'iQwND8dlCdM',
+        duration: 65,
+        moduleId: idModuleNODE2,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+
+      {
+        title: 'Routing pada Express.js',
+        no: 1,
+        videoUrl: 'HOPtedXdrCY',
+        duration: 74,
+        moduleId: idModuleNODE3,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Middleware dalam Pengembangan Node.js',
+        no: 2,
+        videoUrl: 'BruzjxVsneM',
+        duration: 30,
+        moduleId: idModuleNODE3,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Penerapan Routing dan Middleware',
+        no: 3,
+        videoUrl: 'CjzwkDddlFM',
+        duration: 21,
+        moduleId: idModuleNODE3,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+
+      {
+        title: 'Pengenalan RESTful API',
+        no: 1,
+        videoUrl: 'SKoGGSF4fDc',
+        duration: 20,
+        moduleId: idModuleNODE4,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Membuat Endpoint GET pada Express.js',
+        no: 2,
+        videoUrl: 'vlaBGlCOSg0',
+        duration: 90,
+        moduleId: idModuleNODE4,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Menangani POST Request dan Validasi Data',
+        no: 3,
+        videoUrl: 'HOPtedXdrCY',
+        duration: 15,
+        moduleId: idModuleNODE4,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+
+      {
+        title: 'Pengenalan Koneksi ke Database',
+        no: 1,
+        videoUrl: 'vlaBGlCOSg0',
+        duration: 15,
+        moduleId: idModuleNODE5,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Menggunakan MongoDB dengan Mongoose',
+        no: 2,
+        videoUrl: 'j7hZe2ZwWPo',
+        duration: 28,
+        moduleId: idModuleNODE5,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Mengintegrasikan Express.js dengan Database',
+        no: 3,
+        videoUrl: 'vlaBGlCOSg0',
+        duration: 30,
+        moduleId: idModuleNODE5,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+
+      {
+        title: 'Pentingnya Keamanan Aplikasi Node.js',
+        no: 1,
+        videoUrl: 'vlaBGlCOSg0',
+        duration: 30,
+        moduleId: idModuleNODE6,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Strategi Pengamanan Data pada Express.js',
+        no: 2,
+        videoUrl: 'j7hZe2ZwWPo',
+        duration: 13,
+        moduleId: idModuleNODE6,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Menggunakan Helmet untuk Keamanan Express.js',
+        no: 3,
+        videoUrl: 'HOPtedXdrCY',
+        duration: 24,
+        moduleId: idModuleNODE6,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+
+      //------------//
+      // create video UI/UX with Figma
+      {
+        title: 'Pengantar UI/UX Design',
+        no: 1,
+        videoUrl: 'CjzwkDddlFM',
+        duration: 24,
+        moduleId: idModuleFIGMA1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Peran Penting UI dalam Desain Produk',
+        no: 2,
+        videoUrl: 'HOPtedXdrCY',
+        duration: 30,
+        moduleId: idModuleFIGMA1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Konsep Dasar UX dan Figma',
+        no: 3,
+        videoUrl: 'Sl0YBFJuvSU',
+        duration: 28,
+        moduleId: idModuleFIGMA1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+
+      {
+        title: 'Perencanaan Ide Desain Produk',
+        no: 1,
+        videoUrl: 'vlaBGlCOSg0',
+        duration: 35,
+        moduleId: idModuleFIGMA2,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Menggunakan Figma untuk Brainstorming',
+        no: 2,
+        videoUrl: 'HOPtedXdrCY',
+        duration: 40,
+        moduleId: idModuleFIGMA2,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Strategi Penyusunan Ide yang Efektif',
+        no: 3,
+        videoUrl: 'CjzwkDddlFM',
+        duration: 32,
+        moduleId: idModuleFIGMA2,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+
+      {
+        title: 'Prinsip Dasar Desain Antarmuka Pengguna',
+        no: 1,
+        videoUrl: 'HOPtedXdrCY',
+        duration: 45,
+        moduleId: idModuleFIGMA3,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Menerapkan Desain Responsif dengan Figma',
+        no: 2,
+        videoUrl: 'vlaBGlCOSg0',
+        duration: 50,
+        moduleId: idModuleFIGMA3,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Pemilihan Warna dan Tipografi dalam Desain UI',
+        no: 3,
+        videoUrl: 'j7hZe2ZwWPo',
+        duration: 38,
+        moduleId: idModuleFIGMA3,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+
+      {
+        title: 'Memahami Prinsip-Prinsip Pengalaman Pengguna',
+        no: 1,
+        videoUrl: 'iQwND8dlCdM',
+        duration: 40,
+        moduleId: idModuleFIGMA4,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'User Research: Meningkatkan Desain berdasarkan Pengguna',
+        no: 2,
+        videoUrl: 'SKoGGSF4fDc',
+        duration: 55,
+        moduleId: idModuleFIGMA4,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        title: 'Prototyping dan Pengujian Pengalaman Pengguna',
+        no: 3,
+        videoUrl: 'vlaBGlCOSg0',
+        duration: 48,
+        moduleId: idModuleFIGMA4,
         createdAt: new Date(),
         updatedAt: new Date(),
       },

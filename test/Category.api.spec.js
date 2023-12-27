@@ -1,5 +1,7 @@
 /* eslint-disable */
 const request = require('supertest')
+const fs = require('fs')
+const path = require('path')
 const app = require('../server')
 const { faker } = require('@faker-js/faker')
 require('dotenv').config()
@@ -18,31 +20,28 @@ const getTokenAdmin = async (credentials) => {
   return res.token
 }
 
-// const getIdCategory = async (id) => {
-//   const check = await request(app).get(`/api/v1/category/${id}`)
-
-//   const res = JSON.parse(check.text)
-//   return res.data.id
-// }
+let imageBuffer
+beforeAll(async () => {
+  const filePath = path.join(__dirname, '../public/img/anddev.png')
+  imageBuffer = fs.readFileSync(filePath)
+})
 
 describe('API Category', () => {
   it('Success create category', async () => {
-    const category = {
-      id: 'C-0DOP',
-      name: 'DevOps',
-    }
     const tokenAdmin = await getTokenAdmin({
       email: 'admin2@gmail.com',
       password: 'admin2123',
     })
     const response = await request(app)
       .post('/api/v1/category')
-      .send(category)
+      .field('id', 'C-0DOP')
+      .field('name', 'Devops')
       .set('Authorization', `Bearer ${tokenAdmin}`)
+      .attach('image', imageBuffer, 'anddev.png')
     expect(response.statusCode).toBe(201)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, create category')
-  }, 10000)
+  }, 30000)
 
   it('Failed create category because jwt expired', async () => {
     const category = {
@@ -182,30 +181,44 @@ describe('API Category', () => {
   }, 10000)
 
   it('Success update category', async () => {
-    const category = {
-      name: 'Cyber Security',
-    }
     const tokenAdmin = await getTokenAdmin({
       email: 'admin2@gmail.com',
       password: 'admin2123',
     })
     const response = await request(app)
-      .put('/api/v1/category/C-0BI')
-      .send(category)
+      .patch('/api/v1/category/C-0WEB')
+      .field('name', 'Devops')
       .set('Authorization', `Bearer ${tokenAdmin}`)
+      .attach('image', imageBuffer, 'anddev.png')
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, updated')
-  }, 15000)
+  }, 30000)
 
-  it('Failed create category because jwt expired', async () => {
+  it('Failed update category route does not exist', async () => {
+    const tokenAdmin = await getTokenAdmin({
+      email: 'admin2@gmail.com',
+      password: 'admin2123',
+    })
+    const response = await request(app)
+      .put('/api/v1/category/C-0WEB')
+      .field('name', 'Devops')
+      .set('Authorization', `Bearer ${tokenAdmin}`)
+      .attach('image', imageBuffer, 'anddev.png')
+      .set('Authorization', `Bearer ${tokenAdmin}`)
+    expect(response.statusCode).toBe(404)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('Routes does not exist')
+  }, 10000)
+
+  it('Failed update category because jwt expired', async () => {
     const category = {
       name: 'Cyber Security',
     }
     const tokenExpired =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywibmFtZSI6ImFkbWluIiwiZW1haWwiOiJiaW5hci50ZWFtLmMxMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDIzNzc1NzksImV4cCI6MTcwMjQ2Mzk3OX0.4eAhzrpoZ9kUnabNdil8YHxkVNa-EnD5iimahZ8ky2g'
     const response = await request(app)
-      .put('/api/v1/category/C-0AND')
+      .patch('/api/v1/category/C-0AND')
       .send(category)
       .set('Authorization', `Bearer ${tokenExpired}`)
     expect(response.statusCode).toBe(500)
@@ -220,7 +233,7 @@ describe('API Category', () => {
     const tokenMalformed =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJpZCI6NyBnbWFpbC5jb20iLCJybpYXQiOjE3MDI0NjA3NzgsB0C7ex_p-tYiP5KtK97mMc4jzq6poxj9c'
     const response = await request(app)
-      .put('/api/v1/category/C-0AND')
+      .patch('/api/v1/category/C-0AND')
       .send(category)
       .set('Authorization', `Bearer ${tokenMalformed}`)
     expect(response.statusCode).toBe(500)
@@ -237,7 +250,7 @@ describe('API Category', () => {
       password: 'admin2123',
     })
     const response = await request(app)
-      .put('/api/v1/category/C-0ANDDDDDDDD')
+      .patch('/api/v1/category/C-0ANDDDDDDDD')
       .send(category)
       .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(404)
@@ -254,7 +267,7 @@ describe('API Category', () => {
       password: 'usergord123',
     })
     const response = await request(app)
-      .put('/api/v1/category/C-0AND')
+      .patch('/api/v1/category/C-0AND')
       .send(category)
       .set('Authorization', `Bearer ${tokenUser}`)
     expect(response.statusCode).toBe(401)
@@ -269,7 +282,7 @@ describe('API Category', () => {
       name: 'Artificial intelligence',
     }
     const response = await request(app)
-      .put('/api/v1/category/C-0UIX')
+      .patch('/api/v1/category/C-0UIX')
       .send(category)
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
@@ -282,7 +295,7 @@ describe('API Category', () => {
       password: 'admin2123',
     })
     const response = await request(app)
-      .put('/api/v1/category')
+      .patch('/api/v1/category')
       .set('Authorization', `Bearer ${tokenAdmin}`)
     expect(response.statusCode).toBe(404)
     expect(response.body.success).toBe(false)

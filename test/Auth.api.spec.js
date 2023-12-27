@@ -4,6 +4,7 @@ const fs = require('fs')
 const path = require('path')
 const app = require('../server')
 const { faker } = require('@faker-js/faker')
+const supertest = require('supertest')
 require('dotenv').config()
 
 const getToken = async (credentials) => {
@@ -18,36 +19,119 @@ beforeAll(async () => {
   imageBuffer = fs.readFileSync(filePath)
 })
 
-// describe('OTP endpoint', () => {
-//   it('Should generate OTP and send email', async () => {
-//     const user = {
-//       email: 'simbahmbah77@gmail.com',
-//     }
-
-//     const response = await request(app).post('/api/v1/otp').send(user)
-//     otpForRegister = response.req.session.otp
-//     console.log(response.body)
-//     expect(response.statusCode).toBe(200)
-//     expect(response.body.success).toBe(true)
-//     expect(response.body.message).toBe('Success, sent')
-//   })
-// })
+let otp = ''
+let hash = ''
+let otp2 = ''
+let hash2 = ''
 
 describe('API Register', () => {
-  // it('success register', async () => {
-  //   const user = {
-  //     otp: otpForRegister,
-  //     email: 'simbahmbah77@gmail.com',
-  //     password: '12345678',
-  //     name: 'simbah',
-  //     phoneNumber: 6288716625536,
-  //   }
-  //   const response = await request(app).post('/api/v1/auth/register').send(user)
-  //   console.log(response.body)
-  //   expect(response.statusCode).toBe(201)
-  //   expect(response.body.success).toBe(true)
-  //   expect(response.body.status).toBe('Success, register user')
-  // })
+  it('Success send OTP', async () => {
+    const email = {
+      email: 'simbahmbah77@gmail.com',
+    }
+    const response = await supertest(app).post('/api/v1/otp').send(email)
+    otp = response.body.otp
+    hash = response.body.data
+    expect(response.statusCode).toBe(200)
+    expect(response.body.success).toBe(true)
+    expect(response.body.message).toBe('Success, sent')
+  })
+  it('Failed send OTP because email already registered', async () => {
+    const email = {
+      email: 'syifa@gmail.com',
+    }
+    const response = await supertest(app).post('/api/v1/otp').send(email)
+    expect(response.statusCode).toBe(400)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('Email already registered')
+  })
+
+  it('Failed register because phone format is wrong', async () => {
+    const user = {
+      phoneNumber: 88716625536,
+      name: 'simbah',
+      email: 'simbahmbah77@gmail.com',
+      password: '12345678',
+      otp,
+      hashedOtp: hash,
+    }
+    const response = await request(app).post('/api/v1/auth/register').send(user)
+    expect(response.statusCode).toBe(400)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('Please enter a valid phone number')
+  })
+
+  it('Success send OTP', async () => {
+    const email = {
+      email: 'messi@gmail.com',
+    }
+    const response = await supertest(app).post('/api/v1/otp').send(email)
+    otp2 = response.body.otp
+    hash2 = response.body.data
+    expect(response.statusCode).toBe(200)
+    expect(response.body.success).toBe(true)
+    expect(response.body.message).toBe('Success, sent')
+  })
+  it('Failed register because email format is wrong', async () => {
+    const user = {
+      phoneNumber: 88716625536,
+      name: 'simbah',
+      email: 'simbahmbah77mail.com',
+      password: '12345678',
+      otp: otp2,
+      hashedOtp: hash2,
+    }
+    const response = await request(app).post('/api/v1/auth/register').send(user)
+    expect(response.statusCode).toBe(400)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('invalid or expired otp')
+  })
+  it('Failed register because password lower than 8', async () => {
+    const user = {
+      phoneNumber: 88716625536,
+      name: 'simbah',
+      email: 'messi@gmail.com',
+      password: '12345',
+      otp: otp2,
+      hashedOtp: hash2,
+    }
+    const response = await request(app).post('/api/v1/auth/register').send(user)
+    expect(response.statusCode).toBe(400)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('Minimum password must be 8 character')
+  })
+
+  it('Success register', async () => {
+    const user = {
+      phoneNumber: 6288716625536,
+      name: 'simbah',
+      email: 'simbahmbah77@gmail.com',
+      password: '12345678',
+      otp,
+      hashedOtp: hash,
+    }
+    const response = await request(app).post('/api/v1/auth/register').send(user)
+    console.log(response.body)
+    expect(response.statusCode).toBe(201)
+    expect(response.body.success).toBe(true)
+    expect(response.body.message).toBe('Success, register user')
+  })
+
+  it('Failed register because email already exist', async () => {
+    const user = {
+      phoneNumber: 6288716625536,
+      name: 'simbah',
+      email: 'simbahmbah77@gmail.com',
+      password: '12345678',
+      otp,
+      hashedOtp: hash,
+    }
+    const response = await request(app).post('/api/v1/auth/register').send(user)
+    expect(response.statusCode).toBe(400)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('User email already taken')
+  }, 10000)
+
   it('Failed register because user not including otp', async () => {
     const user = {
       email: 'imamtaufiq333@gmail.com',
@@ -71,7 +155,6 @@ describe('API Register', () => {
       hashedOtp: '55d6c68b61cefc6a66d2abaff',
     }
     const response = await request(app).post('/api/v1/auth/register').send(user)
-    console.log(response.body)
     expect(response.statusCode).toBe(400)
     expect(response.body.success).toBe(false)
     expect(response.body.message).toBe('invalid or expired otp')

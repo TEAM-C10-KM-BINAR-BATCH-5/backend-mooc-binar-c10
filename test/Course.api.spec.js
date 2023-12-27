@@ -1,5 +1,7 @@
 /* eslint-disable */
 const request = require('supertest')
+const fs = require('fs')
+const path = require('path')
 const app = require('../server')
 const { faker } = require('@faker-js/faker')
 require('dotenv').config()
@@ -18,6 +20,12 @@ const getTokenAdmin = async (credentials) => {
   return res.token
 }
 
+let imageBuffer
+beforeAll(async () => {
+  const filePath = path.join(__dirname, '../public/img/anddev.png')
+  imageBuffer = fs.readFileSync(filePath)
+})
+
 const getIdCourse = async (id) => {
   const check = await request(app).get(`/api/v1/course/${id}`)
 
@@ -27,29 +35,33 @@ const getIdCourse = async (id) => {
 
 describe('API Course', () => {
   it('Success create course', async () => {
-    const course = {
-      title: 'Tutorial Html dan Css',
-      about:
-        'Html dan Css adalah sebuah kerangka dasar dalam membuat suatu web',
-      objective:
-        'Course ini ditujukan untuk orang yang mau berkarier di dunia IT khususnya di bidang pengembangan web',
-      categoryId: 'C-0WEB',
-      onboarding:
-        'Siapkan mental anda untuk menghadapi course ini, karena course ini sangat bagus sehingga membuat mental anda menjadi semangat',
-      level: 'Beginner',
-      rating: 4.5,
-      instructor: 'Sandika Galih',
-      telegramLink: 'http://www.telegramling.com',
-      price: 50000,
-    }
     const tokenAdmin = await getTokenAdmin({
       email: 'admin2@gmail.com',
       password: 'admin2123',
     })
     const response = await request(app)
       .post('/api/v1/course')
-      .send(course)
+      .field('title', 'Tutorial Html dan Css')
+      .field(
+        'about',
+        'Html dan Css adalah sebuah kerangka dasar dalam membuat suatu web',
+      )
+      .field(
+        'objective',
+        'Course ini ditujukan untuk orang yang mau berkarier di dunia IT khususnya di bidang pengembangan web',
+      )
+      .field('categoryId', 'C-0WEB')
+      .field(
+        'onboarding',
+        'Siapkan mental anda untuk menghadapi course ini, karena course ini sangat bagus sehingga membuat mental anda menjadi semangat',
+      )
+      .field('level', 'Beginner')
+      .field('rating', 4.5)
+      .field('price', 100000)
+      .field('instructor', 'Sandika Galih')
+      .field('telegramLink', 'http://www.telegramling.com')
       .set('Authorization', `Bearer ${tokenAdmin}`)
+      .attach('image', imageBuffer, 'anddev.png')
     expect(response.statusCode).toBe(201)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, create course')
@@ -307,10 +319,6 @@ describe('API Course', () => {
   }, 10000)
 
   it('Success update course', async () => {
-    const course = {
-      rating: 4.3,
-      price: 30000,
-    }
     const tokenAdmin = await getTokenAdmin({
       email: 'admin2@gmail.com',
       password: 'admin2123',
@@ -318,8 +326,27 @@ describe('API Course', () => {
     const courseId = await getIdCourse(1)
     const response = await request(app)
       .patch(`/api/v1/course/${courseId}`)
-      .send(course)
+      .field('title', 'Tutorial Html dan Css')
+      .field(
+        'about',
+        'Html dan Css adalah sebuah kerangka dasar dalam membuat suatu web',
+      )
+      .field(
+        'objective',
+        'Course ini ditujukan untuk orang yang mau berkarier di dunia IT khususnya di bidang pengembangan web',
+      )
+      .field('categoryId', 'C-0WEB')
+      .field(
+        'onboarding',
+        'Siapkan mental anda untuk menghadapi course ini, karena course ini sangat bagus sehingga membuat mental anda menjadi semangat',
+      )
+      .field('level', 'Beginner')
+      .field('rating', 4.5)
+      .field('price', 100000)
+      .field('instructor', 'Sandika Galih')
+      .field('telegramLink', 'http://www.telegramling.com')
       .set('Authorization', `Bearer ${tokenAdmin}`)
+      .attach('image', imageBuffer, 'anddev.png')
     expect(response.statusCode).toBe(200)
     expect(response.body.success).toBe(true)
     expect(response.body.message).toBe('Success, updated')
@@ -491,12 +518,11 @@ describe('API Course', () => {
 
   it('Failed delete course because user role not admin', async () => {
     const tokenUser = await getToken({
-      email: 'khaled@gmail.com',
-      password: 'userkhaled123',
+      email: 'syifa@gmail.com',
+      password: 'usersyifa123',
     })
-    const courseId = await getIdCourse(2)
     const response = await request(app)
-      .delete(`/api/v1/course/${courseId}`)
+      .delete('/api/v1/course/1')
       .set('Authorization', `Bearer ${tokenUser}`)
     expect(response.statusCode).toBe(401)
     expect(response.body.success).toBe(false)
