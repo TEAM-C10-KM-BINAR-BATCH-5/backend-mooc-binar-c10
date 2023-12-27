@@ -123,9 +123,7 @@ const getUserTransactions = async (req, res, next) => {
   }
 
   if (statusSearch) {
-    whereClausePayment.status = {
-      [Op.in]: [statusSearch],
-    }
+    whereClausePayment.status = statusSearch
   }
   if (paymentTypeSearch) {
     whereClausePayment.payment_type = {
