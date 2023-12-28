@@ -89,6 +89,19 @@ describe('API Progress', () => {
     expect(response.body.message).toBe('id does not exist')
   }, 10000)
 
+  it('Failed update video because not enrolled the course', async () => {
+    const tokenUser = await getToken({
+      email: 'syifa@gmail.com',
+      password: 'usersyifa123',
+    })
+    const response = await request(app)
+      .post('/api/v1/progress/21')
+      .set('Authorization', `Bearer ${tokenUser}`)
+    expect(response.statusCode).toBe(400)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe('You have not enroll this course yet')
+  }, 10000)
+
   it('Failed update video because routes not found', async () => {
     const tokenUser = await getToken({
       email: 'syifa@gmail.com',

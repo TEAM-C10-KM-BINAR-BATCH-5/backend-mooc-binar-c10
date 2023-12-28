@@ -54,6 +54,13 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        name: 'neymar',
+        role: 'user',
+        membership: 'free',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
         name: 'admin2',
         role: 'admin',
         createdAt: new Date(),
@@ -119,6 +126,13 @@ module.exports = {
       'Users',
       {
         where: { name: 'layla' },
+      },
+      ['id'],
+    )
+    const idNeymar = await queryInterface.rawSelect(
+      'Users',
+      {
+        where: { name: 'neymar' },
       },
       ['id'],
     )
@@ -198,6 +212,15 @@ module.exports = {
           '$2a$12$sOzHt5uBFRVUmmPh2NqXquqVmOzP3ocAyoGp29WA3xIkl..43PQGe',
         phoneNumber: 6288716534418,
         userId: idLayla,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        email: 'neymar@gmail.com',
+        password:
+          '$2a$12$6xlTF9e2L9D/OYQ0hAf9E.COB2bzc3ebX5gzH9r2tAMwvMZxnGvxC',
+        phoneNumber: 6288716534418,
+        userId: idNeymar,
         createdAt: new Date(),
         updatedAt: new Date(),
       },

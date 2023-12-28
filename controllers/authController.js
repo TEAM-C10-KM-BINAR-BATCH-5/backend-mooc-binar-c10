@@ -53,6 +53,8 @@ const register = async (req, res, next) => {
       name,
       role: 'user',
       membership: 'free',
+      profileUrl:
+        'https://ik.imagekit.io/yxctvbjvh/blank-profile-picture.png?updatedAt=1703740955642',
     })
 
     const auth = await Auth.create({
