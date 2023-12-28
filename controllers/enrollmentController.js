@@ -284,8 +284,19 @@ const enrollCourse = async (req, res, next) => {
       },
     })
 
+    const isPremiumCourse = await Course.findOne({
+      where: {
+        id: courseId,
+        courseType: 'Premium',
+      },
+    })
+
     if (alreadyEnrolled) {
       return next(new ApiError('Course already enrolled', 400))
+    }
+
+    if (isPremiumCourse) {
+      return next(new ApiError('Course not purchased', 400))
     }
 
     await UserCourse.create({
