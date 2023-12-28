@@ -33,20 +33,6 @@ const buyCourse = async (req, res, next) => {
       return next(new ApiError('Course already purchased', 400))
     }
 
-    const alreadyEnrolled = await UserCourse.findOne({
-      where: {
-        userId: req.user.id,
-        courseId,
-      },
-    })
-
-    if (!alreadyEnrolled) {
-      await UserCourse.create({
-        userId: req.user.id,
-        courseId,
-      })
-    }
-
     const orderId = uuidv4()
 
     const dataTransaction = {
