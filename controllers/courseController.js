@@ -78,7 +78,7 @@ const getCourses = async (req, res, next) => {
   const popularitySort = req.query.popularity
   const whereClause = {}
 
-  if (categoryIds.length > 0 || !categoryIds.includes('C-0ALL')) {
+  if (categoryIds.length > 0 && !categoryIds.includes('C-0ALL')) {
     whereClause.categoryId = {
       [Op.in]: categoryIds,
     }
