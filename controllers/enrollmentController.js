@@ -112,7 +112,6 @@ const getUserCourseById = async (req, res, next) => {
   const courseId = req.params.id
   try {
     if (!req.user) {
-      console.log('MASOEKK DALAM IF')
       const course = await Course.findOne({
         where: { id: courseId },
         include: [
@@ -159,7 +158,6 @@ const getUserCourseById = async (req, res, next) => {
         },
       })
     }
-    console.log('MASOEKK DILUAR IF')
 
     let course = await Course.findOne({
       where: {
@@ -250,7 +248,7 @@ const getUserCourseById = async (req, res, next) => {
         )
         const videos = {
           ...video,
-          isWatched: watchedVideosId.includes(video.id),
+          isWatched: course ? watchedVideosId.includes(video.id) : undefined,
           isLocked: module.isLocked && !isCoursePurchased,
         }
         return videos

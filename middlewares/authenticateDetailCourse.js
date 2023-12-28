@@ -6,7 +6,6 @@ const checkRole = require('./checkRole')
 module.exports = async (req, res, next) => {
   try {
     if (req.headers.authorization) {
-      console.log('MASUK SINI GAK')
       const bearerToken = req.headers.authorization
 
       if (!bearerToken) {

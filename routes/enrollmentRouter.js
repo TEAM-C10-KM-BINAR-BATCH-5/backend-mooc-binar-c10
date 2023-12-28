@@ -4,7 +4,7 @@ const enrollment = require('../controllers/enrollmentController')
 const authenticate = require('../middlewares/authenticate')
 const checkRole = require('../middlewares/checkRole')
 const checkId = require('../middlewares/checkId')
-const authenticateCategory = require('../middlewares/authenticateCategory')
+const authenticateDetailCourse = require('../middlewares/authenticateDetailCourse')
 
 router
   .route('/')
@@ -12,7 +12,7 @@ router
 
 router
   .route('/:id')
-  .get(authenticateCategory, checkId(Course), enrollment.getUserCourseById)
+  .get(authenticateDetailCourse, checkId(Course), enrollment.getUserCourseById)
 
 router.post(
   '/:id',
