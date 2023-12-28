@@ -111,7 +111,57 @@ const getUserCourses = async (req, res, next) => {
 const getUserCourseById = async (req, res, next) => {
   const courseId = req.params.id
   try {
-    const course = await Course.findOne({
+    if (!req.user) {
+      console.log('MASOEKK DALAM IF')
+      const course = await Course.findOne({
+        where: { id: courseId },
+        include: [
+          {
+            model: Category,
+            attributes: { exclude: ['id', 'createdAt', 'updatedAt'] },
+          },
+          {
+            model: Module,
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            include: [
+              {
+                model: Video,
+                attributes: { exclude: ['createdAt', 'updatedAt'] },
+              },
+            ],
+          },
+        ],
+      })
+
+      const filteredModules = course.toJSON().Modules.map((module) => {
+        const filteredVideos = module.Videos.map((video) => {
+          const videos = {
+            ...video,
+            isLocked: module.isLocked,
+          }
+          return videos
+        })
+        return { ...module, Videos: filteredVideos }
+      })
+
+      const totalDuration = await Module.sum('duration', {
+        where: {
+          courseId,
+        },
+      })
+      return res.status(200).json({
+        success: true,
+        message: 'Success, fetch',
+        data: {
+          ...course.toJSON(),
+          totalDuration: totalDuration === null ? 0 : totalDuration,
+          Modules: filteredModules,
+        },
+      })
+    }
+    console.log('MASOEKK DILUAR IF')
+
+    let course = await Course.findOne({
       where: {
         id: courseId,
       },
@@ -151,12 +201,33 @@ const getUserCourseById = async (req, res, next) => {
     })
 
     if (!course) {
-      return next(
-        new ApiError(
-          'You have not enroll this course yet, or course not available',
-          404,
-        ),
-      )
+      course = await Course.findOne({
+        where: {
+          id: courseId,
+        },
+        include: [
+          {
+            model: Category,
+            attributes: { exclude: ['id', 'createdAt', 'updatedAt'] },
+          },
+          {
+            model: Module,
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            include: [
+              {
+                model: Video,
+                attributes: { exclude: ['createdAt', 'updatedAt'] },
+              },
+            ],
+          },
+        ],
+      })
+      // return next(
+      //   new ApiError(
+      //     'You have not enroll this course yet, or course not available',
+      //     404,
+      //   ),
+      // )
     }
 
     const totalDuration = await Module.sum('duration', {
