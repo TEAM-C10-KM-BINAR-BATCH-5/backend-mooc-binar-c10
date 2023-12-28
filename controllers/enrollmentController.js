@@ -14,7 +14,7 @@ const getUserCourses = async (req, res, next) => {
   const levelSearch = req.query.level || ''
   const whereClause = {}
 
-  if (categoryIds.length > 0) {
+  if (categoryIds.length > 0 || categoryIds.includes('ALL')) {
     whereClause.categoryId = {
       [Op.in]: categoryIds,
     }

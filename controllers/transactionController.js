@@ -15,7 +15,7 @@ const getAllTransactions = async (req, res, next) => {
   const whereClauseCourse = {}
   const whereClausePayment = {}
 
-  if (categoryIds.length > 0) {
+  if (categoryIds.length > 0 || categoryIds.includes('ALL')) {
     whereClauseCourse.categoryId = {
       [Op.in]: categoryIds,
     }
@@ -109,7 +109,7 @@ const getUserTransactions = async (req, res, next) => {
     userId: req.user.id,
   }
 
-  if (categoryIds.length > 0) {
+  if (categoryIds.length > 0 || categoryIds.includes('ALL')) {
     whereClauseCourse.categoryId = {
       [Op.in]: categoryIds,
     }
