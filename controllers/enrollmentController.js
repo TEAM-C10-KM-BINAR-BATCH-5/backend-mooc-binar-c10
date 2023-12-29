@@ -6,10 +6,12 @@ const {
 const ApiError = require('../utils/apiError')
 
 const getUserCourses = async (req, res, next) => {
-  const categoryIdsArray = Array.isArray(req.query.categoryIds)
-    ? req.query.categoryIds
-    : req.query.categoryIds.split(',')
-  const categoryIds = req.query.categoryIds ? categoryIdsArray : []
+  // eslint-disable-next-line no-nested-ternary
+  const categoryIds = req.query.categoryIds
+    ? Array.isArray(req.query.categoryIds)
+      ? req.query.categoryIds
+      : req.query.categoryIds.split(',')
+    : []
   const titleSearch = req.query.title || ''
   const courseTypeSearch = req.query.courseType || ''
   const levelSearch = req.query.level || ''

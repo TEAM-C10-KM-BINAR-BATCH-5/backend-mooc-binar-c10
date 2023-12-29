@@ -6,10 +6,12 @@ const {
 const ApiError = require('../utils/apiError')
 
 const getAllTransactions = async (req, res, next) => {
-  const categoryIdsArray = Array.isArray(req.query.categoryIds)
-    ? req.query.categoryIds
-    : req.query.categoryIds.split(',')
-  const categoryIds = req.query.categoryIds ? categoryIdsArray : []
+  // eslint-disable-next-line no-nested-ternary
+  const categoryIds = req.query.categoryIds
+    ? Array.isArray(req.query.categoryIds)
+      ? req.query.categoryIds
+      : req.query.categoryIds.split(',')
+    : []
   const statusSearch = req.query.status || ''
   const paymentTypeSearch = req.query.paymentType || ''
   const titleSearch = req.query.title || ''
@@ -99,10 +101,12 @@ const getUserTransactionStatusById = async (req, res, next) => {
 }
 
 const getUserTransactions = async (req, res, next) => {
-  const categoryIdsArray = Array.isArray(req.query.categoryIds)
-    ? req.query.categoryIds
-    : req.query.categoryIds.split(',')
-  const categoryIds = req.query.categoryIds ? categoryIdsArray : []
+  // eslint-disable-next-line no-nested-ternary
+  const categoryIds = req.query.categoryIds
+    ? Array.isArray(req.query.categoryIds)
+      ? req.query.categoryIds
+      : req.query.categoryIds.split(',')
+    : []
   const statusSearch = req.query.status || ''
   const paymentTypeSearch = req.query.paymentType || ''
   const titleSearch = req.query.title || ''
