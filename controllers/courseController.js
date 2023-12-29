@@ -68,9 +68,10 @@ const createCourse = async (req, res, next) => {
 }
 
 const getCourses = async (req, res, next) => {
-  const categoryIds = req.query.categoryIds
-    ? req.query.categoryIds.split(',')
-    : []
+  const categoryIdsArray = Array.isArray(req.query.categoryIds)
+    ? req.query.categoryIds
+    : req.query.categoryIds.split(',')
+  const categoryIds = req.query.categoryIds ? categoryIdsArray : []
   const titleSearch = req.query.title || ''
   const courseTypeSearch = req.query.courseType || ''
   const levelSearch = req.query.level || ''
