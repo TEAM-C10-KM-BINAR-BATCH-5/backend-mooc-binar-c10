@@ -1,6 +1,6 @@
 // prettier-ignore
 const {
-  Video, UserVideo, Module, UserCourse,
+  Video, UserVideo, Module, UserCourse, Payment,
 } = require('../models')
 const ApiError = require('../utils/apiError')
 
@@ -27,7 +27,7 @@ const updateProgress = async (req, res, next) => {
     }
 
     if (video.Module.isLocked) {
-      const isPurchased = await UserCourse.findOne({
+      const isPurchased = await Payment.findOne({
         where: {
           userId: req.user.id,
           courseId: video.Module.courseId,
@@ -42,17 +42,18 @@ const updateProgress = async (req, res, next) => {
       where: {
         userId: req.user.id,
         videoId: video.id,
-        courseId: video.Module.courseId,
       },
     })
 
-    if (!checkUserVideo) {
-      await UserVideo.create({
-        userId: req.user.id,
-        videoId: video.id,
-        courseId: video.Module.courseId,
-      })
+    if (checkUserVideo) {
+      return next(new ApiError('Already watch this video', 400))
     }
+
+    await UserVideo.create({
+      userId: req.user.id,
+      videoId: video.id,
+      courseId: video.Module.courseId,
+    })
 
     return res.status(200).json({
       success: true,
