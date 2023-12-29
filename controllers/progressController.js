@@ -1,3 +1,4 @@
+const { Op } = require('sequelize')
 // prettier-ignore
 const {
   Video, UserVideo, Module, UserCourse, Payment,
@@ -31,6 +32,9 @@ const updateProgress = async (req, res, next) => {
         where: {
           userId: req.user.id,
           courseId: video.Module.courseId,
+          status: {
+            [Op.in]: ['settlement', 'capture'],
+          },
         },
       })
       if (!isPurchased) {
