@@ -17,11 +17,12 @@ const getUserCourses = async (req, res, next) => {
   const levelSearch = req.query.level || ''
   const whereClause = {}
 
+  const allCategoryIndex = categoryIds.indexOf('C-0ALL')
+  if (allCategoryIndex !== -1) {
+    categoryIds.splice(allCategoryIndex, 1)
+  }
+
   if (categoryIds.length > 0) {
-    const allCategoryIndex = categoryIds.indexOf('C-0ALL')
-    if (allCategoryIndex !== -1) {
-      categoryIds.splice(allCategoryIndex, 1)
-    }
     whereClause.categoryId = {
       [Op.in]: categoryIds,
     }
