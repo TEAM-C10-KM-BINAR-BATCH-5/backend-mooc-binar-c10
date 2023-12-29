@@ -18,7 +18,11 @@ const getAllTransactions = async (req, res, next) => {
   const whereClauseCourse = {}
   const whereClausePayment = {}
 
-  if (categoryIds.length > 0 && !categoryIds.includes('C-0ALL')) {
+  if (categoryIds.length > 0) {
+    const allCategoryIndex = categoryIds.indexOf('C-0ALL')
+    if (allCategoryIndex !== -1) {
+      categoryIds.splice(allCategoryIndex, 1)
+    }
     whereClauseCourse.categoryId = {
       [Op.in]: categoryIds,
     }
@@ -115,7 +119,11 @@ const getUserTransactions = async (req, res, next) => {
     userId: req.user.id,
   }
 
-  if (categoryIds.length > 0 && !categoryIds.includes('C-0ALL')) {
+  if (categoryIds.length > 0) {
+    const allCategoryIndex = categoryIds.indexOf('C-0ALL')
+    if (allCategoryIndex !== -1) {
+      categoryIds.splice(allCategoryIndex, 1)
+    }
     whereClauseCourse.categoryId = {
       [Op.in]: categoryIds,
     }
