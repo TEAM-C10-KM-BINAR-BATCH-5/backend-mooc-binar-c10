@@ -142,7 +142,7 @@ const getCourses = async (req, res, next) => {
       attributes: [
         '*',
         [
-          sequelize.fn('SUM', sequelize.col('Modules.duration')),
+          sequelize.literal('SUM(DISTINCT "Modules".duration)'),
           'totalDuration',
         ],
         [sequelize.literal(subquery), 'popularity'],

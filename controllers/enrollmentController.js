@@ -55,6 +55,10 @@ const getUserCourses = async (req, res, next) => {
                 {
                   model: UserVideo,
                   attributes: [],
+                  required: false,
+                  where: {
+                    userId: req.user.id,
+                  },
                 },
               ],
             },
@@ -78,7 +82,7 @@ const getUserCourses = async (req, res, next) => {
       attributes: [
         '*',
         [
-          sequelize.fn('SUM', sequelize.col('Modules.duration')),
+          sequelize.literal('SUM(DISTINCT "Modules".duration)'),
           'totalDuration',
         ],
         [
